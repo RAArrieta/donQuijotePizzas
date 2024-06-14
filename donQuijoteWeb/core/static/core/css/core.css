@@ -1,0 +1,145 @@
+/* General Styles */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  font-family: 'Merriweather', serif;
+  color: #333;
+  background-color: #f4f4f9;
+}
+
+/* HEADER */
+.header-container {
+  background-color: #2C3E50;
+  height: 12vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: #fff;
+  font-family: 'Poetsen One', sans-serif;
+  font-size: 32px;
+}
+
+/* FOOTER */
+.footer-container {
+  background-color: #2C3E50;
+  height: 5vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding: 0 20px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.footer-info {
+  color: #fff;
+  font-size: 14px;
+}
+
+/* MENU */
+.menu-container {
+  width: 20%;
+  height: 83vh;
+  background-color: #fdfdfd71;
+  float: left;
+  overflow-y: auto;
+  border-right: 1px solid #bdc3c7;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.list-app {
+  list-style: none;
+  padding: 0;
+}
+
+.list-link {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.link-app {
+  color: #2C3E50;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.link-app:hover {
+  background-color: #bdc3c7;
+  color: #2C3E50;
+}
+
+/* Submenu */
+.sub-menu {
+  list-style: none;
+  padding: 0;
+  margin-left: 20px;
+  display: none;
+  border-left: 2px solid #bdc3c7;
+  margin-top: 10px;
+}
+
+.list-link:hover > .sub-menu,
+.sub-list-link:hover > .sub-menu {
+  display: block;
+}
+
+/* MAIN */
+.main-container {
+  height: 83vh;
+  width: 80%;
+  float: left;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* CONTAINER ICONOS */
+.iconos-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  padding: 20px;
+  align-items: center;
+}
+
+.acceso-link {
+  text-decoration: none;
+  color: #2C3E50;
+  text-align: center;
+  flex-basis: calc(25% - 40px); /* 4 items per row, accounting for gap */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.acceso-link:hover {
+  transform: translateY(-5px);
+}
+
+.escritorio-img {
+  width: 55%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.escritorio-img-nom { 
+  padding-top: 20px;
+}

@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    don Quijote
+{% endblock title %}
+
+{% block main %}
+    <div class="iconos-container">
+        <a class="acceso-link" href="#">
+            <img class="escritorio-img" src="{% static 'core/img/caja.webp' %}" alt="Caja">
+            <p class="escritorio-img-nom">Caja</p>
+        </a>
+        <a class="acceso-link" href="#">
+            <img class="escritorio-img" src="{% static 'core/img/pedido.webp' %}" alt="Pedidos">
+            <p class="escritorio-img-nom">Pedidos</p>
+        </a>
+        <a class="acceso-link" href="#">
+            <img class="escritorio-img" src="{% static 'core/img/facturacion.webp' %}" alt="Facturación">
+            <p class="escritorio-img-nom">Facturación</p>
+        </a>
+        <a class="acceso-link" href="#">
+            <img class="escritorio-img" src="{% static 'core/img/gastos.webp' %}" alt="Gastos">
+            <p class="escritorio-img-nom">Gastos</p>
+        </a>
+        <a class="acceso-link" href="#">
+            <img class="escritorio-img" src="{% static 'core/img/contabilidad.webp' %}" alt="Contabilidad">
+            <p class="escritorio-img-nom">Contabilidad</p>
+        </a>
+        <a class="acceso-link" href="#">
+            <img class="escritorio-img" src="{% static 'core/img/estadisticas.webp' %}" alt="Estadisticas">
+            <p class="escritorio-img-nom">Estadisticas</p>
+        </a>  
+        <a class="acceso-link" href="#">
+            <img class="escritorio-img" src="{% static 'core/img/producto.webp' %}" alt="Productos">
+            <p class="escritorio-img-nom">Productos</p>
+        </a>
+        <a class="acceso-link" href="#">
+            <img class="escritorio-img" src="{% static 'core/img/costos.webp' %}" alt="Costos">
+            <p class="escritorio-img-nom">Costos</p>
+        </a>
+    </div>
+{% endblock main %}
