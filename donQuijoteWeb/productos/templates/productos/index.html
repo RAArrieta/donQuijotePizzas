@@ -11,11 +11,18 @@
 
 {% block titulo %}
     <div class="titulo-container">
-        <h1 class="main-titulo">Productos</h1>
+        <div class="titulo-producto-container">
+            <h1 class="main-titulo">Productos</h1>
+            <a>Crear Producto</a>
+            <a>Categorias</a>
+        </div>
         <hr  class="main-hr"/>
     </div>
 {% endblock titulo %}
 
 {% block main %}
-    <h1>Página Productos</h1>
+    {% for producto in productos %}
+        <p>{{producto.nombre}} ${{producto.precio_unit}}</p>
+    
+    {% endfor %}
 {% endblock main %}
