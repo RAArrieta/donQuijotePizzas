@@ -14,7 +14,7 @@ body {
 
 /* HEADER */
 .header-container {
-  background-color: #2C3E50;
+  background-color: #5c88b8;
   height: 12vh;
   width: 100%;
   display: flex;
@@ -32,7 +32,7 @@ body {
 
 /* FOOTER */
 .footer-container {
-  background-color: #2C3E50;
+  background-color: #5c88b8;
   height: 5vh;
   width: 100%;
   display: flex;
@@ -101,7 +101,7 @@ body {
 /* MAIN */
 .main-container {
   width: 80%;
-  height: 83vh; /* Asegura que ocupe todo el viewport height */
+  height: 83vh; 
   float: left;
   padding: 20px;
   overflow-y: auto;
@@ -114,7 +114,7 @@ body {
 /* CONTAINER ICONOS */
 .iconos-container {
   width: 100%;
-  flex-grow: 1; /* Permite que este contenedor crezca para ocupar el espacio disponible */
+  flex-grow: 1; 
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
@@ -127,7 +127,7 @@ body {
   text-decoration: none;
   color: #2C3E50;
   text-align: center;
-  flex-basis: calc(25% - 40px); /* 4 items per row, accounting for gap */
+  flex-basis: calc(25% - 40px); 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -149,7 +149,7 @@ body {
 /* TITULO CONTAINER */
 .titulo-container {
   width: 100%;
-  height: auto; /* Permite que el contenedor de título se ajuste a su contenido */
+  height: auto; 
   text-align: left;
   margin-bottom: 40px;
   border-radius: 8px;
@@ -167,6 +167,6 @@ body {
   border: none;
   width: 95%;
   height: 2px;
-  background-color: #2C3E50;
-  margin: 0 auto; /* Centrando horizontalmente */
+  background-color: #5c88b8;
+  margin: 0 auto; 
 }
