@@ -19,6 +19,7 @@
     {% include 'core/components/header.html' %}
     {% include 'core/components/menu.html' %}
     <main class="main-container">
+        {% block titulo %}{% endblock titulo %}
         {% block main %}{% endblock main %}
     </main>
     {% include 'core/components/footer.html' %}
