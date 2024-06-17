@@ -21,8 +21,28 @@
 {% endblock titulo %}
 
 {% block main %}
-    {% for producto in productos %}
-        <p>{{producto.nombre}} ${{producto.precio_unit}}</p>
-    
-    {% endfor %}
+    {% regroup object_list by categoria.nombre as categorias %}
+
+    <div class="categorias-container">
+        {% for categoria in categorias %}
+        <div class="card-producto-categoria-container">
+            <div class="card-categoria">
+                <h1 class="categoria-titulo">{{ categoria.grouper }}</h1>
+                <hr class="categoria-hr">
+                {% for producto in categoria.list %}
+                <div class="producto-opciones">
+                    <p class="producto-nombre">{{ producto.nombre }}</p>
+                    <p class="producto-precio">${{ producto.precio_unit }}</p>
+                    <div class="producto-opc">
+                        <a href="#"><img class="icono-opcion-producto" src="{% static 'productos/img/lupa.webp' %}" alt="Detalle Producto"></a>
+                        <a href="#"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+                        <a href="#"><img class="icono-opcion-producto" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
+                    </div>
+                </div>     
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 {% endblock main %}
+
