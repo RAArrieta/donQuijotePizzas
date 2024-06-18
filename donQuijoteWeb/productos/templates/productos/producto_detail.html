@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Detalle Producto
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    <div class="titulo-container">
+        <h1 class="main-titulo">Eliminar Producto</h1>
+        <hr  class="main-hr"/>
+    </div>
+{% endblock titulo %}
+
+{% block main %}
+    <div class="productos-container">
+        <div class="producto-card">
+            <div class="producto-card-titulo-container">
+                <h1 class="producto-card-titulo">{{ object.nombre }}</h1>
+                <div class="producto-opciones2">
+                    <a href="{% url 'productos:productos_update' producto.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+                    <a href="{% url 'productos:productos_delete' producto.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
+                </div>
+            </div>
+            <hr>
+            <p class="detalle-producto">Categoria: {{ object.categoria }}</p>
+            {% if object.descripcion %}
+                <p class="detalle-producto">Descripción: {{ object.descripcion }}</p>
+            {% endif %}            
+            <p class="detalle-producto">Precio Unitario: ${{ object.precio_unit }}</p>
+            {% if object.precio_media %}
+            <p class="detalle-producto">Precio Unitario: ${{ object.precio_media }}</p>
+            {% endif %}
+            {% if object.precio_doc %}
+                <p class="detalle-producto">Precio Unitario: ${{ object.precio_doc }}</p>
+            {% endif %}
+            <div class="form-btn-container">
+                <a class="boton" href="{% url 'productos:home' %}">Volver</a>
+            </div> 
+        </div>
+    </div>
+   
+{% endblock main %}

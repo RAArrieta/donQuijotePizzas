@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Productos
+    dQ | Productos
 {% endblock title %}
 
 {% block css %}
@@ -13,8 +13,10 @@
     <div class="titulo-container">
         <div class="titulo-producto-container">
             <h1 class="main-titulo">Productos</h1>
-            <a>Crear Producto</a>
-            <a>Categorias</a>
+            <div class="productos-crear-cat">
+                <a class="productos-crear" href="{% url 'productos:productos_create' %}">Crear Producto</a>
+                <a class="productos-crear" href="#">Categorias</a>
+            </div>
         </div>
         <hr  class="main-hr"/>
     </div>
@@ -34,9 +36,9 @@
                     <p class="producto-nombre">{{ producto.nombre }}</p>
                     <p class="producto-precio">${{ producto.precio_unit }}</p>
                     <div class="producto-opc">
-                        <a href="#"><img class="icono-opcion-producto" src="{% static 'productos/img/lupa.webp' %}" alt="Detalle Producto"></a>
-                        <a href="#"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
-                        <a href="#"><img class="icono-opcion-producto" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
+                        <a href="{% url 'productos:productos_detail' producto.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/lupa.webp' %}" alt="Detalle Producto"></a>
+                        <a href="{% url 'productos:productos_update' producto.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+                        <a href="{% url 'productos:productos_delete' producto.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
                     </div>
                 </div>     
                 {% endfor %}
