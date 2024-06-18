@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+
+{% block titulo %}
+    <div class="titulo-container">
+        <h1 class="main-titulo">Eliminar Producto</h1>
+        <hr  class="main-hr"/>
+    </div>
+{% endblock titulo %}
+
+{% block main %}
+    <div class="card-categoria">
+        <p>¿Confirma eliminar "{{ object.nombre }}"?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="boton-confir-delete">Confirmar</button>
+        </form>
+    </div>
+{% endblock main %}

@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block titulo %}
+    <div class="titulo-container">
+        <h1 class="main-titulo">Eliminar Producto</h1>
+        <hr  class="main-hr"/>
+    </div>
+{% endblock titulo %}
+
+{% block main %}
+    <div class="card-categoria">
+        <h1>{{ object.nombre }}</h1>
+        <hr>
+        <p class="detalle-producto">Categoria: {{ object.categoria }}</p>
+        <p class="detalle-producto">Descripción: {{ object.descripcion }}</p>
+        <p class="detalle-producto">Precio: ${{ object.precio_unit }}</p>
+    </div>
+{% endblock main %}

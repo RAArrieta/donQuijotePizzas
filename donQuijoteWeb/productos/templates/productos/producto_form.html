@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+{% block titulo %}
+    {% if form.instance.pk %}
+        <div class="titulo-container">
+            <h1 class="main-titulo">Modificar Producto</h1>
+            <hr  class="main-hr"/>
+        </div>
+    {% else %}
+        <div class="titulo-container">
+            <h1 class="main-titulo">Crear Producto</h1>
+            <hr  class="main-hr"/>
+        </div>
+    {% endif %}  
+{% endblock titulo %}
+
+{% block main %}
+    <form class="form-container" action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button class="link-crud-productos" type="submit">Guardar</button>
+    </form>
+{% endblock main %}
