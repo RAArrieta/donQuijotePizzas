@@ -7,7 +7,7 @@ class ProductoCategoria(models.Model):
         return self.nombre
     
 class Producto(models.Model):
-    nombre=models.CharField(max_length=50, verbose_name="Nobre")
+    nombre=models.CharField(max_length=50, verbose_name="Nombre")
     categoria=models.ForeignKey(ProductoCategoria, on_delete=models.CASCADE, verbose_name="Categoría")
     descripcion=models.CharField(max_length=200, blank=True, null=True, verbose_name="Descripción")
     precio_unit=models.IntegerField(verbose_name="P. Unitario")

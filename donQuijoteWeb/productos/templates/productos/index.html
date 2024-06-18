@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Productos
+    dQ | Productos
 {% endblock title %}
 
 {% block css %}
@@ -13,8 +13,10 @@
     <div class="titulo-container">
         <div class="titulo-producto-container">
             <h1 class="main-titulo">Productos</h1>
-            <a href="{% url 'productos:productos_create' %}">Crear Producto</a>
-            <a>Categorias</a>
+            <div class="productos-crear-cat">
+                <a class="productos-crear" href="{% url 'productos:productos_create' %}">Crear Producto</a>
+                <a class="productos-crear" href="#">Categorias</a>
+            </div>
         </div>
         <hr  class="main-hr"/>
     </div>

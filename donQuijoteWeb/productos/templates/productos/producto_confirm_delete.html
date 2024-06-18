@@ -1,4 +1,13 @@
 {% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Eliminar Producto
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
+{% endblock css %}
 
 {% block titulo %}
     <div class="titulo-container">
@@ -8,12 +17,15 @@
 {% endblock titulo %}
 
 {% block main %}
-    <div class="card-categoria">
+    <div class="eliminar-container">
         <p>¿Confirma eliminar "{{ object.nombre }}"?</p>
 
         <form method="post">
             {% csrf_token %}
-            <button type="submit" class="boton-confir-delete">Confirmar</button>
+            <div class="delete-btn-container">
+                <button type="submit" class="btn-delete">Confirmar</button>
+                <a class="boton" href="{% url 'productos:home' %}">Volver</a>
+            </div>                
         </form>
     </div>
 {% endblock main %}

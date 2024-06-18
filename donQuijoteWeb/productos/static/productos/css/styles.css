@@ -1,3 +1,25 @@
+/* TITULOS */
+.productos-crear-cat {
+    display: flex;
+    gap: 20px; /* Espacio entre los enlaces */
+    padding-right: 40px;
+}
+
+.productos-crear {
+    color: #2C3E50;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #f4f4f9;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.productos-crear:hover {
+    background-color: #bdc3c7;
+    color: #2C3E50;
+}
+
 /* Lista de Productos */
 .categorias-container {
     width: 90%;
@@ -80,4 +102,121 @@
 
 .icono-opcion-producto:hover {
     transform: scale(1.2);
+}
+
+/* FORMS */
+.productos-container {
+    width: 100%;
+    height: calc(100vh - 17vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.producto-card {
+    width: 70%;
+    max-width: 600px;
+    padding: 35px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Merriweather', serif;
+}
+
+.form-btn-container {
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    margin-top: 10px;
+}
+
+/* DETAIL */
+.producto-card-titulo-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.producto-opciones2{
+    width: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+.producto-card-titulo {
+    font-size: 28px;
+    color: #2C3E50;
+    margin-bottom: 10px;
+}
+
+.producto-card hr {
+    width: 100%;
+    height: 2px;
+    background-color: #2C3E50;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.detalle-producto {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* ELIMINAR CONTAINER */
+.eliminar-container {
+    width: 60%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centra el texto dentro del contenedor */
+}
+
+.eliminar-container p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* DELETE BUTTON CONTAINER */
+.delete-btn-container {
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    gap: 20px; /* Espacio entre los botones */
+    margin-top: 20px;
+}
+
+.btn-delete {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-delete {
+    background-color: #e74c3c; /* Rojo para el botón de eliminar */
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b; /* Rojo más oscuro en hover */
 }
