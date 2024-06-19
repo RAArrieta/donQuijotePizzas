@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Categorias
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    <div class="titulo-container">
+        <div class="titulo-producto-container">
+            <h1 class="main-titulo">Categorias</h1>
+            <div class="productos-crear-cat">
+                <a class="productos-crear" href="{% url 'productos:home' %}">Productos</a>
+                <a class="productos-crear" href="{% url 'productos:categorias_create' %}">Crear Categoria</a>
+            </div>
+        </div>
+        <hr  class="main-hr"/>
+    </div>
+{% endblock titulo %}
+
+{% block main %}
+    <div class="categorias-container">
+        {% for categoria in categorias %}
+        <div class="card-producto-categoria-container">
+            <div class="card-categoria">
+                <h1 class="categoria-titulo">{{ categoria }}</h1>
+                <div class="producto-opc">
+                    <a href="{% url 'productos:categorias_update' categoria.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+                    <a href="{% url 'productos:categorias_delete' categoria.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
+                </div>
+            </div>     
+        </div>
+        {% endfor %}
+    </div>
+{% endblock main %}
