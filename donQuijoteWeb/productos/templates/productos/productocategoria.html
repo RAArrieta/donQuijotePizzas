@@ -23,12 +23,12 @@
 {% endblock titulo %}
 
 {% block main %}
-    <div class="categorias-container">
+    <div class="categorias-container2">
         {% for categoria in categorias %}
-        <div class="card-producto-categoria-container">
-            <div class="card-categoria">
+        <div class="card-categoria-container">
+            <div class="card-categ">
                 <h1 class="categoria-titulo">{{ categoria }}</h1>
-                <div class="producto-opc">
+                <div class="producto-opciones2">
                     <a href="{% url 'productos:categorias_update' categoria.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
                     <a href="{% url 'productos:categorias_delete' categoria.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
                 </div>
