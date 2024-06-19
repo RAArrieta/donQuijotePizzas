@@ -17,3 +17,7 @@ urlpatterns += [
     path("productos/categorias/update/<int:pk>", views.ProductoCategoriaUpdate.as_view(), name="categorias_update"),
     path("productos/categorias/delete/<int:pk>", views.ProductoCategoriaDelete.as_view(), name="categorias_delete"),   
 ]
+
+urlpatterns += [
+    path("productos/lista_wa", views.lista_wa, name="lista_wa"),
+]

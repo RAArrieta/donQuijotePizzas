@@ -45,3 +45,10 @@ class ProductoCategoriaDelete(DeleteView):
     
 class ProductoDetail(DetailView):
     model = models.Producto
+    
+def lista_wa(request):
+    productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()
+    context = {
+        'object_list': productos
+    }
+    return render(request, 'productos/lista_wa.html', context)

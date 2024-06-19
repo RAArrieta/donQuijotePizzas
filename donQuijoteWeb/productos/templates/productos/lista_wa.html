@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Lista Whatsapp
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    <div class="titulo-container">
+        <h1 class="main-titulo">Lista Whatsapp</h1>
+        <hr class="main-hr"/>
+    </div>
+{% endblock titulo %}
+
+{% block main %}
+    {% regroup object_list by categoria.nombre as categorias %}
+
+    <div class="categorias-container">
+        {% for categoria in categorias %}
+        <div class="card-producto-categoria-container">
+            <div class="card-categoria">
+                <div class="producto-opciones2">
+                    <h1 class="categoria-titulo">*{{ categoria.grouper }}*</h1>
+                    <button class="productos-crear" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                </div>
+                <div class="categoria-info">
+                    {% for producto in categoria.list %}
+                        {% if producto.precio_doc %}
+                            <p>*{{ producto.nombre }}:* _Doc: ${{producto.precio_doc}} | c/u: ${{producto.precio_unit}}_</p>
+                        {% elif producto.precio_media %}
+                            <p>*{{ producto.nombre }}:* _1/2: ${{producto.precio_media}} | c/u: ${{producto.precio_unit}}_</p>
+                        {% else %}
+                            <p>*{{ producto.nombre }}:* _${{producto.precio_unit}}_</p>
+                        {% endif %} 
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>   
+
+    <script>
+        function copiarAlPortapapeles(button) {
+            var categoriaContainer = button.closest('.card-categoria');
+
+            var titulo = categoriaContainer.querySelector('.categoria-titulo').innerText;
+
+            var informacionContainer = categoriaContainer.querySelector('.categoria-info');
+
+            var informacion = informacionContainer.innerText;
+
+            var textoACopiar = titulo + "\n" + informacion;
+
+            var lineas = textoACopiar.split('\n');
+            var textoFiltrado = lineas.filter(function(linea) {
+                return linea.trim() !== '';
+            }).join('\n');
+
+            var tempInput = document.createElement('textarea');
+            tempInput.value = textoFiltrado;
+            document.body.appendChild(tempInput);
+
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); 
+
+            document.execCommand('copy');
+
+            document.body.removeChild(tempInput);
+
+            alert('Información copiada al portapapeles');
+        }
+    </script>
+{% endblock main %}
+
+
