@@ -10,3 +10,10 @@ urlpatterns = [
     path("productos/update/<int:pk>", views.ProductoUpdate.as_view(), name="productos_update"),
     path("productos/delete/<int:pk>", views.ProductoDelete.as_view(), name="productos_delete"),
 ]
+
+urlpatterns += [
+    path("productos/categorias/", views.categorias, name="categorias"),
+    path("productos/categorias/create/", views.ProductoCategoriaCreate.as_view(), name="categorias_create"),
+    path("productos/categorias/update/<int:pk>", views.ProductoCategoriaUpdate.as_view(), name="categorias_update"),
+    path("productos/categorias/delete/<int:pk>", views.ProductoCategoriaDelete.as_view(), name="categorias_delete"),   
+]
