@@ -16,12 +16,14 @@
             <a class="link-app" href="{% url 'productos:home' %}">Productos</a>
             <ul class="sub-menu">
                 <li class="sub-list-link"><a class="link-app" href="{% url 'productos:productos_create' %}">Crear Producto</a></li>
+                <li class="sub-list-link"><a class="link-app" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a></li>
                 <li class="sub-list-link">
                     <a class="link-app" href="{% url 'productos:categorias' %}">Categoria</a>
                     <ul class="sub-menu">
                         <li class="sub-list-link"><a class="link-app" href="{% url 'productos:categorias_create' %}">Crear Categoria</a></li>
                     </ul>
                 </li>
+                
             </ul>
         </li>   
         <li class="list-link"><a class="link-app" href="#">Costos</a></li>
