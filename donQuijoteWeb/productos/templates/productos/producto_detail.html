@@ -11,7 +11,14 @@
 
 {% block titulo %}
     <div class="titulo-container">
-        <h1 class="main-titulo">Eliminar Producto</h1>
+        <div class="titulo-producto-container">
+            <h1 class="main-titulo">Detalle Producto</h1>
+            <div class="productos-crear-cat">
+                <a class="productos-crear" href="{% url 'productos:home' %}">Productos</a>
+                <a class="productos-crear" href="{% url 'productos:categorias' %}">Categorias</a>
+                <a class="productos-crear" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
+            </div>
+        </div>
         <hr  class="main-hr"/>
     </div>
 {% endblock titulo %}

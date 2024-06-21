@@ -1,3 +1,19 @@
 <header class="header-container">
     <h1 class="title">don Quijote</h1>
+    {% if user.is_authenticated %}
+    <div class="usuario-logout">
+        <div class="list-link">
+            <span class="usuario-label">Usuario:</span>
+            <span class="usuario-nombre">{{ user.username }}</span>
+        </div>
+        <form action="{% url 'core:logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">Cerrar sesión</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="list-link">
+        <a class="header-link-app" href="{% url 'core:login' %}">Login</a>
+    </div>
+    {% endif %}
 </header>

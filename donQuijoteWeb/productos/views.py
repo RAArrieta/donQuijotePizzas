@@ -2,8 +2,11 @@ from django.shortcuts import render
 from .models import Producto, ProductoCategoria
 from . import forms, models
 from django.urls import reverse_lazy
-from django.views.generic import (CreateView, DeleteView, DetailView, ListView, UpdateView,)
+from django.views.generic import (CreateView, DeleteView, DetailView, UpdateView,)
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def home(request):
     productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()
     context = {
@@ -11,41 +14,43 @@ def home(request):
     }
     return render(request, 'productos/index.html', context)
 
+@login_required
 def categorias(request):
     categorias = ProductoCategoria.objects.all()
     return render(request, "productos/productocategoria.html", {'categorias':categorias})
 
-class ProductosCreate(CreateView):
+class ProductosCreate(LoginRequiredMixin, CreateView):
     model = models.Producto
     form_class = forms.ProductoForm
     success_url = reverse_lazy("productos:home")
     
-class ProductoCategoriaCreate(CreateView):
+class ProductoCategoriaCreate(LoginRequiredMixin, CreateView):
     model=models.ProductoCategoria
     form_class=forms.ProductoCategoriaForm
     success_url = reverse_lazy("productos:categorias")
 
-class ProductoUpdate(UpdateView):
+class ProductoUpdate(LoginRequiredMixin, UpdateView):
     model = models.Producto
     form_class = forms.ProductoForm
     success_url = reverse_lazy("productos:home")
     
-class ProductoCategoriaUpdate(UpdateView):
+class ProductoCategoriaUpdate(LoginRequiredMixin, UpdateView):
     model=models.ProductoCategoria
     form_class=forms.ProductoCategoriaForm
     success_url = reverse_lazy("productos:categorias")
     
-class ProductoDelete(DeleteView):
+class ProductoDelete(LoginRequiredMixin, DeleteView):
     model = models.Producto
     success_url = reverse_lazy("productos:home")
     
-class ProductoCategoriaDelete(DeleteView):
+class ProductoCategoriaDelete(LoginRequiredMixin, DeleteView):
     model = models.ProductoCategoria
     success_url = reverse_lazy("productos:categorias")
     
-class ProductoDetail(DetailView):
+class ProductoDetail(LoginRequiredMixin, DetailView):
     model = models.Producto
-    
+
+@login_required
 def lista_wa(request):
     productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()
     context = {
