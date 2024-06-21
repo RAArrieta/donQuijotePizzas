@@ -20,7 +20,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -29,6 +29,56 @@ body {
   font-family: 'Poetsen One', sans-serif;
   font-size: 32px;
 }
+
+/* LOGIN */
+.usuario-logout {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.usuario-label {
+  color: #fff;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.usuario-nombre {
+  color: #fff;
+}
+
+.btn-logout {
+  padding: 5px 10px;
+  background-color: #2C3E50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-logout:hover {
+  background-color: #1a242f;
+}
+
+.list-link {
+  margin-left: 20px;
+}
+
+.header-link-app {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.header-link-app:hover {
+  background-color: #bdc3c7;
+  color: #2C3E50;
+}
+
 
 /* FOOTER */
 .footer-container {
@@ -194,3 +244,4 @@ body {
 .boton:hover {
   background-color: #1a242f;
 }
+
