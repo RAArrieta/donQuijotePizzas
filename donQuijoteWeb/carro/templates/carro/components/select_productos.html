@@ -1,0 +1,15 @@
+<h3 class="carro-titulo-producto">Productos</h3>
+<div class="form-selects-conteiner">
+    <div class="form-selects">
+        {% for categoria, productos in categorias.items %}
+            <div class="select-container">
+                <select class="selects" name="producto" id="producto_{{ forloop.counter }}">
+                    <option disabled selected>{{ categoria }}</option>
+                    {% for producto in productos %}
+                        <option value="{{ producto.id }}">{{ producto.nombre }} ${{ producto.precio_unit }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endfor %}
+    </div>
+</div>
