@@ -1,0 +1,24 @@
+<h3>Producto agregado:</h3>
+
+<p>{{producto.nombre}}</p>
+<button>-</button>
+<p>{{producto.cantidad}}</p>
+<button>+</button>
+<p>subtotal</p>
+
+<p>Total: ${{importe_total_carro}}</p>
+
+
+{% if request.session.carro.items %}
+    {% for key, value in request.session.carro.items}
+        <p>{{value.nombre}}</p>
+        <p>{{value.cantidad}}</p>
+        <a href="{% url 'carro:restar' value.producto_id %}">-</a>
+        <p>{{value.precio_unit}}</p>
+        <a href="{% url 'carro:agregar' value.producto_id %}">+</a>
+    {% endfor }
+{% else %}    
+    <h2>No hay productos cargados</h2>
+{% endif %}
+
+

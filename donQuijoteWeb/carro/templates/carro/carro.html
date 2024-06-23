@@ -24,17 +24,28 @@
 {% endblock titulo %}
 
 {% block main %}
+    
 
-    <section class="carro-section-conteiner">
+        <section class="carro-section-conteiner">
 
-        <div class="carro-div-conteiner card">
+            <div class="carro-div-conteiner card">
+                <h1>{{producto.id}}</h1>
+                {% include "carro/components/agregar_producto.html" %}
+            </div>
 
-        </div>
-        <div class="carro-div-conteiner card">
-            {% include 'carro/components/select_productos.html' %}
-        </div>
+            <div class="carro-div-conteiner card">
 
 
-    </section>
+                {% include 'carro/components/select_productos.html' %}
+
+                
+                
+            </div>
+    
+    
+        </section>
+
+ 
+    
     
 {% endblock main %}
