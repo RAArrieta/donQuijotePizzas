@@ -5,14 +5,26 @@
 
 {% if request.session.carro.items %}
     {% for key, value in request.session.carro.items %}
+        <p>{{value.categoria}}</p>
         <p>{{value.nombre}}</p>
-        <p>{{value.cantidad}}</p>
         <a href="{% url 'carro:restar' value.producto_id %}">-</a>
-        <p>{{value.precio}}</p>
+        <input type="number" name="cantidad" value="{{ value.cantidad }}" min="0.5" oninput="validarCantidad(this)">        
         <a href="{% url 'carro:agregar' value.producto_id %}">+</a>
+        <p>{{value.precio_unit}}</p>
     {% endfor %}
 {% else %}    
     <h2>No hay productos cargados</h2>
 {% endif %}
+
+<script>
+    function validarCantidad(input) {
+        let cantidad = parseInt(input.value);
+    
+        if (cantidad <= 0 || isNaN(cantidad)) {
+            input.value = 1;
+            alert("La cantidad no puede ser cero o negativo...")
+        }
+    }
+</script>
 
 
