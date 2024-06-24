@@ -65,3 +65,9 @@
   .selects option:disabled {
     color: #bdc3c7;
   }
+
+  /* WIDGET */
+  .widget {
+    display: flex;
+    flex-direction: row;
+  }

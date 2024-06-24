@@ -1,9 +1,9 @@
 <h3 class="carro-titulo-producto">Productos</h3>
 <div class="form-selects-conteiner">
-    <form class="form-selects">
+    <form class="form-selects" id="form-productos">
         {% for categoria, productos in categorias.items %}
             <div class="select-container">
-                <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtros(event)">
+                <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtrosYEnviar(event)">
                     <option disabled selected>{{ categoria }}</option>
                     {% for producto in productos %}
                         <option value="{{ producto.id }}">{{ producto.nombre }} ${{ producto.precio_unit }}</option>
@@ -11,7 +11,6 @@
                 </select>
             </div>
         {% endfor %}
-        <button type="submit">Agregar</button>
     </form>
 </div>
 
@@ -19,8 +18,8 @@
     // Obtener todos los select con la clase "selects"
     const selects = document.querySelectorAll('.selects');
 
-    // Función para deseleccionar todos los select excepto el actual
-    function deseleccionarOtros(event) {
+    // Función para deseleccionar todos los select excepto el actual y enviar el formulario
+    function deseleccionarOtrosYEnviar(event) {
         // Obtener el select actual
         const selectActual = event.target;
         
@@ -31,6 +30,10 @@
                 select.selectedIndex = 0;
             }
         });
+
+        // Enviar el formulario automáticamente
+        document.getElementById('form-productos').submit();
     }
 </script>
+
 
