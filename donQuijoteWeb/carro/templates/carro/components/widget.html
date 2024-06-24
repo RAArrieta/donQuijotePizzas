@@ -10,7 +10,7 @@
             <a href="{% url 'carro:restar' value.producto_id %}">-</a>
             <input type="number" name="cantidad" value="{{ value.cantidad }}" min="0.5" oninput="validarCantidad(this)">        
             <a href="{% url 'carro:agregar' value.producto_id %}">+</a>
-            <p>{{value.precio_unit}}</p>
+            <p>{{value.subtotal}}</p>
             <a href="{% url 'carro:eliminar' value.producto_id %}">x</a>
         </div> 
     {% endfor %}
