@@ -26,7 +26,7 @@ class Carro:
                 "nombre":producto.nombre,
                 "precio":str(producto.precio_unit),
                 "cantidad":1,
-                "categoria":producto.categoria
+                # "categoria":producto.categoria
             }
         else:
             for key, value in self.carro.items():

@@ -1,9 +1,9 @@
 <h3 class="carro-titulo-producto">Productos</h3>
 <div class="form-selects-conteiner">
-    <div class="form-selects">
+    <form class="form-selects">
         {% for categoria, productos in categorias.items %}
             <div class="select-container">
-                <select class="selects" name="producto" id="producto_{{ forloop.counter }}">
+                <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtros(event)">
                     <option disabled selected>{{ categoria }}</option>
                     {% for producto in productos %}
                         <option value="{{ producto.id }}">{{ producto.nombre }} ${{ producto.precio_unit }}</option>
@@ -12,7 +12,7 @@
             </div>
         {% endfor %}
         <button type="submit">Agregar</button>
-    </div>
+    </form>
 </div>
 
 <script>
@@ -32,10 +32,5 @@
             }
         });
     }
-
-    // Agregar un evento 'change' a cada select
-    selects.forEach(select => {
-        select.addEventListener('change', deseleccionarOtros);
-    });
 </script>
 
