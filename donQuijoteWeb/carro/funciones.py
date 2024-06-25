@@ -16,7 +16,12 @@ class Carro:
         self.session = request.session
         carro = self.session.get("carro")
         if not carro:
-            carro = self.session["carro"] = {}
+            carro = self.session["carro"] = {
+                "contador_empanadas": {
+                    "cantidad": 0,
+                    "subtotal": 0.0
+                }
+            }
         self.carro = carro
 
     def agregar(self, producto):
@@ -29,14 +34,18 @@ class Carro:
                 "precio_media": str(producto.precio_media),
                 "precio_doc": str(producto.precio_doc),
                 "cantidad": 1,
-                "subtotal": float(producto.precio_unit),  # Inicializar con el precio unitario del producto
+                "subtotal": float(producto.precio_unit),  
                 "categoria": str(producto.categoria)
             }
+            if producto.precio_doc is not None:
+                self.carro["contador_empanadas"]["cantidad"] += 1
         else:
             for key, value in self.carro.items():
                 if key == producto_id_str:
                     value["cantidad"] += 1
-                    value["subtotal"] = self.calcular_precio(producto, value["subtotal"])
+                    if producto.precio_doc is not None:
+                        self.carro["contador_empanadas"]["cantidad"] += 1
+                    value["subtotal"] += producto.precio_unit
                     break
         self.guardar_carro()
 
@@ -55,7 +64,9 @@ class Carro:
         for key, value in self.carro.items():
             if key == producto_id_str:
                 value["cantidad"] -= 1
-                value["subtotal"] = self.calcular_precio(producto, value["subtotal"], subtract=True)
+                if producto.precio_doc is not None:
+                    self.carro["contador_empanadas"]["cantidad"] -= 1
+                value["subtotal"] -= producto.precio_unit
                 if value["cantidad"] < 1:
                     self.eliminar(producto)
                 break
@@ -65,9 +76,5 @@ class Carro:
         self.session["carro"] = {}
         self.session.modified = True
 
-    def calcular_precio(self, producto, subtotal, subtract=False):
-        subtotal = float(subtotal)
-        if subtract:
-            return subtotal - producto.precio_unit
-        else:
-            return subtotal + producto.precio_unit
+    def calcular_precio(self):
+        pass

@@ -12,7 +12,6 @@ def carro(request):
     categorias=select_productos()
     if request.method == 'GET':
         producto_id = request.GET.get('producto')
-        print(f"producto_id en carro {producto_id}")
         if producto_id:
             return agregar_producto(request, producto_id)
         

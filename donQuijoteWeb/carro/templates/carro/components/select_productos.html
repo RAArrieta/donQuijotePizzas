@@ -6,7 +6,13 @@
                 <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtrosYEnviar(event)">
                     <option disabled selected>{{ categoria }}</option>
                     {% for producto in productos %}
-                        <option value="{{ producto.id }}">{{ producto.nombre }} ${{ producto.precio_unit }}</option>
+                        {% if producto.precio_doc %}
+                            <option value="{{ producto.id }}">{{ producto.nombre }} c/u: ${{ producto.precio_unit }} | 1/2: ${{ producto.precio_media }} | Doc: ${{ producto.precio_doc }} </option>
+                        {% elif producto.precio_media and not producto.precio_doc%}
+                            <option value="{{ producto.id }}">{{ producto.nombre }} 1/2: ${{ producto.precio_media }} | c/u: ${{ producto.precio_unit }}</option>
+                        {% else %}
+                            <option value="{{ producto.id }}">{{ producto.nombre }} c/u: ${{ producto.precio_unit }}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
             </div>
@@ -15,23 +21,17 @@
 </div>
 
 <script>
-    // Obtener todos los select con la clase "selects"
     const selects = document.querySelectorAll('.selects');
 
-    // Función para deseleccionar todos los select excepto el actual y enviar el formulario
     function deseleccionarOtrosYEnviar(event) {
-        // Obtener el select actual
         const selectActual = event.target;
         
-        // Recorrer todos los select
         selects.forEach(select => {
-            // Si el select no es el actual, deseleccionar su valor
             if (select !== selectActual) {
                 select.selectedIndex = 0;
             }
         });
 
-        // Enviar el formulario automáticamente
         document.getElementById('form-productos').submit();
     }
 </script>

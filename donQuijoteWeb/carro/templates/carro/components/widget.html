@@ -1,18 +1,22 @@
-<h3>Producto agregado:</h3>
+
 
 
 
 
 {% if request.session.carro.items %}
+    <h3>Producto agregado:</h3>
     {% for key, value in request.session.carro.items %}
-        <div class="widget">
-            <p>{{value.nombre}}</p>
-            <a href="{% url 'carro:restar' value.producto_id %}">-</a>
-            <input type="number" name="cantidad" value="{{ value.cantidad }}" min="0.5" oninput="validarCantidad(this)">        
-            <a href="{% url 'carro:agregar' value.producto_id %}">+</a>
-            <p>{{value.subtotal}}</p>
-            <a href="{% url 'carro:eliminar' value.producto_id %}">x</a>
-        </div> 
+        {% if key != 'contador_empanadas' %}
+            <div class="widget">
+                <p>{{value.nombre}}</p>
+                <a href="{% url 'carro:restar' value.producto_id %}">-</a>
+                <p>{{value.cantidad}}</p>     
+                <a href="{% url 'carro:agregar' value.producto_id %}">+</a>
+                <p>{{value.subtotal}}</p>
+                <a href="{% url 'carro:eliminar' value.producto_id %}">x</a>
+            </div>
+        {% endif %}
+         
     {% endfor %}
 
     <p>Total: ${{importe_total_carro}}</p>
@@ -21,15 +25,6 @@
     <h2>No hay productos cargados</h2>
 {% endif %}
 
-<script>
-    function validarCantidad(input) {
-        let cantidad = parseInt(input.value);
-    
-        if (cantidad <= 0 || isNaN(cantidad)) {
-            input.value = 1;
-            alert("La cantidad no puede ser cero o negativo...")
-        }
-    }
-</script>
+
 
 
