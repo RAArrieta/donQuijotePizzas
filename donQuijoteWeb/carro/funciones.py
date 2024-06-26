@@ -16,12 +16,7 @@ class Carro:
         self.session = request.session
         carro = self.session.get("carro")
         if not carro:
-            carro = self.session["carro"] = {
-                "contador_empanadas": {
-                    "cantidad": 0,
-                    "subtotal": 0.0
-                }
-            }
+            carro = self.session["carro"] = {}
         self.carro = carro
 
     def agregar(self, producto):
@@ -37,14 +32,10 @@ class Carro:
                 "subtotal": float(producto.precio_unit),  
                 "categoria": str(producto.categoria)
             }
-            if producto.precio_doc is not None:
-                self.carro["contador_empanadas"]["cantidad"] += 1
         else:
             for key, value in self.carro.items():
                 if key == producto_id_str:
                     value["cantidad"] += 1
-                    if producto.precio_doc is not None:
-                        self.carro["contador_empanadas"]["cantidad"] += 1
                     value["subtotal"] += producto.precio_unit
                     break
         self.guardar_carro()
@@ -64,8 +55,6 @@ class Carro:
         for key, value in self.carro.items():
             if key == producto_id_str:
                 value["cantidad"] -= 1
-                if producto.precio_doc is not None:
-                    self.carro["contador_empanadas"]["cantidad"] -= 1
                 value["subtotal"] -= producto.precio_unit
                 if value["cantidad"] < 1:
                     self.eliminar(producto)
