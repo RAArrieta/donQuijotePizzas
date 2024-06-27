@@ -16,7 +16,16 @@ class Carro:
         self.session = request.session
         carro = self.session.get("carro")
         if not carro:
-            carro = self.session["carro"] = {}
+            carro = self.session["carro"] = {
+                "datos":{
+                    "estado": "Pendiente",
+                    "pago": "Cobrar",
+                    "forma_entrega": "Retira",
+                    "nombre": "nombre",
+                    "direccion": "direccion",
+                    "observacion": "observacion",
+                }
+            }
         self.carro = carro
 
     def agregar(self, producto):
@@ -67,3 +76,47 @@ class Carro:
 
     def calcular_precio(self):
         pass
+    
+    
+    
+    
+    
+    
+    # def agregar_datos(self, id_datos, estado, pago, nombre, direccion, observacion):
+    #     self.datos[id_datos] = {
+    #         "estado": estado,
+    #         "pago": pago,
+    #         "nombre": nombre,
+    #         "direccion": direccion,
+    #         "observacion": observacion
+    #     }
+    #     self.guardar_datos()
+
+    # def guardar_datos(self):
+    #     self.session["datos"] = self.datos
+    #     self.session.modified = True
+
+    # def obtener_datos(self, id_datos):
+    #     return self.datos.get(id_datos, None)
+
+    # def eliminar_datos(self, id_datos):
+    #     if id_datos in self.datos:
+    #         del self.datos[id_datos]
+    #         self.guardar_datos()
+
+    # def actualizar_datos(self, id_datos, estado=None, pago=None, nombre=None, direccion=None, observacion=None):
+    #     datos = self.datos.get(id_datos)
+    #     if datos:
+    #         if estado:
+    #             datos["estado"] = estado
+    #         if pago:
+    #             datos["pago"] = pago
+    #         if nombre:
+    #             datos["nombre"] = nombre
+    #         if direccion:
+    #             datos["direccion"] = direccion
+    #         if observacion:
+    #             datos["observacion"] = observacion
+    #         self.guardar_datos()
+
+

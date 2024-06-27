@@ -29,15 +29,15 @@
         <section class="carro-section-conteiner">
 
             <div class="carro-div-conteiner card">
-                <h1>{{producto.id}}</h1>
                 {% include "carro/components/widget.html" %}
+                <a href="{% url 'pedido:procesar_ped' %}">cargar pedido</a>
             </div>
 
             <div class="carro-div-conteiner card">
 
 
                 {% include 'carro/components/select_productos.html' %}
-
+                {% include 'carro/components/pedido_datos.html' %}
                 
                 
             </div>

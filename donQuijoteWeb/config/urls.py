@@ -6,4 +6,5 @@ urlpatterns = [
     path('', include('core.urls')),
     path('productos/', include('productos.urls')),
     path('carro/', include('carro.urls')),
+    path('pedido/', include('pedido.urls')),
 ]

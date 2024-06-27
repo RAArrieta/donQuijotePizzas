@@ -6,7 +6,7 @@
 {% if request.session.carro.items %}
     <h3>Producto agregado:</h3>
     {% for key, value in request.session.carro.items %}
-        {% if key != 'contador_empanadas' %}
+        {% if key != 'datos' %}
             <div class="widget">
                 <p>{{value.nombre}}</p>
                 <a href="{% url 'carro:restar' value.producto_id %}">-</a>
@@ -21,6 +21,7 @@
 
     <p>Total: ${{importe_total_carro}}</p>
     <a href="{% url 'carro:limpiar' %}">Cancelar Pedido</a>
+    
 {% else %}    
     <h2>No hay productos cargados</h2>
 {% endif %}

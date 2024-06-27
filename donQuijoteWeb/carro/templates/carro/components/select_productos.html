@@ -1,6 +1,7 @@
 <h3 class="carro-titulo-producto">Productos</h3>
 <div class="form-selects-conteiner">
     <form class="form-selects" id="form-productos">
+        {% csrf_token %}
         {% for categoria, productos in categorias.items %}
             <div class="select-container">
                 <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtrosYEnviar(event)">
@@ -17,7 +18,9 @@
                 </select>
             </div>
         {% endfor %}
+       
     </form>
+     
 </div>
 
 <script>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from productos.models import Producto
-from .funciones import Carro, select_productos
+from .pedido_productos import Carro, select_productos
 from django.contrib.auth.decorators import login_required
 
 @login_required
