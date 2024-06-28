@@ -23,8 +23,8 @@ def procesar_ped(request):
             ))
         else:
             pedido=Pedido.objects.create(
-                estado=value["estado"],
-                pago=value["pago"],
+                estado="Pendiente",
+                pago="Cobrar",
                 nombre=value["nombre"],
                 direccion=value["direccion"],
                 observacion=value["observacion"]
@@ -32,6 +32,8 @@ def procesar_ped(request):
             
         
     PedidoProductos.objects.bulk_create(lista_productos)
+    
+    carro.limpiar_carro()
     
     return redirect("carro:home")
     

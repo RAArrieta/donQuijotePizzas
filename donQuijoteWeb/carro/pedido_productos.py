@@ -1,5 +1,6 @@
 from productos.models import Producto
 
+
 def select_productos():
     productos = Producto.objects.all()
     categorias = {}
@@ -77,19 +78,29 @@ class Carro:
     def calcular_precio(self):
         pass
     
+    def agregar_datos(self, datos):
+        self.carro["datos"] = {
+            "nombre": datos["nombre"],
+            "direccion": datos["direccion"],
+            "observacion": datos["observacion"]
+        }
+        self.guardar_carro()
     
     
     
     
-    
-    # def agregar_datos(self, id_datos, estado, pago, nombre, direccion, observacion):
-    #     self.datos[id_datos] = {
-    #         "estado": estado,
-    #         "pago": pago,
-    #         "nombre": nombre,
-    #         "direccion": direccion,
-    #         "observacion": observacion
-    #     }
+    # def agregar_datos(self, datos):
+    #     dato = datos
+    #     print(dato)
+    #     for key, value in self.carro.items():
+    #         if key == "datos":
+    #             self.datos = {
+    #                 # "estado": estado,
+    #                 # "pago": pago,
+    #                 "nombre": value["nombre"],
+    #                 "direccion": value["direccion"],
+    #                 "observacion": value["observacion"]
+    #             }
     #     self.guardar_datos()
 
     # def guardar_datos(self):

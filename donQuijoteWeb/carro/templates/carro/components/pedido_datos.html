@@ -1,5 +1,5 @@
 <h3 class="carro-titulo-producto">Datos</h3>
-<form>
+<form action="{% url 'carro:agregar_datos' %}" method="get">
     {% csrf_token %}
     <div class="form-selects-conteiner">
 
