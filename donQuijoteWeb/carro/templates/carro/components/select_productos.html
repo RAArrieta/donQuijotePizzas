@@ -18,7 +18,28 @@
                 </select>
             </div>
         {% endfor %}
-       
+
+        <h3 class="carro-titulo-producto">Datos</h3>
+            {% csrf_token %}
+            {% for key, value in request.session.carro.items %}
+                {% if key == "datos" %}
+                    
+                    <div class="form-selects-conteiner">
+
+                        <div class="select-container">
+                            <input type="text" placeholder="Dirección..." name="direccion" value="{{ value.direccion }}">
+                            <input type="text" placeholder="Nombre..." name="nombre" value="{{ value.nombre }}">
+                            <input type="text" placeholder="Observación..." name="observacion" value="{{ value.observacion }}">
+                        </div>
+        
+                    </div>
+                    
+                {% endif %}
+                
+            {% endfor %}
+            
+            <button type="submit" name="cargar_pedido">cargar pedido</button>
+            
     </form>
      
 </div>

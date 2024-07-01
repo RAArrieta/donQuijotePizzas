@@ -9,6 +9,7 @@ def home(request):
 
 @login_required
 def carro(request):
+    carro=Carro(request)
     datos = {
                 "estado": "Pendiente",
                 "pago": "Cobrar",
@@ -18,12 +19,29 @@ def carro(request):
                 "observacion": "observacion",
             }
     
-    categorias=select_productos()
+    categorias=select_productos()     
+    
     if request.method == 'GET':      
         producto_id = request.GET.get('producto')
         if producto_id:
-            return agregar_producto(request, producto_id)
+            agregar_producto(request, producto_id)
         
+        direccion = request.GET.get('direccion')
+        nombre = request.GET.get('nombre')
+        observacion = request.GET.get('observacion')
+        
+        if direccion and nombre and observacion:
+            carro = Carro(request)
+
+            print(carro)
+            datos = {"direccion": direccion, "nombre": nombre, "observacion": observacion}
+            carro.agregar_datos(datos=datos)
+            
+ 
+        
+    if 'cargar_pedido' in request.GET:
+            return redirect("pedido:procesar_ped")
+            
     context = {
         'categorias': categorias,
         'datos': datos,
