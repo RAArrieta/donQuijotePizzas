@@ -6,22 +6,22 @@ from django.db.models import F, Sum, FloatField
 
 class Pedido(models.Model):
     ESTADO_CHOICES = [
-        ('Entregado', 'Entregado'),
-        ('Pendiente', 'Pendiente'),
-        ('Cancelado', 'Cancelado')
+        ('entregado', 'Entregado'),
+        ('pendiente', 'Pendiente'),
+        ('cancelado', 'Cancelado')
     ]
 
     PAGO_CHOICES = [
-        ('Efectivo', 'EFT'),
-        ('Mercado', 'MP'),
-        ('Naranja', 'NRJ'),
-        ('Debito', 'DEBIT'),
-        ('Cobrar', 'COBRAR')
+        ('efectivo', 'EFT'),
+        ('mercado', 'MP'),
+        ('naranja', 'NRJ'),
+        ('debito', 'DEBIT'),
+        ('cobrar', 'COBRAR')
     ]
     
     FORMA_ENTREGA_CHOICES = [
-        ('Retira', 'Retira'),
-        ('Envio', 'Envio'),
+        ('retira', 'Retira'),
+        ('envio', 'Envio'),
     ]
     
     estado=models.CharField(max_length=10, choices=ESTADO_CHOICES)
@@ -29,7 +29,7 @@ class Pedido(models.Model):
     forma_entrega=models.CharField(max_length=10, choices=FORMA_ENTREGA_CHOICES)
     hora=models.DateTimeField(auto_now_add=True)
     nombre=models.CharField(max_length=50, blank=True, null=True)
-    direccion=models.CharField(max_length=100)
+    direccion=models.CharField(max_length=100, blank=True, null=True)
     observacion=models.CharField(max_length=100, blank=True, null=True)
     
     

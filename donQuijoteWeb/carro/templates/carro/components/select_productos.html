@@ -25,13 +25,28 @@
                 {% if key == "datos" %}
                     
                     <div class="form-selects-conteiner">
-
                         <div class="select-container">
-                            <input type="text" placeholder="Dirección..." name="direccion" value="{{ value.direccion }}">
-                            <input type="text" placeholder="Nombre..." name="nombre" value="{{ value.nombre }}">
-                            <input type="text" placeholder="Observación..." name="observacion" value="{{ value.observacion }}">
+                            <input type="text" {% if value.direccion == "" %}placeholder="Dirección..."{% else %}value="{{ value.direccion }}"{% endif %} name="direccion">
+                            <input type="text" {% if value.nombre == "" %}placeholder="Nombre..."{% else %}value="{{ value.nombre }}"{% endif %} name="nombre">
+                            <input type="text" {% if value.observacion == "" %}placeholder="Observación..."{% else %}value="{{ value.observacion }}"{% endif %} name="observacion">
+                            <select name="estado">
+                                <option value="pendiente" {% if value.estado == "pendiente" %}selected{% endif %}>PENDIENTE</option>
+                                <option value="entregado" {% if value.estado == "entregado" %}selected{% endif %}>ENTREGADO</option>
+                                <option value="cancelado" {% if value.estado == "cancelado" %}selected{% endif %}>CANCELADO</option>
+                            </select>
+                            <select name="pago">
+                                <option value="cobrar" {% if value.pago == "cobrar" %}selected{% endif %}>COBRAR</option>
+                                <option value="efectivo" {% if value.pago == "efectivo" %}selected{% endif %}>EFT</option>
+                                <option value="mercado" {% if value.pago == "mercado" %}selected{% endif %}>MP</option>
+                                <option value="naranja" {% if value.pago == "naranja" %}selected{% endif %}>NRJ</option>
+                                <option value="debito" {% if value.pago == "debito" %}selected{% endif %}>DEBIT</option>
+                            </select>    
+                            <select name="forma_entrega">
+                                <option value="retira" {% if value.forma_entrega == "retira" %}selected{% endif %}>RETIRA</option>
+                                <option value="envio" {% if value.forma_entrega == "envio" %}selected{% endif %}>ENVIO</option>
+                            </select>
                         </div>
-        
+                                 
                     </div>
                     
                 {% endif %}

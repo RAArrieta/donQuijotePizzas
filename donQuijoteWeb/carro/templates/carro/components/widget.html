@@ -22,10 +22,12 @@
     <h3>Datos:</h3>
     {% for key, value in request.session.carro.items %}
         {% if key == 'datos' %}
-            <div class="widget">
+            <div class="widget_datos">
                 <p>{{value.nombre}}</p>
                 <p>{{value.direccion}}</p>     
                 <p>{{value.observacion}}</p>
+                <p>{{value.estado}}</p>
+                <p>{{value.pago}}</p>
             </div>
         {% endif %}
     

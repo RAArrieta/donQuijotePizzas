@@ -19,12 +19,12 @@ class Carro:
         if not carro:
             carro = self.session["carro"] = {
                 "datos":{
-                    "estado": "Pendiente",
-                    "pago": "Cobrar",
-                    "forma_entrega": "Retira",
-                    "nombre": "nombre",
-                    "direccion": "direccion",
-                    "observacion": "observacion",
+                    "estado": "",
+                    "pago": "",
+                    "forma_entrega": "",
+                    "nombre": "",
+                    "direccion": "",
+                    "observacion": "",
                 }
             }
         self.carro = carro
@@ -79,11 +79,18 @@ class Carro:
         pass
     
     def agregar_datos(self, datos):
-        self.carro["datos"] = {
-            "nombre": datos["nombre"],
-            "direccion": datos["direccion"],
-            "observacion": datos["observacion"]
-        }
+        if "nombre" in datos:
+            self.carro["datos"]["nombre"]=datos["nombre"]
+        if "direccion" in datos:
+            self.carro["datos"]["direccion"]=datos["direccion"]
+        if "observacion" in datos:
+            self.carro["datos"]["observacion"]=datos["observacion"]
+        if "estado" in datos:
+            self.carro["datos"]["estado"]=datos["estado"]
+        if "pago" in datos:
+            self.carro["datos"]["pago"]=datos["pago"]
+        if "forma_entrega" in datos:
+            self.carro["datos"]["forma_entrega"]=datos["forma_entrega"]
         self.guardar_carro()
     
     

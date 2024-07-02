@@ -7,7 +7,6 @@ from pedido.models import Pedido, PedidoProductos
 
 @login_required
 def procesar_ped(request):
-    pedido=Pedido.objects.create()
     carro=Carro(request)
     lista_productos=list()
     
@@ -23,8 +22,9 @@ def procesar_ped(request):
             ))
         else:
             pedido=Pedido.objects.create(
-                estado="Pendiente",
-                pago="Cobrar",
+                estado=value["estado"],
+                pago=value["pago"],
+                forma_entrega=value["forma_entrega"],
                 nombre=value["nombre"],
                 direccion=value["direccion"],
                 observacion=value["observacion"]
