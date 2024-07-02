@@ -1,14 +1,12 @@
 from productos.models import Producto
 
-
 def select_productos():
     productos = Producto.objects.all()
     categorias = {}
     for producto in productos:
         if producto.categoria not in categorias:
             categorias[producto.categoria] = []
-        categorias[producto.categoria].append(producto)
-        
+        categorias[producto.categoria].append(producto)  
     return categorias
 
 class Carro:
@@ -21,7 +19,7 @@ class Carro:
                 "datos":{
                     "estado": "",
                     "pago": "",
-                    "forma_entrega": "",
+                    "forma_entrega": "envio",
                     "nombre": "",
                     "direccion": "",
                     "observacion": "",
@@ -49,17 +47,7 @@ class Carro:
                     value["subtotal"] += producto.precio_unit
                     break
         self.guardar_carro()
-
-    def guardar_carro(self):
-        self.session["carro"] = self.carro
-        self.session.modified = True
-
-    def eliminar(self, producto):
-        producto_id_str = str(producto.id)
-        if producto_id_str in self.carro:
-            del self.carro[producto_id_str]
-            self.guardar_carro()
-
+        
     def restar_producto(self, producto):
         producto_id_str = str(producto.id)
         for key, value in self.carro.items():
@@ -71,13 +59,20 @@ class Carro:
                 break
         self.guardar_carro()
 
+    def eliminar(self, producto):
+        producto_id_str = str(producto.id)
+        if producto_id_str in self.carro:
+            del self.carro[producto_id_str]
+            self.guardar_carro()
+    
     def limpiar_carro(self):
         self.session["carro"] = {}
         self.session.modified = True
-
-    def calcular_precio(self):
-        pass
     
+    def guardar_carro(self):
+        self.session["carro"] = self.carro
+        self.session.modified = True
+
     def agregar_datos(self, datos):
         if "nombre" in datos:
             self.carro["datos"]["nombre"]=datos["nombre"]
@@ -92,49 +87,12 @@ class Carro:
         if "forma_entrega" in datos:
             self.carro["datos"]["forma_entrega"]=datos["forma_entrega"]
         self.guardar_carro()
+        
+    def comprobacion_pedido(self):
+        comprobacion_pedido=False
+        if self.carro["datos"]["direccion"] != "" and len(self.carro.keys()) > 1: 
+            comprobacion_pedido=True
+        return comprobacion_pedido
     
-    
-    
-    
-    # def agregar_datos(self, datos):
-    #     dato = datos
-    #     print(dato)
-    #     for key, value in self.carro.items():
-    #         if key == "datos":
-    #             self.datos = {
-    #                 # "estado": estado,
-    #                 # "pago": pago,
-    #                 "nombre": value["nombre"],
-    #                 "direccion": value["direccion"],
-    #                 "observacion": value["observacion"]
-    #             }
-    #     self.guardar_datos()
-
-    # def guardar_datos(self):
-    #     self.session["datos"] = self.datos
-    #     self.session.modified = True
-
-    # def obtener_datos(self, id_datos):
-    #     return self.datos.get(id_datos, None)
-
-    # def eliminar_datos(self, id_datos):
-    #     if id_datos in self.datos:
-    #         del self.datos[id_datos]
-    #         self.guardar_datos()
-
-    # def actualizar_datos(self, id_datos, estado=None, pago=None, nombre=None, direccion=None, observacion=None):
-    #     datos = self.datos.get(id_datos)
-    #     if datos:
-    #         if estado:
-    #             datos["estado"] = estado
-    #         if pago:
-    #             datos["pago"] = pago
-    #         if nombre:
-    #             datos["nombre"] = nombre
-    #         if direccion:
-    #             datos["direccion"] = direccion
-    #         if observacion:
-    #             datos["observacion"] = observacion
-    #         self.guardar_datos()
-
-
+    def calcular_precio(self):
+        pass

@@ -22,44 +22,50 @@
         <h3 class="carro-titulo-producto">Datos</h3>
             {% csrf_token %}
             {% for key, value in request.session.carro.items %}
-                {% if key == "datos" %}
-                    
+                {% if key == "datos" %}       
                     <div class="form-selects-conteiner">
                         <div class="select-container">
-                            <input type="text" {% if value.direccion == "" %}placeholder="Dirección..."{% else %}value="{{ value.direccion }}"{% endif %} name="direccion">
-                            <input type="text" {% if value.nombre == "" %}placeholder="Nombre..."{% else %}value="{{ value.nombre }}"{% endif %} name="nombre">
-                            <input type="text" {% if value.observacion == "" %}placeholder="Observación..."{% else %}value="{{ value.observacion }}"{% endif %} name="observacion">
-                            <select name="estado">
+                            <select name="estado" onchange="deseleccionarOtrosYEnviar(event)">
                                 <option value="pendiente" {% if value.estado == "pendiente" %}selected{% endif %}>PENDIENTE</option>
                                 <option value="entregado" {% if value.estado == "entregado" %}selected{% endif %}>ENTREGADO</option>
                                 <option value="cancelado" {% if value.estado == "cancelado" %}selected{% endif %}>CANCELADO</option>
                             </select>
-                            <select name="pago">
+                            <select name="pago" onchange="deseleccionarOtrosYEnviar(event)">
                                 <option value="cobrar" {% if value.pago == "cobrar" %}selected{% endif %}>COBRAR</option>
                                 <option value="efectivo" {% if value.pago == "efectivo" %}selected{% endif %}>EFT</option>
                                 <option value="mercado" {% if value.pago == "mercado" %}selected{% endif %}>MP</option>
                                 <option value="naranja" {% if value.pago == "naranja" %}selected{% endif %}>NRJ</option>
                                 <option value="debito" {% if value.pago == "debito" %}selected{% endif %}>DEBIT</option>
                             </select>    
-                            <select name="forma_entrega">
-                                <option value="retira" {% if value.forma_entrega == "retira" %}selected{% endif %}>RETIRA</option>
+                            <select name="forma_entrega" onchange="deseleccionarOtrosYEnviar(event)">
                                 <option value="envio" {% if value.forma_entrega == "envio" %}selected{% endif %}>ENVIO</option>
+                                <option value="retira" {% if value.forma_entrega == "retira" %}selected{% endif %}>RETIRA</option>
                             </select>
-                        </div>
-                                 
+                            {% if value.forma_entrega == "envio" %}
+                                <input type="text" {% if value.direccion == "" %}placeholder="Dirección..."{% else %}value="{{ value.direccion }}"{% endif %} name="direccion">
+                            {% endif %}
+                            <input type="text" {% if value.nombre == "" %}placeholder="Nombre..."{% else %}value="{{ value.nombre }}"{% endif %} name="nombre">
+                            <input type="text" {% if value.observacion == "" %}placeholder="Observación..."{% else %}value="{{ value.observacion }}"{% endif %} name="observacion">       
+                        </div>           
                     </div>
-                    
                 {% endif %}
-                
             {% endfor %}
             
-            <button type="submit" name="cargar_pedido">cargar pedido</button>
-            
+            <button type="submit" name="cargar_pedido">cargar pedido</button>  
     </form>
-     
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('form-productos');
+
+        form.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+    });
+    
     const selects = document.querySelectorAll('.selects');
 
     function deseleccionarOtrosYEnviar(event) {
