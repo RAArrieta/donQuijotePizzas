@@ -94,5 +94,11 @@ class Carro:
             comprobacion_pedido=True
         return comprobacion_pedido
     
+    def actualizar_cant(self, producto, nueva_cantidad):
+        print("def actulizar_cant")
+        producto_id = str(producto.id)
+        self.carro[producto_id]['cantidad'] = int(nueva_cantidad)
+        self.guardar_carro()
+    
     def calcular_precio(self):
         pass

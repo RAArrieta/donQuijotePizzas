@@ -33,45 +33,25 @@ def carro(request):
             if field == 'forma_entrega' and datos["forma_entrega"] != "envio":
                 datos["direccion"]= "RETIRA POR SUCURSAL"
 
-            carro.agregar_datos(datos=datos)
-            
-    
-    # if 'estado' in request.GET:
-    #     estado = request.GET.get('estado')
-    #     datos = {"estado": estado}
-    #     carro.agregar_datos(datos=datos)
-        
-    # if 'pago' in request.GET:
-    #     pago = request.GET.get('pago')
-    #     datos = {"pago": pago}
-    #     carro.agregar_datos(datos=datos)
-        
-    # if 'forma_entrega' in request.GET:
-    #     forma_entrega = request.GET.get('forma_entrega')
-    #     if forma_entrega == "envio":
-    #         datos = {"forma_entrega": forma_entrega}
-    #     else:
-    #         datos = {"forma_entrega": forma_entrega, "direccion": "RETIRA POR SUCURSAL"}
-    #     carro.agregar_datos(datos=datos)
-                
-    # if 'direccion' in request.GET: 
-    #     direccion = request.GET.get('direccion')
-    #     datos = {"direccion": direccion}
-    #     carro.agregar_datos(datos=datos)
-        
-    # if 'nombre' in request.GET: 
-    #     nombre = request.GET.get('nombre')
-    #     datos = {"nombre": nombre}
-    #     carro.agregar_datos(datos=datos)
-        
-    # if 'observacion' in request.GET: 
-    #     observacion = request.GET.get('observacion')
-    #     datos = {"observacion": observacion}
-    #     carro.agregar_datos(datos=datos)      
+            carro.agregar_datos(datos=datos)    
         
     if 'cargar_pedido' in request.GET:
         if comprobacion_pedido:
             return redirect("pedido:procesar_ped")
+        
+    print("estoy en carro antes del if") 
+    if 'nueva_cantidad' in request.GET:
+        print("carro/nueva_cantidad")
+        nueva_cantidad = request.GET['nueva_cantidad']
+        producto_id = request.GET['producto_id']
+        producto=Producto.objects.get(id=producto_id)
+        print("nueva_cantidad")
+        print(nueva_cantidad)
+        print("producto_id")
+        print(producto_id)
+        carro.actualizar_cant(producto=producto, nueva_cantidad=nueva_cantidad)
+  
+  
           
     context = {
         'categorias': categorias,
@@ -88,17 +68,27 @@ def agregar_producto(request, producto_id):
     return redirect("carro:carro")
 
 @login_required
-def eliminar_producto(request, producto_id):
-    carro=Carro(request)
-    producto=Producto.objects.get(id=producto_id)
-    carro.eliminar(producto=producto)
-    return redirect("carro:carro")
-
-@login_required
 def restar_producto(request, producto_id):
     carro=Carro(request)
     producto=Producto.objects.get(id=producto_id)
     carro.restar_producto(producto=producto)
+    return redirect("carro:carro")
+
+@login_required
+def actualizar_cantidad(request, producto_id, actualizar_cantidad):
+    print("actualizar_cantidad")
+    carro = Carro(request)
+    producto = Producto.objects.get(id=producto_id)
+    carro.actualizar_cant(producto=producto, nueva_cantidad=actualizar_cantidad)
+    return redirect("carro:carro")
+
+
+
+@login_required
+def eliminar_producto(request, producto_id):
+    carro=Carro(request)
+    producto=Producto.objects.get(id=producto_id)
+    carro.eliminar(producto=producto)
     return redirect("carro:carro")
 
 @login_required

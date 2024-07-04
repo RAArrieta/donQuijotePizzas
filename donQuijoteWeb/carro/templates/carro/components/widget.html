@@ -10,7 +10,11 @@
             <div class="widget">
                 <p>{{value.nombre}}</p>
                 <a href="{% url 'carro:restar' value.producto_id %}">-</a>
-                <p>{{value.cantidad}}</p>     
+                <form method="get">
+                    {% csrf_token %}
+                    <input type="hidden" name="producto_id" value="{{ value.producto_id }}">
+                    <input type="number" name="nueva_cantidad" value="{{value.cantidad}}">
+                </form>
                 <a href="{% url 'carro:agregar' value.producto_id %}">+</a>
                 <p>{{value.subtotal}}</p>
                 <a href="{% url 'carro:eliminar' value.producto_id %}">x</a>
@@ -19,6 +23,7 @@
         
          
     {% endfor %}
+    
     <h3>Datos:</h3>
     {% for key, value in request.session.carro.items %}
         {% if key == 'datos' %}
