@@ -37,21 +37,7 @@ def carro(request):
         
     if 'cargar_pedido' in request.GET:
         if comprobacion_pedido:
-            return redirect("pedido:procesar_ped")
-        
-    print("estoy en carro antes del if") 
-    if 'nueva_cantidad' in request.GET:
-        print("carro/nueva_cantidad")
-        nueva_cantidad = request.GET['nueva_cantidad']
-        producto_id = request.GET['producto_id']
-        producto=Producto.objects.get(id=producto_id)
-        print("nueva_cantidad")
-        print(nueva_cantidad)
-        print("producto_id")
-        print(producto_id)
-        carro.actualizar_cant(producto=producto, nueva_cantidad=nueva_cantidad)
-  
-  
+            return redirect("pedido:procesar_ped") 
           
     context = {
         'categorias': categorias,
@@ -75,14 +61,16 @@ def restar_producto(request, producto_id):
     return redirect("carro:carro")
 
 @login_required
-def actualizar_cantidad(request, producto_id, actualizar_cantidad):
+def actualizar_cantidad(request, producto_id, nueva_cantidad):
     print("actualizar_cantidad")
-    carro = Carro(request)
-    producto = Producto.objects.get(id=producto_id)
-    carro.actualizar_cant(producto=producto, nueva_cantidad=actualizar_cantidad)
-    return redirect("carro:carro")
-
-
+    
+    if request.method == 'GET':    
+        carro=Carro(request)
+        nueva_cantidad = request.GET['nueva_cantidad']
+        producto_id = request.GET['producto_id']
+        producto=Producto.objects.get(id=producto_id)
+        carro.actualizar_cant(producto=producto, nueva_cantidad=nueva_cantidad)
+        return redirect("carro:carro")
 
 @login_required
 def eliminar_producto(request, producto_id):

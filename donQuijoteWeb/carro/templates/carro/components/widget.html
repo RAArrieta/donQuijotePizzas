@@ -10,10 +10,17 @@
             <div class="widget">
                 <p>{{value.nombre}}</p>
                 <a href="{% url 'carro:restar' value.producto_id %}">-</a>
-                <form method="get">
+                <form method="get" action="{% url 'carro:actualizar_cantidad' value.producto_id value.cantidad %}">
                     {% csrf_token %}
                     <input type="hidden" name="producto_id" value="{{ value.producto_id }}">
                     <input type="number" name="nueva_cantidad" value="{{value.cantidad}}">
+                    {% comment  %}
+                    {% if value.precio_media != "None" and value.precio_doc == "None" %}
+                        <input type="number" name="nueva_cantidad" value="{{value.cantidad}}" step="0.5" min="0.5">
+                    {% else %}
+                        <input type="number" name="nueva_cantidad" value="{{value.cantidad}}">
+                    {% endif %}
+                    {% endcomment %}
                 </form>
                 <a href="{% url 'carro:agregar' value.producto_id %}">+</a>
                 <p>{{value.subtotal}}</p>
