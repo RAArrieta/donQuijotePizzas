@@ -52,7 +52,7 @@ class Pedido(models.Model):
 class PedidoProductos(models.Model):
     producto=models.ForeignKey(Producto, on_delete=models.CASCADE)
     pedido=models.ForeignKey(Pedido, on_delete=models.CASCADE)
-    cantidad=models.IntegerField(default=1)
+    cantidad=models.FloatField(default=1)
     created_at=models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

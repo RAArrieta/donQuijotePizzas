@@ -36,15 +36,17 @@ class Carro:
                 "precio_unit": str(producto.precio_unit),
                 "precio_media": str(producto.precio_media),
                 "precio_doc": str(producto.precio_doc),
-                "cantidad": 1,
+                "cantidad": float(1.0),
                 "subtotal": float(producto.precio_unit),  
                 "categoria": str(producto.categoria)
             }
         else:
             for key, value in self.carro.items():
                 if key == producto_id_str:
-                    value["cantidad"] += 1
-                    value["subtotal"] += producto.precio_unit
+                    if value["precio_media"] != "None" and value["precio_doc"] == "None":
+                        value["cantidad"] = float(value["cantidad"]) + 0.5
+                    else:
+                        value["cantidad"] = float(value["cantidad"]) + 1.0
                     break
         self.guardar_carro()
         
@@ -52,12 +54,27 @@ class Carro:
         producto_id_str = str(producto.id)
         for key, value in self.carro.items():
             if key == producto_id_str:
-                value["cantidad"] -= 1
-                value["subtotal"] -= producto.precio_unit
-                if value["cantidad"] < 1:
+                if value["precio_media"] != "None" and value["precio_doc"] == "None":
+                    restar=0.5   
+                else:
+                    restar=1.0
+                value["cantidad"] = float(value["cantidad"]) - restar   
+                
+                if value["precio_media"] != "None" and value["precio_doc"] == "None":
+                    minimo=0.5
+                else:
+                    minimo=1.0
+                if value["cantidad"] < minimo:
                     self.eliminar(producto)
-                break
+                    break
         self.guardar_carro()
+        
+    def actualizar_cant(self, producto, nueva_cantidad):
+        producto_id = str(producto.id)
+        self.carro[producto_id]['cantidad'] = float(nueva_cantidad)
+        self.guardar_carro()
+        
+        
 
     def eliminar(self, producto):
         producto_id_str = str(producto.id)
@@ -68,10 +85,17 @@ class Carro:
     def limpiar_carro(self):
         self.session["carro"] = {}
         self.session.modified = True
-    
+        
     def guardar_carro(self):
         self.session["carro"] = self.carro
         self.session.modified = True
+        print(f"Carro guardado: {self.carro}")
+        
+        
+    
+    # def guardar_carro(self):
+    #     self.session["carro"] = self.carro
+    #     self.session.modified = True
 
     def agregar_datos(self, datos):
         if "nombre" in datos:
@@ -94,11 +118,7 @@ class Carro:
             comprobacion_pedido=True
         return comprobacion_pedido
     
-    def actualizar_cant(self, producto, nueva_cantidad):
-        print("def actulizar_cant")
-        producto_id = str(producto.id)
-        self.carro[producto_id]['cantidad'] = int(nueva_cantidad)
-        self.guardar_carro()
+
     
     def calcular_precio(self):
         pass
