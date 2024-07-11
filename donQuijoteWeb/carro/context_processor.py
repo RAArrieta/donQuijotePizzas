@@ -6,3 +6,7 @@ def importe_total_carro(request):
                 if key != "datos":
                     total = float(total)+float(value["subtotal"])
     return {"importe_total_carro":total}
+
+
+
+    
