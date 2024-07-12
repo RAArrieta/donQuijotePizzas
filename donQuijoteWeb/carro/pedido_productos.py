@@ -44,9 +44,6 @@ class Carro:
                 "subtotal": float(producto.precio_unit),   
                 "categoria": str(producto.categoria)
             }
-            self.guardar_carro()
-            self.calcular_precio(producto)
-            self.guardar_carro()
         else:
             for key, value in self.carro.items():
                 if key == producto_id_str:
@@ -57,7 +54,7 @@ class Carro:
                     value["cantidad"] = float(value["cantidad"]) + sumar
                     break
         
-        self.calcular_precio(producto)
+        self.calcular_precio()
         self.guardar_carro()
 
     def restar_producto(self, producto):
@@ -69,7 +66,7 @@ class Carro:
                 else:
                     restar=1.0
                 value["cantidad"] = float(value["cantidad"]) - restar  
-                self.calcular_precio(producto) 
+                self.calcular_precio()
                 
                 if value["precio_media"] != "None" and value["precio_doc"] == "None":
                     minimo=0.5
@@ -77,14 +74,14 @@ class Carro:
                     minimo=1.0
                 if value["cantidad"] < minimo:
                     self.eliminar(producto)
-                    self.calcular_precio(producto)
+                    self.calcular_precio()
                     break
         self.guardar_carro()
         
     def actualizar_cant(self, producto, nueva_cantidad):
         producto_id = str(producto.id)
         self.carro[producto_id]['cantidad'] = float(nueva_cantidad)
-        self.calcular_precio(producto)
+        self.calcular_precio()
         self.guardar_carro()
         
     def eliminar(self, producto):
@@ -92,6 +89,14 @@ class Carro:
         if producto_id_str in self.carro:
             del self.carro[producto_id_str]
             self.guardar_carro()
+            self.calcular_precio()
+        
+    def eliminar(self, producto):
+        producto_id_str = str(producto.id)
+        if producto_id_str in self.carro:
+            del self.carro[producto_id_str]
+            self.guardar_carro()
+            self.calcular_precio() 
     
     def limpiar_carro(self):
         self.session["carro"] = {}
@@ -129,15 +134,17 @@ class Carro:
             if key != "datos" and key != "empanadas" and value["precio_doc"] != "None":
                 cantidad_empanadas += value["cantidad"]
         return cantidad_empanadas
-    
-    def calcular_precio(self, producto):
-        producto_id_str = str(producto.id)
+       
+    def calcular_precio(self):
+        cantidad_empanadas = float(self.cantidad_empanadas())
+        self.session["carro"]["empanadas"]["cantidad"] = cantidad_empanadas 
+        subtotal_emp = 0.0
         
         for key, value in self.carro.items():
-            if key == producto_id_str:
+            if key != "datos" and key != "empanadas":
                 if value["precio_unit"] != "None" and value["precio_media"] == "None" and value["precio_doc"] == "None":
                     value["subtotal"] = float(value["cantidad"]) * float(value["precio_unit"])
-                    break
+
                 
                 if value["precio_media"] != "None" and value["precio_doc"] == "None":
                     if value["cantidad"] < 1.0:
@@ -152,32 +159,39 @@ class Carro:
                         value["subtotal"] = (entero * float(value["precio_unit"])) + float(value["precio_media"])
                     else:
                         value["subtotal"] = float(value["cantidad"]) * float(value["precio_unit"])
-                    break
+
+            
                 
+                
+                   
                 if value["precio_doc"] != "None":
-                    self.session["carro"]["empanadas"]["cantidad"] = float(self.cantidad_empanadas())
-                    cantidad_empanadas = float(self.cantidad_empanadas())
+                    
+                    precio_unit = float(value["precio_unit"])
+                    precio_media = float(value["precio_media"])
+                    precio_doc = float(value["precio_doc"])
+
+                    if cantidad_empanadas == 0.0:
+                        subtotal_emp = 0.0
                     if cantidad_empanadas < 6.0:
-                        self.session["carro"]["empanadas"]["subtotal_emp"] = float(cantidad_empanadas) * float(value["precio_unit"])
-                    elif cantidad_empanadas == 6.0:
-                        self.session["carro"]["empanadas"]["subtotal_emp"] = float(value["precio_media"])
-                    elif cantidad_empanadas == 12.0:
-                        self.session["carro"]["empanadas"]["subtotal_emp"] = float(value["precio_doc"])
-                        
-                    elif cantidad_empanadas > 6.0 and cantidad_empanadas < 12.0:
-                        resto = float(cantidad_empanadas % 6.0)
-                        self.session["carro"]["empanadas"]["subtotal_emp"] = float(value["precio_media"]) + (float(resto) * float(value["precio_unit"]))
-                        
-                    elif cantidad_empanadas > 12.0:
-                        docenas = float(cantidad_empanadas // 12.0)
-                        sueltas = float(cantidad_empanadas % 12.0)
+                        subtotal_emp = cantidad_empanadas * precio_unit
+                    elif cantidad_empanadas < 12.0:
+                        resto = cantidad_empanadas % 6.0
+                        if resto == 0.0:
+                            subtotal_emp = precio_media
+                        else:
+                            subtotal_emp = precio_media + (resto * precio_unit)
+                    else:
+                        docenas = cantidad_empanadas // 12.0
+                        sueltas = cantidad_empanadas % 12.0
                         if sueltas == 0.0:
-                            self.session["carro"]["empanadas"]["subtotal_emp"] = float(value["precio_doc"]) * float(docenas)
-                        elif sueltas < 6.0: 
-                            self.session["carro"]["empanadas"]["subtotal_emp"] = (float(value["precio_doc"]) * float(docenas)) + (float(sueltas) * float(value["precio_unit"]))
+                            subtotal_emp = precio_doc * docenas
+                        elif sueltas < 6.0:
+                            subtotal_emp = (precio_doc * docenas) + (sueltas * precio_unit)
                         elif sueltas == 6.0:
-                            self.session["carro"]["empanadas"]["subtotal_emp"] = (float(value["precio_doc"]) * float(docenas)) + (float(value["precio_doc"]) / 2.0)
-                        elif sueltas > 6.0:
+                            subtotal_emp = (precio_doc * docenas) + (precio_doc / 2.0)
+                        else:
                             resto = sueltas - 6.0
-                            self.session["carro"]["empanadas"]["subtotal_emp"] = (float(value["precio_doc"]) * float(docenas)) + (float(value["precio_doc"]) / 2.0) + (float(value["precio_unit"]) * float(resto))                 
-                break
+                            subtotal_emp = (precio_doc * docenas) + (precio_doc / 2.0) + (resto * precio_unit)
+                
+        self.session["carro"]["empanadas"]["subtotal_emp"] = subtotal_emp
+        self.guardar_carro()

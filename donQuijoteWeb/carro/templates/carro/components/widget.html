@@ -35,7 +35,7 @@
     {% for key, value in request.session.carro.items %}
         {% if key != 'datos' and key != 'empanadas'%}
             <div class="widget">
-                {% if value.precio_doc == "None" %}
+                {% if value.precio_doc == "None" and value.categoria != "Envío" %}
                     <div class="widget">
                         <p>{{value.nombre}}</p>
                         <a href="{% url 'carro:restar' value.producto_id %}">-</a>
@@ -54,13 +54,25 @@
                         <p>{{value.subtotal}}</p>
                         <a href="{% url 'carro:eliminar' value.producto_id %}">x</a>
                     </div>
-                {% endif %} 
-                    
-                
-                
-
+                {% endif %}   
             </div>
         {% endif %}    
+    {% endfor %}
+
+    {% for key, value in request.session.carro.items %}
+        {% if value.categoria == "Envío" %}
+        <div class="widget">
+            <p>{{value.nombre}}</p>
+            <form method="post" action="{% url 'carro:actualizar_cantidad' value.producto_id %}">
+                {% csrf_token %}
+                {% if value.subtotal > 0 %}
+                    <p>{{value.subtotal}}</p>
+                {% endif %}
+                
+            </form>
+        </div>
+            
+        {% endif %} 
     {% endfor %}
     
 {% else %}    
