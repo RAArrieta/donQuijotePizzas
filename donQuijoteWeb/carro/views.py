@@ -51,6 +51,9 @@ def agregar_producto(request, producto_id):
     carro=Carro(request)
     producto=Producto.objects.get(id=producto_id)
     carro.agregar(producto=producto)
+    print("Contenido del carro:")
+    for key, value in carro.carro.items():
+        print(f"Producto ID: {key}, Detalles: {value}")
     return redirect("carro:carro")
 
 @login_required

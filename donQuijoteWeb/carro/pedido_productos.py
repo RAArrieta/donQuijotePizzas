@@ -30,11 +30,11 @@ class Carro:
                 }
             }
         self.carro = carro
-
+        
     def agregar(self, producto):
         producto_id_str = str(producto.id)
         if producto_id_str not in self.carro.keys():
-            self.carro[producto.id] = {
+            self.carro[producto_id_str] = {
                 "producto_id": producto.id,
                 "nombre": producto.nombre,
                 "precio_unit": str(producto.precio_unit),
@@ -44,7 +44,9 @@ class Carro:
                 "subtotal": float(producto.precio_unit),   
                 "categoria": str(producto.categoria)
             }
-            
+            self.guardar_carro()
+            self.calcular_precio(producto)
+            self.guardar_carro()
         else:
             for key, value in self.carro.items():
                 if key == producto_id_str:
@@ -57,7 +59,7 @@ class Carro:
         
         self.calcular_precio(producto)
         self.guardar_carro()
-        
+
     def restar_producto(self, producto):
         producto_id_str = str(producto.id)
         for key, value in self.carro.items():
@@ -130,6 +132,7 @@ class Carro:
     
     def calcular_precio(self, producto):
         producto_id_str = str(producto.id)
+        
         for key, value in self.carro.items():
             if key == producto_id_str:
                 if value["precio_unit"] != "None" and value["precio_media"] == "None" and value["precio_doc"] == "None":
