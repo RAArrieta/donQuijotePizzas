@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Modificar Forma de Entrega   
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    <div class="titulo-container">
+        <div class="titulo-producto-container">
+            <h1 class="main-titulo">Modificar Forma de Entrega</h1>
+
+            <div class="productos-crear-cat">
+                <a class="productos-crear" href="{% url 'productos:home' %}">Productos</a>
+                <a class="productos-crear" href="{% url 'productos:categorias' %}">Categorias</a>
+                <a class="productos-crear" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
+            </div>
+        </div>
+        <hr  class="main-hr"/>
+    </div>
+{% endblock titulo %}
+
+{% block main %}
+    <div class="productos-container">
+        <form class="producto-card" action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <div class="form-btn-container">
+                <button class="boton" type="submit">Guardar</button>
+                <a class="boton" href="{% url 'productos:home' %}">Volver</a>
+            </div> 
+        </form>
+    </div>
+{% endblock main %}

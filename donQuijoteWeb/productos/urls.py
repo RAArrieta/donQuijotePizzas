@@ -21,3 +21,4 @@ urlpatterns += [
 urlpatterns += [
     path("productos/lista_wa", views.lista_wa, name="lista_wa"),
 ]
+

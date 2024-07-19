@@ -2,7 +2,17 @@ from django.db import models
 from productos.models import Producto
 from django.db.models import F, Sum, FloatField
 
-# Create your models here.
+class FormaEntrega(models.Model):
+    forma_entrega = models.CharField(max_length=50)
+    precio = models.FloatField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"Forma de Entrega: {self.forma_entrega}"
+    
+    class Meta:
+        db_table = "formaentrega"
+        verbose_name = "Forma de entrega"
+    
 
 class Pedido(models.Model):
     ESTADO_CHOICES = [
@@ -19,14 +29,9 @@ class Pedido(models.Model):
         ('cobrar', 'COBRAR')
     ]
     
-    FORMA_ENTREGA_CHOICES = [
-        ('retira', 'Retira'),
-        ('envio', 'Envio'),
-    ]
-    
     estado=models.CharField(max_length=10, choices=ESTADO_CHOICES)
     pago=models.CharField(max_length=10, choices=PAGO_CHOICES)
-    forma_entrega=models.CharField(max_length=10, choices=FORMA_ENTREGA_CHOICES)
+    forma_entrega=models.ForeignKey(FormaEntrega, on_delete=models.SET_NULL, null=True, blank=True)
     hora=models.DateTimeField(auto_now_add=True)
     nombre=models.CharField(max_length=50, blank=True, null=True)
     direccion=models.CharField(max_length=100, blank=True, null=True)

@@ -46,6 +46,12 @@
             </div>
         </div>
         {% endfor %}
+        {% for entrega in forma_entrega %}
+            <p>{{entrega.forma_entrega}}</p>
+            <p>{{entrega.precio}}</p>
+            <a href="{% url 'pedido:formaentrega_update' entrega.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+            
+        {% endfor %}
     </div>
 {% endblock main %}
 

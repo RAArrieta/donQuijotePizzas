@@ -1,6 +1,12 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
+from django.urls import reverse_lazy
+from pedido.models import FormaEntrega
+from pedido.forms import FormaEntregaForm
+from django.views.generic import (CreateView, DeleteView, DetailView, UpdateView,)
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from carro.pedido_productos import Carro
 from pedido.models import Pedido, PedidoProductos
 
@@ -36,5 +42,10 @@ def procesar_ped(request):
     carro.limpiar_carro()
     
     return redirect("carro:home")
+
+class FormaEntregaUpdate(LoginRequiredMixin, UpdateView):
+    model = FormaEntrega
+    form_class = FormaEntregaForm
+    success_url = reverse_lazy("productos:home")
     
     
