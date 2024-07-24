@@ -20,13 +20,16 @@ class Carro:
                     "estado": "",
                     "pago": "",
                     "forma_entrega": "envio",
+                    "precio_entrega": 0.0,
+                    "envio":True,
                     "nombre": "",
                     "direccion": "",
                     "observacion": "",
+                    "total":0.0,
                 },
                 "empanadas": {
                     "cantidad":"",
-                    "subtotal_emp":"",
+                    "subtotal_emp":0.0,
                 }
             }
         self.carro = carro
@@ -119,11 +122,15 @@ class Carro:
             self.carro["datos"]["pago"]=datos["pago"]
         if "forma_entrega" in datos:
             self.carro["datos"]["forma_entrega"]=datos["forma_entrega"]
+            self.carro["datos"]["precio_entrega"]=datos["precio_entrega"]
+            self.carro["datos"]["envio"]=bool(datos["envio"])
         self.guardar_carro()
         
     def comprobacion_pedido(self):
         comprobacion_pedido=False
-        if self.carro["datos"]["direccion"] != "" and len(self.carro.keys()) > 1: 
+        if self.carro["datos"]["direccion"] == "" and self.carro["datos"]["envio"] == False and len(self.carro.keys()) > 2: 
+            comprobacion_pedido=True
+        elif self.carro["datos"]["direccion"] != "" and self.carro["datos"]["envio"] == True and len(self.carro.keys()) > 2: 
             comprobacion_pedido=True
         return comprobacion_pedido
     
@@ -193,5 +200,18 @@ class Carro:
                             resto = sueltas - 6.0
                             subtotal_emp = (precio_doc * docenas) + (precio_doc / 2.0) + (resto * precio_unit)
                 
-        self.session["carro"]["empanadas"]["subtotal_emp"] = subtotal_emp
+        self.session["carro"]["empanadas"]["subtotal_emp"] = float(subtotal_emp)
         self.guardar_carro()
+        
+    def importe_total_carro(self):
+        total = 0.0
+        for key, value in self.carro.items():
+            if key != "datos" and key != "empanadas" and value["precio_doc"] == "None":
+                total = float(total)+float(value["subtotal"])
+            elif key == "datos" and value["precio_entrega"] != None:
+                total = float(total)+float(value["precio_entrega"])
+            elif key == "empanadas":
+                total = float(total)+float(value["subtotal_emp"])
+        
+        self.session["carro"]["datos"]["total"] = float(total)
+        return total

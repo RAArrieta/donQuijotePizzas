@@ -36,14 +36,18 @@
                                 <option value="mercado" {% if value.pago == "mercado" %}selected{% endif %}>MP</option>
                                 <option value="naranja" {% if value.pago == "naranja" %}selected{% endif %}>NRJ</option>
                                 <option value="debito" {% if value.pago == "debito" %}selected{% endif %}>DEBIT</option>
-                            </select>    
+                            </select>   
                             <select name="forma_entrega" onchange="deseleccionarOtrosYEnviar(event)">
-                                <option value="envio" {% if value.forma_entrega == "envio" %}selected{% endif %}>ENVIO</option>
-                                <option value="retira" {% if value.forma_entrega == "retira" %}selected{% endif %}>RETIRA</option>
+                                {% for entrega in forma_entrega %}
+                                    <option value="{{entrega.id}}" {% if value.forma_entrega == entrega.forma_entrega %}selected{% endif %}>{{entrega.forma_entrega}}</option>
+                                    
+                                {% endfor %}
                             </select>
-                            {% if value.forma_entrega == "envio" %}
+                            {% if value.envio == True %}
                                 <input type="text" {% if value.direccion == "" %}placeholder="Dirección..."{% else %}value="{{ value.direccion }}"{% endif %} name="direccion">
                             {% endif %}
+                            
+
                             <input type="text" {% if value.nombre == "" %}placeholder="Nombre..."{% else %}value="{{ value.nombre }}"{% endif %} name="nombre">
                             <input type="text" {% if value.observacion == "" %}placeholder="Observación..."{% else %}value="{{ value.observacion }}"{% endif %} name="observacion">       
                         </div>           

@@ -21,7 +21,7 @@
                             </form>
 
                             <a href="{% url 'carro:agregar' value.producto_id %}">+</a>
-                            <p>{{value.subtotal}}</p>
+
                             <a href="{% url 'carro:eliminar' value.producto_id %}">x</a>
                         </div>
                     {% endif %} 
@@ -59,22 +59,33 @@
         {% endif %}    
     {% endfor %}
 
+
+
+
     {% for key, value in request.session.carro.items %}
-        {% if value.categoria == "Envío" %}
-        <div class="widget">
-            <p>{{value.nombre}}</p>
-            <form method="post" action="{% url 'carro:actualizar_cantidad' value.producto_id %}">
-                {% csrf_token %}
-                {% if value.subtotal > 0 %}
-                    <p>{{value.subtotal}}</p>
-                {% endif %}
+        {% if key == "datos" %}
+            <div class="widget">
+                <p>{{value.forma_entrega}}</p>
                 
-            </form>
-        </div>
-            
+                {% if value.precio_entrega != None %}
+                    <p>${{value.precio_entrega}}</p>
+                {% endif %}
+            </div>
         {% endif %} 
     {% endfor %}
+
+    <h1>total: {{ total }}</h1>
+
+
+        
     
+
+        
+
+
+
+
+
 {% else %}    
     <h2>No hay productos cargados</h2>
 {% endif %}

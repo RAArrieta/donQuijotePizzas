@@ -1,13 +1,13 @@
 from django.db import models
 from productos.models import Producto
-from django.db.models import F, Sum, FloatField
 
 class FormaEntrega(models.Model):
     forma_entrega = models.CharField(max_length=50)
     precio = models.FloatField(null=True, blank=True)
+    envio = models.BooleanField()
     
     def __str__(self):
-        return f"Forma de Entrega: {self.forma_entrega}"
+        return f"{self.forma_entrega}"
     
     class Meta:
         db_table = "formaentrega"
@@ -36,18 +36,11 @@ class Pedido(models.Model):
     nombre=models.CharField(max_length=50, blank=True, null=True)
     direccion=models.CharField(max_length=100, blank=True, null=True)
     observacion=models.CharField(max_length=100, blank=True, null=True)
-    
+    total=models.FloatField()
     
     def __str__(self):
         return f"Pedido: {self.id}"
-    
-    @property
-    def total(self):
-        pass
-        # return self.pedidoproducto_set.aggregate(
-        #     total=Sum(F("precio")*F("cantidad"), output_field=FloatField())
-        # ),["total"]
-    
+        
     class Meta:
         db_table="pedidos"
         verbose_name="Pedido"
