@@ -4,7 +4,8 @@ from . import views
 app_name="pedido"
 
 urlpatterns = [
-    path('', views.procesar_ped, name="procesar_ped")
+    path('', views.home, name="home"),
+    path('procesar_ped/', views.procesar_ped, name="procesar_ped")
 ]
 
 urlpatterns += [

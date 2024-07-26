@@ -10,13 +10,13 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="titulo-container">
-        <div class="titulo-producto-container">
+    <div class="main-titulo-container">
+        <div class="titulo-opciones-container">
             <h1 class="main-titulo">Eliminar Categoria</h1>
-            <div class="productos-crear-cat">
-                <a class="productos-crear" href="{% url 'productos:home' %}">Productos</a>
-                <a class="productos-crear" href="{% url 'productos:categorias' %}">Categorias</a>
-                <a class="productos-crear" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
+            <div class="main-opciones-container">
+                <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+                <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+                <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
             </div>
         </div>
         <hr  class="main-hr"/>
@@ -32,7 +32,7 @@
             {% csrf_token %}
             <div class="delete-btn-container">
                 <button type="submit" class="btn-delete">Confirmar</button>
-                <a class="boton" href="{% url 'productos:categorias' %}">Volver</a>
+                <a class="btn-success" href="{% url 'productos:categorias' %}">Volver</a>
             </div>                
         </form>
     </div>

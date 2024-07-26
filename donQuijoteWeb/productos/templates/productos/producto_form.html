@@ -14,17 +14,17 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="titulo-container">
-        <div class="titulo-producto-container">
+    <div class="main-titulo-container">
+        <div class="titulo-opciones-container">
         {% if form.instance.pk %}
             <h1 class="main-titulo">Modificar Producto</h1>
         {% else %}
             <h1 class="main-titulo">Crear Producto</h1>            
         {% endif %}  
-            <div class="productos-crear-cat">
-                <a class="productos-crear" href="{% url 'productos:home' %}">Productos</a>
-                <a class="productos-crear" href="{% url 'productos:categorias' %}">Categorias</a>
-                <a class="productos-crear" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
+            <div class="main-opciones-container">
+                <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+                <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+                <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
             </div>
         </div>
         <hr  class="main-hr"/>
@@ -37,8 +37,8 @@
             {% csrf_token %}
             {{ form }}
             <div class="form-btn-container">
-                <button class="boton" type="submit">Guardar</button>
-                <a class="boton" href="{% url 'productos:home' %}">Volver</a>
+                <button class="btn-success" type="submit">Guardar</button>
+                <a class="btn-success" href="{% url 'productos:home' %}">Volver</a>
             </div> 
         </form>
     </div>

@@ -10,13 +10,13 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="titulo-container">
-        <div class="titulo-producto-container">
+    <div class="main-titulo-container">
+        <div class="titulo-opciones-container">
             <h1 class="main-titulo">Lista Whatsapp</h1>
-            <div class="productos-crear-cat">
-                <a class="productos-crear" href="{% url 'productos:home' %}">Productos</a>
-                <a class="productos-crear" href="{% url 'productos:categorias' %}">Categorias</a>
-                <a class="productos-crear" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
+            <div class="main-opciones-container">
+                <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+                <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+                <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
             </div>
         </div>
         <hr  class="main-hr"/>
@@ -30,9 +30,9 @@
         {% for categoria in categorias %}
         <div class="card-producto-categoria-container">
             <div class="card-categoria">
-                <div class="titulo-producto-container">
+                <div class="titulo-opciones-container">
                     <h1 class="categoria-titulo">*{{ categoria.grouper }}*</h1>
-                    <button class="productos-crear" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
                 </div>
                 <div class="categoria-info">
                     {% for producto in categoria.list %}

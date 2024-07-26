@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
 from django.urls import reverse_lazy
@@ -11,6 +11,9 @@ from carro.pedido_productos import Carro
 from pedido.models import Pedido, PedidoProductos
 from django.shortcuts import get_object_or_404
 
+@login_required
+def home(request):
+    return render(request, "pedido/index.html")
 
 @login_required
 def procesar_ped(request):
@@ -50,7 +53,7 @@ def procesar_ped(request):
     
     carro.limpiar_carro()
     
-    return redirect("carro:home")    
+    return redirect("pedido:home")    
 
 class FormaEntregaUpdate(LoginRequiredMixin, UpdateView):
     model = FormaEntrega

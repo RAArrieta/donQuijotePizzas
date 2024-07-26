@@ -5,10 +5,6 @@ from .pedido_productos import Carro, select_productos
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def home(request):
-    return render(request, "carro/index.html")
-
-@login_required
 def carro(request):
     categorias=select_productos() 
     forma_entrega = FormaEntrega.objects.all()
@@ -93,4 +89,4 @@ def eliminar_producto(request, producto_id):
 def limpiar_carro(request):
     carro=Carro(request)
     carro.limpiar_carro()
-    return redirect("carro:carro")
+    return redirect("pedido:home")

@@ -10,13 +10,13 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="titulo-container">
-        <div class="titulo-producto-container">
+    <div class="main-titulo-container">
+        <div class="titulo-opciones-container">
             <h1 class="main-titulo">Crear Pedido</h1>
-            <div class="productos-crear-cat">
-                <a class="productos-crear" href="{% url 'carro:carro' %}">Pedido</a>
-                <a class="productos-crear" href="#">Opcion 1</a>
-                <a class="productos-crear" href="#">Opcion 2</a>
+            <div class="main-opciones-container">
+                <a class="btn-opc" href="{% url 'carro:carro' %}">Pedido</a>
+                <a class="btn-opc" href="#">Opcion 1</a>
+                <a class="btn-opc" href="#">Opcion 2</a>
             </div>
         </div>
         <hr  class="main-hr"/>
