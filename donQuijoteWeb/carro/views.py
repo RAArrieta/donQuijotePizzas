@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from productos.models import Producto
 from pedido.models import FormaEntrega
-from .pedido_productos import Carro, select_productos
+from .pedido_productos import Carro
+from .select_productos import select_productos
 from django.contrib.auth.decorators import login_required
 
 @login_required
@@ -68,7 +69,6 @@ def restar_producto(request, producto_id):
     carro.restar_producto(producto=producto)
     return redirect("carro:carro")
 
-@login_required
 def actualizar_cantidad(request, producto_id):   
     if request.method == 'POST':    
         carro = Carro(request)       

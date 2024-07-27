@@ -162,11 +162,6 @@ body {
   font-family: 'Merriweather', serif;
   padding-left: 40px; 
 }
-.main-opciones-container {
-  display: flex;
-  gap: 20px; 
-  padding-right: 40px;
-}
 .main-hr {
   border: none;
   width: 95%;
@@ -176,6 +171,11 @@ body {
 }
 
 /* BOTONES */
+.btn-container {
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+}
 .btn-opc {
   border: none;
   color: #2C3E50;
@@ -206,7 +206,7 @@ body {
   background-color: #1a242f;
 }
 .btn-delete {
-  background-color: #e74c3c; /* Rojo para el botón de eliminar */
+  background-color: #e74c3c; 
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -218,7 +218,7 @@ body {
   transition: background-color 0.3s ease;
 }
 .btn-delete:hover {
-  background-color: #c0392b; /* Rojo más oscuro en hover */
+  background-color: #c0392b; 
 }
 
 /* CARD */
@@ -233,77 +233,51 @@ body {
   box-shadow: 0 4px 4px rgba(56, 55, 55, 0.2);
 }
 
-
-/* .card {
-  border: 1px solid #ced4da;
-  border-radius: 10px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* CONTAINER ICONOS */
-.iconos-container {
+/* SECTION */
+.section-container {
   width: 100%;
-  flex-grow: 1; 
+  height: 100%;
+}
+/* FORM */
+.form-control {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: 'Merriweather', serif;
+}
+
+/* ********************************* */
+/* ********************************* */
+
+/* ESCRITORIO */
+.escritorio {
   display: flex;
   flex-wrap: wrap;
+  flex-grow: 1; 
   gap: 40px;
   justify-content: space-around;
   padding: 40px;
   align-items: center;
 }
-
-.acceso-link {
+.escritorio-link {
   text-decoration: none;
   color: #2C3E50;
   text-align: center;
   flex-basis: calc(25% - 40px); 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-.acceso-link:hover {
+.escritorio-link:hover {
   transform: translateY(-5px);
 }
-
 .escritorio-img {
   width: 47%;
   height: auto;
   border-radius: 8px;
   margin-bottom: 10px;
 }
-
-.escritorio-img-nom { 
+.escritorio-nom { 
   padding-top: 20px;
 }
-
-
-
-
-

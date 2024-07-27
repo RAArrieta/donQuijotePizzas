@@ -21,7 +21,7 @@
         {% else %}
             <h1 class="main-titulo">Crear Producto</h1>            
         {% endif %}  
-            <div class="main-opciones-container">
+            <div class="btn-container">
                 <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
                 <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
                 <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
@@ -32,14 +32,14 @@
 {% endblock titulo %}
 
 {% block main %}
-    <div class="productos-container">
-        <form class="producto-card" action="" method="post">
+    <section class="form-container">
+        <form class="card" action="" method="post">
             {% csrf_token %}
             {{ form }}
-            <div class="form-btn-container">
+            <div class="btn-container">
                 <button class="btn-success" type="submit">Guardar</button>
                 <a class="btn-success" href="{% url 'productos:home' %}">Volver</a>
             </div> 
         </form>
-    </div>
+    </section>
 {% endblock main %}

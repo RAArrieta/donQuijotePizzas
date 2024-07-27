@@ -13,7 +13,7 @@
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
             <h1 class="main-titulo">Categorias</h1>
-            <div class="main-opciones-container">
+            <div class="btn-container">
                 <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
                 <a class="btn-opc" href="{% url 'productos:categorias_create' %}">Crear Categoria</a>
                 <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
@@ -24,14 +24,14 @@
 {% endblock titulo %}
 
 {% block main %}
-    <div class="categorias-container2">
+    <div class="categorias-container">
         {% for categoria in categorias %}
-        <div class="card-categoria-container">
-            <div class="card-categ">
+        <div class="card">
+            <div class="productos">
                 <h1 class="categoria-titulo">{{ categoria }}</h1>
-                <div class="producto-opciones2">
-                    <a href="{% url 'productos:categorias_update' categoria.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
-                    <a href="{% url 'productos:categorias_delete' categoria.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
+                <div class="producto-opc">
+                    <a href="{% url 'productos:categorias_update' categoria.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+                    <a href="{% url 'productos:categorias_delete' categoria.id%}"><img class="icono-opc" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
                 </div>
             </div>     
         </div>

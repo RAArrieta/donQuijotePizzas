@@ -13,7 +13,7 @@
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
             <h1 class="main-titulo">Eliminar Categoria</h1>
-            <div class="main-opciones-container">
+            <div class="btn-container">
                 <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
                 <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
                 <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
@@ -24,16 +24,16 @@
 {% endblock titulo %}
 
 {% block main %}
-    <div class="eliminar-container">
+    <section class="card eliminar colum-center">
         <p>¿Confirma eliminar "{{ object.nombre }}"?</p>
         <p>Se eliminaran todos los productos que contenga...</p>
 
         <form method="post">
             {% csrf_token %}
-            <div class="delete-btn-container">
+            <div class="btn-container">
                 <button type="submit" class="btn-delete">Confirmar</button>
                 <a class="btn-success" href="{% url 'productos:categorias' %}">Volver</a>
             </div>                
         </form>
-    </div>
+    </section>
 {% endblock main %}

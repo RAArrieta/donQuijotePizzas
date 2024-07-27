@@ -13,7 +13,7 @@
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
             <h1 class="main-titulo">Productos</h1>
-            <div class="main-opciones-container">
+            <div class="btn-container">
                 <a class="btn-opc" href="{% url 'productos:productos_create' %}">Crear Producto</a>
                 <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
                 <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
@@ -26,40 +26,39 @@
 {% block main %}
     {% regroup object_list by categoria.nombre as categorias %}
 
-    <div class="categorias-container">
+    <section class="categorias-container">
         {% for categoria in categorias %}
-            <div class="card card-producto-container">           
+            <div class="card">           
                 <h1 class="categoria-titulo">{{ categoria.grouper }}</h1>
                 <hr class="categoria-hr">
                 {% for producto in categoria.list %}
-                <div class="producto-opciones">
-                    <p class="producto-nombre">{{ producto.nombre }}</p>
-                    <p class="producto-precio">${{ producto.precio_unit }}</p>
-                    <div class="producto-opc">
-                        <a href="{% url 'productos:productos_detail' producto.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/lupa.webp' %}" alt="Detalle Producto"></a>
-                        <a href="{% url 'productos:productos_update' producto.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
-                        <a href="{% url 'productos:productos_delete' producto.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
-                    </div>
-                </div>     
+                    <div class="productos">
+                        <p class="producto-nombre">{{ producto.nombre }}</p>
+                        <p class="producto-precio">${{ producto.precio_unit }}</p>
+                        <div class="producto-opc">
+                            <a href="{% url 'productos:productos_detail' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/lupa.webp' %}" alt="Detalle Producto"></a>
+                            <a href="{% url 'productos:productos_update' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+                            <a href="{% url 'productos:productos_delete' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
+                        </div>
+                    </div>     
                 {% endfor %}  
             </div>
         {% endfor %}
-        <div class="card card-producto-container">           
+        <div class="card">           
             <h1 class="categoria-titulo">Formas de entrega</h1>
             <hr class="categoria-hr">
-
             {% for entrega in forma_entrega %}
-            <div class="producto-opciones">
-                <p class="producto-nombre">{{entrega.forma_entrega}}</p>
-                {% if entrega.precio != None %}
-                    <p class="producto-precio">{{entrega.precio}}</p>
-                {% endif %}
-                <div class="producto-opc">
-                    <a href="{% url 'pedido:formaentrega_update' entrega.id%}"><img class="icono-opcion-producto" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
-                </div>
+                <div class="productos">
+                    <p class="producto-nombre">{{entrega.forma_entrega}}</p>
+                    {% if entrega.precio != None %}
+                        <p class="producto-precio">${{entrega.precio}}</p>
+                    {% endif %}
+                    <div class="producto-opc">
+                        <a href="{% url 'pedido:formaentrega_update' entrega.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+                    </div>
             </div>    
             {% endfor %}
         </div>      
-    </div>
+    </section>
 {% endblock main %}
 

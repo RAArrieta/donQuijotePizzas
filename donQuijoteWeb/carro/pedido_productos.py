@@ -1,14 +1,5 @@
 from productos.models import Producto
 
-def select_productos():
-    productos = Producto.objects.all()
-    categorias = {}
-    for producto in productos:
-        if producto.categoria not in categorias:
-            categorias[producto.categoria] = []
-        categorias[producto.categoria].append(producto)  
-    return categorias
-
 class Carro:
     def __init__(self, request):
         self.request = request
@@ -86,14 +77,7 @@ class Carro:
         self.carro[producto_id]['cantidad'] = float(nueva_cantidad)
         self.calcular_precio()
         self.guardar_carro()
-        
-    def eliminar(self, producto):
-        producto_id_str = str(producto.id)
-        if producto_id_str in self.carro:
-            del self.carro[producto_id_str]
-            self.guardar_carro()
-            self.calcular_precio()
-        
+              
     def eliminar(self, producto):
         producto_id_str = str(producto.id)
         if producto_id_str in self.carro:

@@ -14,38 +14,38 @@
 
 
 {% block main %}
-    <div class="iconos-container">
-        <a class="acceso-link" href="#">
+    <section class="section-container escritorio">
+        <a class="escritorio-link" href="#">
             <img class="escritorio-img" src="{% static 'core/img/caja.webp' %}" alt="Caja">
-            <p class="escritorio-img-nom">Caja</p>
+            <p class="escritorio-nom">Caja</p>
         </a>
-        <a class="acceso-link" href="{% url 'pedido:home' %}">
+        <a class="escritorio-link" href="{% url 'pedido:home' %}">
             <img class="escritorio-img" src="{% static 'core/img/pedido.webp' %}" alt="Pedidos">
-            <p class="escritorio-img-nom">Pedidos</p>
+            <p class="escritorio-nom">Pedidos</p>
         </a>
-        <a class="acceso-link" href="#">
+        <a class="escritorio-link" href="#">
             <img class="escritorio-img" src="{% static 'core/img/facturacion.webp' %}" alt="Facturación">
-            <p class="escritorio-img-nom">Facturación</p>
+            <p class="escritorio-nom">Facturación</p>
         </a>
-        <a class="acceso-link" href="#">
+        <a class="escritorio-link" href="#">
             <img class="escritorio-img" src="{% static 'core/img/gastos.webp' %}" alt="Gastos">
-            <p class="escritorio-img-nom">Gastos</p>
+            <p class="escritorio-nom">Gastos</p>
         </a>
-        <a class="acceso-link" href="#">
+        <a class="escritorio-link" href="#">
             <img class="escritorio-img" src="{% static 'core/img/contabilidad.webp' %}" alt="Contabilidad">
-            <p class="escritorio-img-nom">Contabilidad</p>
+            <p class="escritorio-nom">Contabilidad</p>
         </a>
-        <a class="acceso-link" href="#">
+        <a class="escritorio-link" href="#">
             <img class="escritorio-img" src="{% static 'core/img/estadisticas.webp' %}" alt="Estadisticas">
-            <p class="escritorio-img-nom">Estadisticas</p>
+            <p class="escritorio-nom">Estadisticas</p>
         </a>  
-        <a class="acceso-link" href="{% url 'productos:home' %}">
+        <a class="escritorio-link" href="{% url 'productos:home' %}">
             <img class="escritorio-img" src="{% static 'core/img/producto.webp' %}" alt="Productos">
-            <p class="escritorio-img-nom">Productos</p>
+            <p class="escritorio-nom">Productos</p>
         </a>
-        <a class="acceso-link" href="#">
+        <a class="escritorio-link" href="#">
             <img class="escritorio-img" src="{% static 'core/img/costos.webp' %}" alt="Costos">
-            <p class="escritorio-img-nom">Costos</p>
+            <p class="escritorio-nom">Costos</p>
         </a>
-    </div>
+    </section>
 {% endblock main %}

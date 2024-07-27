@@ -13,7 +13,7 @@
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
             <h1 class="main-titulo">Lista Whatsapp</h1>
-            <div class="main-opciones-container">
+            <div class="btn-container">
                 <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
                 <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
                 <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
@@ -26,29 +26,27 @@
 {% block main %}
     {% regroup object_list by categoria.nombre as categorias %}
 
-    <div class="categorias-container">
+    <section class="categorias-container">
         {% for categoria in categorias %}
-        <div class="card-producto-categoria-container">
-            <div class="card-categoria">
-                <div class="titulo-opciones-container">
-                    <h1 class="categoria-titulo">*{{ categoria.grouper }}*</h1>
-                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
-                </div>
-                <div class="categoria-info">
-                    {% for producto in categoria.list %}
-                        {% if producto.precio_doc %}
-                            <p>*{{ producto.nombre }}:* _Doc: ${{producto.precio_doc}} | c/u: ${{producto.precio_unit}}_</p>
-                        {% elif producto.precio_media %}
-                            <p>*{{ producto.nombre }}:* _1/2: ${{producto.precio_media}} | c/u: ${{producto.precio_unit}}_</p>
-                        {% else %}
-                            <p>*{{ producto.nombre }}:* _${{producto.precio_unit}}_</p>
-                        {% endif %} 
-                    {% endfor %}
-                </div>
+        <div class="card card-wa">
+            <div class="titulo-opciones-container">
+                <h1 class="categoria-titulo">*{{ categoria.grouper }}*</h1>
+                <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
             </div>
+            <div class="categoria-info">
+                {% for producto in categoria.list %}
+                    {% if producto.precio_doc %}
+                        <p>*{{ producto.nombre }}:* _Doc: ${{producto.precio_doc}} | c/u: ${{producto.precio_unit}}_</p>
+                    {% elif producto.precio_media %}
+                        <p>*{{ producto.nombre }}:* _1/2: ${{producto.precio_media}} | c/u: ${{producto.precio_unit}}_</p>
+                    {% else %}
+                        <p>*{{ producto.nombre }}:* _${{producto.precio_unit}}_</p>
+                    {% endif %} 
+                {% endfor %}
+            </div>   
         </div>
         {% endfor %}
-    </div>   
+    </section>   
 
     <script>
         function copiarAlPortapapeles(button) {
