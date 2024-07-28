@@ -1,45 +1,36 @@
+/* CONTENEDORES */
 .carro-section-conteiner {
     width: 100%;
     height: 100%;
-    margin-top: 20px;
     display: flex;
     justify-content: space-evenly;
 
 }
-
-.carro-div-conteiner {
+.carro-card-conteiner {
     width: 45%;
     height: 100%;
     display: flex;
     flex-direction: column;
     padding: 25px;
+    background-color: #fff;
+}
+.select-container {
+  margin-bottom: 20px;
 }
 
-.carro-titulo-producto {
+/* TITULO */
+.carro-titulo {
     margin-bottom: 10px;
 }
 
 /* SELECT PRODUCTOS */
-/* FORM SELECTS CONTAINER */
-.form-selects-container {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    margin: 20px auto;
-    width: 80%;
-  }
-  
-  /* SELECT CONTAINER */
-  .select-container {
-    margin-bottom: 20px;
-  }
+ 
+   
   
   /* SELECT STYLES */
   .selects {
     width: 100%;
+    height: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ced4da;
