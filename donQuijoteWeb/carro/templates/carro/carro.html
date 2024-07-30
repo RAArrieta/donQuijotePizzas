@@ -12,7 +12,7 @@
 {% block titulo %}
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
-            <h1 class="main-titulo">Crear Pedido</h1>
+            <h1 class="main-titulo">Nuevo Pedido</h1>
             <div class="btn-container">
                 <a class="btn-opc" href="{% url 'carro:carro' %}">Pedido</a>
                 <a class="btn-opc" href="#">Opcion 1</a>
@@ -24,27 +24,17 @@
 {% endblock titulo %}
 
 {% block main %}
-    
-
-        <section class="carro-section-conteiner">
-
-            <div class="carro-card-conteiner card">
-                {% include "carro/components/widget.html" %}
-            </div>
-
-            <div class="carro-card-conteiner card">
-
-
-                {% include 'carro/components/select_productos.html' %}
-                
-                
-                
-            </div>
-    
-    
-        </section>
-
- 
-    
-    
+    <section class="carro-section-conteiner card">
+        <form class="carro-form" id="form-productos">
+            <div class="carro-section-conteiner">
+                <div class="carro-widget-selects">
+                    {% include "carro/components/widget.html" %}
+                    {% include 'carro/components/select_productos.html' %}
+                </div>
+                <div class="carro-datos">
+                    {% include "carro/components/carro_datos.html" %}
+                </div>
+            </div>              
+        </form>
+    </section>
 {% endblock main %}

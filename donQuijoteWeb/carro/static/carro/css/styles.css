@@ -4,19 +4,55 @@
     height: 100%;
     display: flex;
     justify-content: space-evenly;
-
 }
-.carro-card-conteiner {
-    width: 45%;
+.carro-widget-selects {
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 25px;
+    padding-right: 10px;
     background-color: #fff;
+    row-gap: 10px;
 }
-.select-container {
+.carro-widget-container {
+  width: 100%;
+  height: 55%;
+  border: solid 1px #bdc3c7;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.carro-widget-detalle {
+  width: 100%;
+  height: 88%;
+  overflow-y: auto;
+}
+
+
+
+.carro-select-container {
+  width: 100%;
+  height: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.carro-datos {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  background-color: #fff;
+  justify-content: space-evenly;
+}
+.carro-form {
+    width: 100%;
+    height: 100%;
+}
+/* .select-container {
   margin-bottom: 20px;
-}
+} */
 
 /* TITULO */
 .carro-titulo {
@@ -58,12 +94,68 @@
   }
 
   /* WIDGET */
-  .widget {
+  form {
+    display: contents; 
+  }
+  
+  .widget-producto {
+    width: 100%;
+    height: 30px;
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box; 
+  }
+  
+  .widget-prod-nombre {
+    width: 44%;
+  }
+  
+  .widget-prod-mod {
+    text-decoration: none;
+    width: 8%;
+    text-align: center;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .widget-prod-cant {
+    width: 15%;
+    text-align: center;
+
+  }
+  
+  .widget-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: 'Merriweather', serif;
+    color: #333;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .widget-prod-subt {
+    width: 30%;
+    text-align: end;
+    padding-right: 15px;
+  }
+  
+  .widget-prod-elim {
+    text-decoration: none;
+    width: 8%;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .forma-entrega {
+    width: 67%;
   }
 
-  .widget_datos {
-    display: flex;
-    flex-direction: column;
+  .total {
+    text-align: end;
   }
+

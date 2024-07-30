@@ -1,0 +1,74 @@
+<h3 class="carro-titulo">Datos</h3>
+{% csrf_token %}
+{% for key, value in request.session.carro.items %}
+    {% if key == "datos" %}       
+        <div class="select-container">
+            <select class="selects" name="estado" onchange="deseleccionarOtrosYEnviar(event)">
+                <option value="pendiente" {% if value.estado == "pendiente" %}selected{% endif %}>PENDIENTE</option>
+                <option value="entregado" {% if value.estado == "entregado" %}selected{% endif %}>ENTREGADO</option>
+                <option value="cancelado" {% if value.estado == "cancelado" %}selected{% endif %}>CANCELADO</option>
+            </select>
+        </div>
+        <div class="select-container">
+            <select class="selects" name="pago" onchange="deseleccionarOtrosYEnviar(event)">
+                <option value="cobrar" {% if value.pago == "cobrar" %}selected{% endif %}>COBRAR</option>
+                <option value="efectivo" {% if value.pago == "efectivo" %}selected{% endif %}>EFT</option>
+                <option value="mercado" {% if value.pago == "mercado" %}selected{% endif %}>MP</option>
+                <option value="naranja" {% if value.pago == "naranja" %}selected{% endif %}>NRJ</option>
+                <option value="debito" {% if value.pago == "debito" %}selected{% endif %}>DEBIT</option>
+            </select> 
+        </div>
+        <div class="select-container">
+            <select class="selects" name="forma_entrega" onchange="deseleccionarOtrosYEnviar(event)">
+                {% for entrega in forma_entrega %}
+                    <option value="{{entrega.id}}" {% if value.forma_entrega == entrega.forma_entrega %}selected{% endif %}>{{entrega.forma_entrega}}</option>
+                    
+                {% endfor %}
+            </select>
+        </div>                  
+            {% if value.envio == True %}
+                <div class="select-container">
+                    <input class="selects" type="text" {% if value.direccion == "" %}placeholder="Dirección..."{% else %}value="{{ value.direccion }}"{% endif %} name="direccion">
+                </div>    
+            {% endif %}
+            <div class="select-container">
+                <input class="selects" type="text" {% if value.nombre == "" %}placeholder="Nombre..."{% else %}value="{{ value.nombre }}"{% endif %} name="nombre">    
+            </div> 
+            <div class="select-container">
+                <input class="selects" type="text" {% if value.observacion == "" %}placeholder="Observación..."{% else %}value="{{ value.observacion }}"{% endif %} name="observacion">           
+            </div>            
+    {% endif %}
+{% endfor %}
+
+<div class="btn-container">
+    <button class="btn-success" type="submit" name="cargar_pedido">Guardar</button>
+    <a class="btn-delete" href="{% url 'carro:limpiar' %}">Cancelar</a>
+</div>
+              
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('form-productos');
+
+        form.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+    });
+    
+    const selects = document.querySelectorAll('.selects');
+
+    function deseleccionarOtrosYEnviar(event) {
+        const selectActual = event.target;
+        
+        selects.forEach(select => {
+            if (select !== selectActual) {
+                select.selectedIndex = 0;
+            }
+        });
+
+        document.getElementById('form-productos').submit();
+    }
+</script>
+
+
