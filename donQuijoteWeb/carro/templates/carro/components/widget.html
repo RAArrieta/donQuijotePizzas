@@ -3,7 +3,9 @@
     <div class="carro-widget-detalle">
         {% for key, value in request.session.carro.items %}
             {% if key != 'datos' and value.precio_doc != "None" and value.cantidad > 0.0 %}
+
                 {% if key == "empanadas" %}
+
                     <div class="widget-producto">
                         <p class="widget-prod-nombre">Empanadas</p>
                         <p class="widget-prod-mod"></p>
@@ -17,11 +19,11 @@
                         {% if value.precio_doc != "None" %}
                                 <p class="widget-prod-nombre">{{value.nombre}}</p>
                                 <a class="widget-prod-mod" href="{% url 'carro:restar' value.producto_id %}">-</a>
-                                <form method="post" action="{% url 'carro:actualizar_cantidad' value.producto_id %}">
+                                <form id="form-cantidad" method="post" action="{% url 'carro:actualizar_cantidad' value.producto_id %}">
                                     {% csrf_token %}
                                     <div class="widget-prod-cant">
                                         <input class="widget-input" type="hidden" name="producto_id" value="{{ value.producto_id }}">
-                                        <input class="widget-input" type="number" name="nueva_cantidad" value="{{ value.cantidad|stringformat:"0.f" }}" min="1">
+                                        <input class="widget-input" type="number" name="cantidad" value="{{ value.cantidad|stringformat:"0.f" }}" min="1">
                                     
                                     </div>
                                 </form>
@@ -40,14 +42,14 @@
                     <div class="widget-producto">
                         <p class="widget-prod-nombre">{{ value.nombre }}</p>
                         <a class="widget-prod-mod" href="{% url 'carro:restar' value.producto_id %}">-</a>
-                        <form method="post" action="{% url 'carro:actualizar_cantidad' value.producto_id %}">
+                        <form id="form-cantidad" method="post" action="{% url 'carro:actualizar_cantidad' value.producto_id %}">
                             {% csrf_token %}
                             <div class="widget-prod-cant">
-                                <input type="hidden" name="producto_id" value="{{ value.producto_id }}">
+                                
                                 {% if value.precio_media != "None" and value.precio_doc == "None" %}
-                                    <input class="widget-input" type="number" name="nueva_cantidad" value="{{ value.cantidad|stringformat:"0.1f" }}" min="0.5" step="0.5">
+                                    <input class="widget-input" type="number" name="cantidad" value="{{ value.cantidad|stringformat:"0.1f" }}" min="0.5" step="0.5">
                                 {% else %}
-                                    <input class="widget-input" type="number" name="nueva_cantidad" value="{{ value.cantidad|stringformat:"0.f" }}" min="1">
+                                    <input class="widget-input" type="number" name="cantidad" value="{{ value.cantidad|stringformat:"0.f" }}" min="1">
                                 {% endif %}
                             </div>
                         </form>
@@ -80,4 +82,6 @@
     <h3>No hay productos cargados</h3>
 {% endif %}
 </div>
+
+
 

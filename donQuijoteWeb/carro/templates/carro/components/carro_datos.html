@@ -12,16 +12,16 @@
         <div class="select-container">
             <select class="selects" name="pago" onchange="deseleccionarOtrosYEnviar(event)">
                 <option value="cobrar" {% if value.pago == "cobrar" %}selected{% endif %}>COBRAR</option>
-                <option value="efectivo" {% if value.pago == "efectivo" %}selected{% endif %}>EFT</option>
-                <option value="mercado" {% if value.pago == "mercado" %}selected{% endif %}>MP</option>
-                <option value="naranja" {% if value.pago == "naranja" %}selected{% endif %}>NRJ</option>
-                <option value="debito" {% if value.pago == "debito" %}selected{% endif %}>DEBIT</option>
+                <option value="efectivo" {% if value.pago == "efectivo" %}selected{% endif %}>EFECTIVO</option>
+                <option value="mercado" {% if value.pago == "mercado" %}selected{% endif %}>MERCADO PAGO</option>
+                <option value="naranja" {% if value.pago == "naranja" %}selected{% endif %}>NARANJA</option>
+                <option value="debito" {% if value.pago == "debito" %}selected{% endif %}>DEBITO</option>
             </select> 
         </div>
         <div class="select-container">
             <select class="selects" name="forma_entrega" onchange="deseleccionarOtrosYEnviar(event)">
                 {% for entrega in forma_entrega %}
-                    <option value="{{entrega.id}}" {% if value.forma_entrega == entrega.forma_entrega %}selected{% endif %}>{{entrega.forma_entrega}}</option>
+                    <option value="{{entrega.id}}" {% if value.forma_entrega == entrega.forma_entrega %}selected{% endif %}>{{entrega.forma_entrega|upper}}</option>
                     
                 {% endfor %}
             </select>
@@ -41,34 +41,26 @@
 {% endfor %}
 
 <div class="btn-container">
-    <button class="btn-success" type="submit" name="cargar_pedido">Guardar</button>
+    <button class="btn-success" type="submit" name="cargar_pedido" onclick="setCargarPedido()">Guardar</button>
     <a class="btn-delete" href="{% url 'carro:limpiar' %}">Cancelar</a>
 </div>
-              
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('form-productos');
+    let cargarPedido = false;
 
-        form.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-            }
-        });
-    });
-    
-    const selects = document.querySelectorAll('.selects');
-
-    function deseleccionarOtrosYEnviar(event) {
-        const selectActual = event.target;
-        
-        selects.forEach(select => {
-            if (select !== selectActual) {
-                select.selectedIndex = 0;
-            }
-        });
-
-        document.getElementById('form-productos').submit();
+    function setCargarPedido() {
+        cargarPedido = true;
     }
+
+    document.getElementById('miFormulario').addEventListener('submit', function(event) {
+        if (!cargarPedido) {
+            event.preventDefault();
+            // Puedes agregar lógica adicional aquí si necesitas
+        }
+        cargarPedido = false; // Resetea la variable después del submit
+    });
 </script>
+              
+
 
 

@@ -1,5 +1,3 @@
-from productos.models import Producto
-
 class Carro:
     def __init__(self, request):
         self.request = request
@@ -29,8 +27,8 @@ class Carro:
         producto_id_str = str(producto.id)
         if producto_id_str not in self.carro.keys():
             self.carro[producto_id_str] = {
-                "producto_id": producto.id,
-                "nombre": producto.nombre,
+                "producto_id": int(producto.id),
+                "nombre": str(producto.nombre),
                 "precio_unit": str(producto.precio_unit),
                 "precio_media": str(producto.precio_media),
                 "precio_doc": str(producto.precio_doc),
@@ -124,11 +122,11 @@ class Carro:
         for key, value in self.carro.items():
             if key != "datos" and key != "empanadas" and value["precio_doc"] != "None":
                 cantidad_empanadas += value["cantidad"]
+        self.session["carro"]["empanadas"]["cantidad"] = cantidad_empanadas 
         return cantidad_empanadas
        
     def calcular_precio(self):
         cantidad_empanadas = float(self.cantidad_empanadas())
-        self.session["carro"]["empanadas"]["cantidad"] = cantidad_empanadas 
         subtotal_emp = 0.0
         
         for key, value in self.carro.items():
@@ -185,6 +183,7 @@ class Carro:
                             subtotal_emp = (precio_doc * docenas) + (precio_doc / 2.0) + (resto * precio_unit)
                 
         self.session["carro"]["empanadas"]["subtotal_emp"] = float(subtotal_emp)
+        self.importe_total_carro()
         self.guardar_carro()
         
     def importe_total_carro(self):
@@ -199,3 +198,19 @@ class Carro:
         
         self.session["carro"]["datos"]["total"] = float(total)
         return total
+    
+    def cargar_pedido(self, pedido):
+        self.carro["datos"] = pedido["datos"]
+        
+        if "empanadas" in pedido:
+            self.carro["empanadas"] = pedido["empanadas"]
+        
+        for key, value in pedido.items():
+            if key != "datos" and key != "empanadas":
+                self.carro[key] = value
+
+        self.guardar_carro()
+        
+    # BORRAR, ESTO ES UNA PRUEBA
+    def obtener_contenido(self):
+        return self.carro

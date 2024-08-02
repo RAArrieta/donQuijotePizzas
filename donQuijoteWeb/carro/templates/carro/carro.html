@@ -23,12 +23,13 @@
     </div>
 {% endblock titulo %}
 
-{% block main %}
+{% block main %}   
     <section class="carro-section-conteiner card">
-        <form class="carro-form" id="form-productos">
+        {% include "carro/components/widget.html" %}
+        <form method="post" class="carro-form" id="form-productos">
             <div class="carro-section-conteiner">
                 <div class="carro-widget-selects">
-                    {% include "carro/components/widget.html" %}
+                    
                     {% include 'carro/components/select_productos.html' %}
                 </div>
                 <div class="carro-datos">
@@ -37,4 +38,36 @@
             </div>              
         </form>
     </section>
+
+    <script>
+
+
+
+
+        const selects = document.querySelectorAll('.selects');
+    
+        function deseleccionarOtrosYEnviar(event) {
+            const selectActual = event.target;
+            
+            selects.forEach(select => {
+                if (select !== selectActual) {
+                    select.selectedIndex = 0;
+                }
+            });
+    
+            document.getElementById('form-productos').submit();
+        }
+    
+
+    </script>
 {% endblock main %}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('form-productos');
+
+    form.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && !event.target.classList.contains('cantidad-input')) {
+            event.preventDefault();
+        }
+    });
+});

@@ -36,6 +36,8 @@ class Pedido(models.Model):
     nombre=models.CharField(max_length=50, blank=True, null=True)
     direccion=models.CharField(max_length=100, blank=True, null=True)
     observacion=models.CharField(max_length=100, blank=True, null=True)
+    cantidad_emp=models.FloatField(null=True, blank=True)
+    subtotal_emp=models.FloatField(null=True, blank=True)
     total=models.FloatField()
     
     def __str__(self):
@@ -51,6 +53,7 @@ class PedidoProductos(models.Model):
     producto=models.ForeignKey(Producto, on_delete=models.CASCADE)
     pedido=models.ForeignKey(Pedido, on_delete=models.CASCADE)
     cantidad=models.FloatField(default=1)
+    subtotal=models.FloatField(null=True, blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

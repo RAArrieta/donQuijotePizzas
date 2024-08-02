@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()
     forma_entrega = FormaEntrega.objects.all()
-    print(forma_entrega)
     context = {
         'object_list': productos,
         'forma_entrega': forma_entrega

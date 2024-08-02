@@ -24,5 +24,30 @@
 {% endblock titulo %}
 
 {% block main %}
-    <p>aqui muestro todos los pedidos</p>
+{% for pedido, pedido_data in pedidos.items %}
+<div class="pedido">
+    <h2>Numero de Pedido: {{ pedido }}</h2>
+    <a href="{% url 'pedido:modificar_pedido' pedido %}">detalle</a>
+    <p>Estado: {{ pedido_data.datos.estado }}</p>
+    <p>Pago: {{ pedido_data.datos.pago }}</p>
+    <p>Forma de Entrega: {{ pedido_data.datos.forma_entrega }}</p>
+    <p>Nombre: {{ pedido_data.datos.nombre }}</p>
+    <p>Dirección: {{ pedido_data.datos.direccion }}</p>
+    <p>Observación: {{ pedido_data.datos.observacion }}</p>
+
+    
+    <h3>Productos:</h3>
+    <ul>
+        {% for producto_id, producto_data in pedido_data.items %}
+            {% if producto_id != 'datos' and producto_id != 'empanadas' %}
+                <li>
+                    <p>Nombre: {{ producto_data.nombre }}</p>
+                    <p>Cantidad: {{ producto_data.cantidad }}</p>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <h3>Total: {{ pedido_data.datos.total }}</h3>
+</div>
+{% endfor %}
 {% endblock main %}
