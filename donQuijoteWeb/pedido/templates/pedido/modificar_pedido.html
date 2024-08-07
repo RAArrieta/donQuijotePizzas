@@ -14,9 +14,9 @@
         <div class="titulo-opciones-container">
             <h1 class="main-titulo">Pedido</h1>
             <div class="btn-container">
-                <a class="btn-opc" href="{% url 'carro:carro' %}">Crear Pedido</a>
-                <a class="btn-opc" href="#">Opcion 1</a>
-                <a class="btn-opc" href="#">Opcion 2</a>
+                <a class="btn-opc" href="{% url 'pedido:home' %}">Pedidos</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
             </div>
         </div>
         <hr  class="main-hr"/>

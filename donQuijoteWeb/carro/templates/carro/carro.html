@@ -12,11 +12,11 @@
 {% block titulo %}
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
-            <h1 class="main-titulo">Nuevo Pedido</h1>
+            <h1 class="main-titulo">Pedidos</h1>
             <div class="btn-container">
-                <a class="btn-opc" href="{% url 'carro:carro' %}">Pedido</a>
-                <a class="btn-opc" href="#">Opcion 1</a>
-                <a class="btn-opc" href="#">Opcion 2</a>
+                <a class="btn-opc" href="{% url 'pedido:home' %}">Pedidos</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
             </div>
         </div>
         <hr  class="main-hr"/>
@@ -25,49 +25,17 @@
 
 {% block main %}   
     <section class="carro-section-conteiner card">
-        {% include "carro/components/widget.html" %}
-        <form method="post" class="carro-form" id="form-productos">
-            <div class="carro-section-conteiner">
-                <div class="carro-widget-selects">
-                    
-                    {% include 'carro/components/select_productos.html' %}
-                </div>
-                <div class="carro-datos">
-                    {% include "carro/components/carro_datos.html" %}
-                </div>
-            </div>              
-        </form>
-    </section>
-
-    <script>
-
-
-
-
-        const selects = document.querySelectorAll('.selects');
-    
-        function deseleccionarOtrosYEnviar(event) {
-            const selectActual = event.target;
-            
-            selects.forEach(select => {
-                if (select !== selectActual) {
-                    select.selectedIndex = 0;
-                }
-            });
-    
-            document.getElementById('form-productos').submit();
-        }
-    
-
-    </script>
+        <div class="carro-widget-selects">
+            {% include "carro/components/widget.html" %}
+            {% include 'carro/components/select_productos.html' %}
+        </div>
+        <div class="carro-widget-selects">
+            {% include "carro/components/carro_datos.html" %}
+            <div class="btn-container">
+                <a class="btn-success" href="{% url 'carro:carro' %}?cargar_pedido=true">Guardar</a>
+                <a class="btn-delete" href="{% url 'carro:limpiar' %}">Cancelar</a>
+            </div>
+        </div>
+                          
+    </section> 
 {% endblock main %}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('form-productos');
-
-    form.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter' && !event.target.classList.contains('cantidad-input')) {
-            event.preventDefault();
-        }
-    });
-});

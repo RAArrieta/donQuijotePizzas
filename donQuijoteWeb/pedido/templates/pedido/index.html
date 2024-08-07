@@ -6,7 +6,7 @@
 {% endblock title %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'carro/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'pedido/css/styles.css' %}">
 {% endblock css %}
 
 {% block titulo %}
@@ -14,9 +14,9 @@
         <div class="titulo-opciones-container">
             <h1 class="main-titulo">Pedidos</h1>
             <div class="btn-container">
-                <a class="btn-opc" href="{% url 'carro:carro' %}">Crear Pedido</a>
-                <a class="btn-opc" href="#">Opcion 1</a>
-                <a class="btn-opc" href="#">Opcion 2</a>
+                <a class="btn-opc" href="{% url 'carro:carro' %}">Nuevo Pedido</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
             </div>
         </div>
         <hr  class="main-hr"/>
@@ -24,30 +24,48 @@
 {% endblock titulo %}
 
 {% block main %}
-{% for pedido, pedido_data in pedidos.items %}
-<div class="pedido">
-    <h2>Numero de Pedido: {{ pedido }}</h2>
-    <a href="{% url 'pedido:modificar_pedido' pedido %}">detalle</a>
-    <p>Estado: {{ pedido_data.datos.estado }}</p>
-    <p>Pago: {{ pedido_data.datos.pago }}</p>
-    <p>Forma de Entrega: {{ pedido_data.datos.forma_entrega }}</p>
-    <p>Nombre: {{ pedido_data.datos.nombre }}</p>
-    <p>Dirección: {{ pedido_data.datos.direccion }}</p>
-    <p>Observación: {{ pedido_data.datos.observacion }}</p>
 
-    
-    <h3>Productos:</h3>
-    <ul>
-        {% for producto_id, producto_data in pedido_data.items %}
-            {% if producto_id != 'datos' and producto_id != 'empanadas' %}
-                <li>
-                    <p>Nombre: {{ producto_data.nombre }}</p>
-                    <p>Cantidad: {{ producto_data.cantidad }}</p>
-                </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-    <h3>Total: {{ pedido_data.datos.total }}</h3>
-</div>
-{% endfor %}
+<section class="section-pedido-container">
+    {% for pedido, pedido_data in pedidos.items %}
+    <div class="pedido-container card">
+        <div class="encabezado">
+            <h3>{{ pedido }}</h3>
+            <p {% if pedido_data.datos.estado == "pendiente" or pedido_data.datos.estado == "cancelado" %} style="color: red;" {% else %} style="color: green;" {% endif %}>{{ pedido_data.datos.estado|upper }}</p>
+            <a href="{% url 'pedido:modificar_pedido' pedido %}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+        </div>
+        
+        
+        {% if pedido_data.datos.nombre %}
+            <p>Nom: {{ pedido_data.datos.nombre }}</p>
+        {% endif %}
+        {% if pedido_data.datos.direccion %}
+            <p>Dir: {{ pedido_data.datos.direccion }}</p>
+        {% endif %}
+        {% if pedido_data.datos.observacion %}
+            <p>Obs: {{ pedido_data.datos.observacion }}</p>
+        {% endif %}
+        
+        <div class="producto-pedido-container">
+            {% for producto_id, producto_data in pedido_data.items %}
+                {% if producto_id != 'datos' and producto_id != 'empanadas' %}
+                    <div class="producto-pedido">
+                        {% if producto_data.categoria == "Pizzas" %}
+                            <p class="prod-cant">{{ producto_data.cantidad }}</p>
+                        {% else %}
+                            <p class="prod-cant">{{ producto_data.cantidad|stringformat:"0.f"  }}</p>
+                        {% endif %}                    
+                        <p class="prod-det">{{ producto_data.nombre }}</p>
+                    </div> 
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="total-container">
+            <p>{{ pedido_data.datos.forma_entrega }}</p>
+            <p {% if pedido_data.datos.pago == "cobrar" %} style="color: red;" {% else %} style="color: black;" {% endif %}>{{ pedido_data.datos.pago|upper }}</p>
+            <h3>${{ pedido_data.datos.total }}</h3>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
 {% endblock main %}

@@ -6,7 +6,7 @@ from django.views.generic import (UpdateView,)
 
 from pedido.models import FormaEntrega, Pedido, PedidoProductos
 from pedido.forms import FormaEntregaForm
-from pedido.recuperar_pedidos import recuperar_pedidos
+from pedido.recuperar_pedidos import recuperar_pedidos, recuperar_pendientes, recuperar_entregados
 from carro.carro import Carro
 
 @login_required
@@ -84,16 +84,36 @@ def listar_pedidos(request):
 
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
+@login_required
+def listar_pendientes(request):
+    pedidos = recuperar_pendientes()
+
+    return render(request, 'pedido/index.html', {'pedidos': pedidos})
+
+@login_required
+def listar_entregados(request):
+    pedidos = recuperar_entregados()
+
+    return render(request, 'pedido/index.html', {'pedidos': pedidos})
+
+
+
+
+
+
+
+
+
+
+
+@login_required
 def modificar_pedido(request, pedido):
     nro_pedido = pedido
     pedidos = recuperar_pedidos()
     pedido = pedidos[nro_pedido]
-    
     carro = Carro(request)
     carro.cargar_pedido(pedido)
-
     request.session['nro_pedido'] = nro_pedido
-    
     return redirect("carro:carro")
     
     

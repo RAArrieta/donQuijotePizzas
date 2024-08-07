@@ -1,15 +1,19 @@
+from pedido.models import FormaEntrega
+
 class Carro:
+    
     def __init__(self, request):
         self.request = request
         self.session = request.session
         carro = self.session.get("carro")
+        forma_entrega = FormaEntrega.objects.get(id=2)
         if not carro:
             carro = self.session["carro"] = {
                 "datos":{
-                    "estado": "",
-                    "pago": "",
-                    "forma_entrega": "envio",
-                    "precio_entrega": 0.0,
+                    "estado": "pendiente",
+                    "pago": "cobrar",
+                    "forma_entrega": str(forma_entrega.forma_entrega),
+                    "precio_entrega": float(forma_entrega.precio),
                     "envio":True,
                     "nombre": "",
                     "direccion": "",
@@ -106,14 +110,17 @@ class Carro:
             self.carro["datos"]["forma_entrega"]=datos["forma_entrega"]
             self.carro["datos"]["precio_entrega"]=datos["precio_entrega"]
             self.carro["datos"]["envio"]=bool(datos["envio"])
+        
+        
         self.guardar_carro()
+        
         
     def comprobacion_pedido(self):
         comprobacion_pedido=False
-        if self.carro["datos"]["direccion"] == "" and self.carro["datos"]["envio"] == False and len(self.carro.keys()) > 2: 
+        if self.carro["datos"]["direccion"] != "" and self.carro["datos"]["envio"] == True and len(self.carro.keys()) > 2: 
             comprobacion_pedido=True
-        elif self.carro["datos"]["direccion"] != "" and self.carro["datos"]["envio"] == True and len(self.carro.keys()) > 2: 
-            comprobacion_pedido=True
+        elif self.carro["datos"]["envio"] == False and len(self.carro.keys()) > 2: 
+            comprobacion_pedido=True    
         return comprobacion_pedido
     
     
@@ -211,6 +218,3 @@ class Carro:
 
         self.guardar_carro()
         
-    # BORRAR, ESTO ES UNA PRUEBA
-    def obtener_contenido(self):
-        return self.carro

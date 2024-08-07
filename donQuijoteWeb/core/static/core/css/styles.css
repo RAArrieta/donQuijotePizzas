@@ -281,3 +281,10 @@ body {
 .escritorio-nom { 
   padding-top: 20px;
 }
+
+/* ICONOS */
+.icono-opc {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
