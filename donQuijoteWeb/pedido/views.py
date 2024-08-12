@@ -6,7 +6,7 @@ from django.views.generic import (UpdateView,)
 
 from pedido.models import FormaEntrega, Pedido, PedidoProductos
 from pedido.forms import FormaEntregaForm
-from pedido.recuperar_pedidos import recuperar_pedidos, recuperar_pendientes, recuperar_entregados
+from pedido.recuperar_pedidos import recuperar_pedidos, recuperar_pendientes, recuperar_entregados, recuperar_reservados
 from carro.carro import Carro
 
 @login_required
@@ -69,7 +69,6 @@ def procesar_ped(request):
         PedidoProductos.objects.bulk_create(lista_productos)
 
     carro.limpiar_carro()
-
     return redirect("pedido:home")
    
 
@@ -81,30 +80,22 @@ class FormaEntregaUpdate(LoginRequiredMixin, UpdateView):
 @login_required
 def listar_pedidos(request):
     pedidos = recuperar_pedidos()
-
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
 @login_required
 def listar_pendientes(request):
     pedidos = recuperar_pendientes()
-
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
 @login_required
 def listar_entregados(request):
     pedidos = recuperar_entregados()
-
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
-
-
-
-
-
-
-
-
-
+@login_required
+def listar_reservados(request):
+    pedidos = recuperar_reservados()
+    return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
 @login_required
 def modificar_pedido(request, pedido):

@@ -11,6 +11,7 @@ class Carro:
             carro = self.session["carro"] = {
                 "datos":{
                     "estado": "pendiente",
+                    "hora": "",
                     "pago": "cobrar",
                     "forma_entrega": str(forma_entrega.forma_entrega),
                     "precio_entrega": float(forma_entrega.precio),
@@ -110,8 +111,6 @@ class Carro:
             self.carro["datos"]["forma_entrega"]=datos["forma_entrega"]
             self.carro["datos"]["precio_entrega"]=datos["precio_entrega"]
             self.carro["datos"]["envio"]=bool(datos["envio"])
-        
-        
         self.guardar_carro()
         
         
@@ -122,7 +121,6 @@ class Carro:
         elif self.carro["datos"]["envio"] == False and len(self.carro.keys()) > 2: 
             comprobacion_pedido=True    
         return comprobacion_pedido
-    
     
     def cantidad_empanadas(self):
         cantidad_empanadas=0
@@ -154,11 +152,7 @@ class Carro:
                     elif media != 0 and value["cantidad"] > 1:
                         value["subtotal"] = (entero * float(value["precio_unit"])) + float(value["precio_media"])
                     else:
-                        value["subtotal"] = float(value["cantidad"]) * float(value["precio_unit"])
-
-            
-                
-                
+                        value["subtotal"] = float(value["cantidad"]) * float(value["precio_unit"])   
                    
                 if value["precio_doc"] != "None":
                     

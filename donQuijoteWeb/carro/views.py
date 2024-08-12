@@ -15,11 +15,8 @@ def carro(request):
     forma_entrega = FormaEntrega.objects.all()
     comprobacion_pedido=carro.comprobacion_pedido()
     cargar_pedido = request.GET.get('cargar_pedido', 'false') == 'true'
-    print("ESTOY EN CARRO")
     if cargar_pedido:
-        print("ENTRO A IF")
         if comprobacion_pedido:
-            print("COMPRUEBO TRUE")
             return redirect("pedido:procesar_ped")   
     
     context = {
@@ -34,6 +31,7 @@ def cargar_datos(request):
     carro=Carro(request)
     datos = {
             "estado": "",
+            "hora":"",
             "pago": "",
             "forma_entrega": "",
             "precio_entrega": "",
@@ -43,7 +41,7 @@ def cargar_datos(request):
             "observacion": "",
         }
     if request.method == 'POST':        
-        for field in ['estado', 'pago', 'direccion', 'forma_entrega', 'nombre', 'observacion']:
+        for field in ['estado', 'hora', 'pago', 'direccion', 'forma_entrega', 'nombre', 'observacion']:
             if field in request.POST:
                 datos[field]=request.POST.get(field)
                 if field == 'forma_entrega':

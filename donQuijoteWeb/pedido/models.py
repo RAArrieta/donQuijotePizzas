@@ -18,6 +18,7 @@ class Pedido(models.Model):
     ESTADO_CHOICES = [
         ('entregado', 'Entregado'),
         ('pendiente', 'Pendiente'),
+        ('reservado', 'reservado'),
         ('cancelado', 'Cancelado')
     ]
 

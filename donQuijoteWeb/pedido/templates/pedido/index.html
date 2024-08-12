@@ -15,8 +15,10 @@
             <h1 class="main-titulo">Pedidos</h1>
             <div class="btn-container">
                 <a class="btn-opc" href="{% url 'carro:carro' %}">Nuevo Pedido</a>
+                <a class="btn-opc" href="{% url 'pedido:home' %}">Pedidos</a>
                 <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
                 <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_reservados' %}">Reservados</a>
             </div>
         </div>
         <hr  class="main-hr"/>
@@ -30,11 +32,10 @@
     <div class="pedido-container card">
         <div class="encabezado">
             <h3>{{ pedido }}</h3>
-            <p {% if pedido_data.datos.estado == "pendiente" or pedido_data.datos.estado == "cancelado" %} style="color: red;" {% else %} style="color: green;" {% endif %}>{{ pedido_data.datos.estado|upper }}</p>
+            <p {% if pedido_data.datos.estado == "pendiente" or pedido_data.datos.estado == "cancelado" %} style="color: red;" {% elif pedido_data.datos.estado == "reservado" %} style="color: blue;" {% else %} style="color: green;" {% endif %}>{{ pedido_data.datos.estado|upper }}</p>
             <a href="{% url 'pedido:modificar_pedido' pedido %}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
         </div>
-        
-        
+        <p>Ingreso: {{ pedido_data.datos.hora|slice:"11:16" }}hs</p>
         {% if pedido_data.datos.nombre %}
             <p>Nom: {{ pedido_data.datos.nombre }}</p>
         {% endif %}
