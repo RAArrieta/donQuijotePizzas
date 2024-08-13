@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Facturas
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'facturas/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    <div class="main-titulo-container">
+        <div class="titulo-opciones-container">
+            <h1 class="main-titulo">Facturas</h1>
+            <div class="btn-container">
+                <a class="btn-opc" href="#">Facturas</a>
+                <a class="btn-opc" href="#">Opcion 1</a>
+                <a class="btn-opc" href="#">Opcion 2</a>
+            </div>
+        </div>
+        <hr  class="main-hr"/>
+    </div>
+{% endblock titulo %}
+
+{% block main %}
+<h1>AQUI VEO LAS FACTURAS</h1>
+        
+{% endblock main %}
