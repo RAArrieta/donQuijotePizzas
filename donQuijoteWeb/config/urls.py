@@ -7,4 +7,5 @@ urlpatterns = [
     path('productos/', include('productos.urls')),
     path('carro/', include('carro.urls')),
     path('pedido/', include('pedido.urls')),
+    path('facturas/', include('facturas.urls')),
 ]

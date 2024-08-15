@@ -26,7 +26,6 @@ class Pedido(models.Model):
         ('efectivo', 'EFT'),
         ('mercado', 'MP'),
         ('naranja', 'NRJ'),
-        ('debito', 'DEBIT'),
         ('cobrar', 'COBRAR')
     ]
     

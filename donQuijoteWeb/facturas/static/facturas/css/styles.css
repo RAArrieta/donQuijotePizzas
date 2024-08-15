@@ -1,0 +1,26 @@
+.facturas-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.facturas-card-container {
+    width: 80%;
+}
+.facturas-totales {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+.facturas-detalle {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 15px;
+    font-size: 20px;
+}
+.facturas-detalle-pedido {
+    width: 33%;
+    text-align: center;
+}
