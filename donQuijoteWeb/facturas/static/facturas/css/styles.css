@@ -24,3 +24,38 @@
     width: 33%;
     text-align: center;
 }
+
+/* ALERT */
+.messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.messages li {
+    background-color: #f8d7da; /* color de fondo similar a SweetAlert para mensajes de error */
+    color: #721c24; /* color de texto */
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    text-align: center;
+}
+
+.messages li.success {
+    background-color: #d4edda; /* color de fondo para mensajes de éxito */
+    color: #155724;
+}
+
+.messages li.warning {
+    background-color: #fff3cd; /* color de fondo para mensajes de advertencia */
+    color: #856404;
+}
+
+.messages li.info {
+    background-color: #cce5ff; /* color de fondo para mensajes de información */
+    color: #004085;
+}
+
