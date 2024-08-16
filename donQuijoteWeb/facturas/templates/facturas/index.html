@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    dQ | Facturas
+    dQ | Caja Diaria
 {% endblock title %}
 
 {% block css %}
@@ -12,11 +12,10 @@
 {% block titulo %}
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
-            <h1 class="main-titulo">Facturas</h1>
+            <h1 class="main-titulo">Caja Diaria</h1>
             <div class="btn-container">
-                <a class="btn-opc" href="#">Facturas</a>
-                <a class="btn-opc" href="#">Opcion 1</a>
-                <a class="btn-opc" href="#">Opcion 2</a>
+                <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>
+                <a class="btn-opc" href="{% url 'facturas:cerrar_caja' %}">Cerrar Caja</a>
             </div>
         </div>
         <hr  class="main-hr"/>
