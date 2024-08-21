@@ -3,6 +3,7 @@ from pedido.recuperar_pedidos import recuperar_entregados
 from django.contrib import messages
 from .models import Caja, Facturas
 from pedido.models import Pedido
+from django.db import connection
 
 
 
@@ -47,10 +48,15 @@ def cerrar_caja(request):
         caja.save() 
         cant_pendientes = Pedido.objects.filter(estado='pendiente').count()
         if cant_pendientes == 0:
-            cargar_facturas(request) 
+            cargar_facturas()            
+            Pedido.objects.all().delete()
+
+            with connection.cursor() as cursor:
+                cursor.execute("DELETE FROM sqlite_sequence WHERE name='pedidos'") 
+
             return redirect("facturas:home")  
         else:
-            messages.warning(request, "TIENES PEDIDOS PENDIENTES")
+            messages.warning(request, "Tienes pedidos pendientes, debes marcarlos como entregado o cancelarlos...")
             return redirect("facturas:home") 
     else:
         messages.error(request, "No hay una instancia de Caja disponible.")
@@ -72,3 +78,12 @@ def cargar_facturas():
         factura.save() 
 
     return redirect("core:home")
+
+def facturas(request):
+    facturas = Facturas.objects.all()
+    
+    context = {
+        'facturas': facturas,
+
+    }
+    return render(request, "facturas/facturas.html", context)

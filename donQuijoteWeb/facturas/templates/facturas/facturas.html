@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Facturación
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'facturas/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    <div class="main-titulo-container">
+        <div class="titulo-opciones-container">
+            <h1 class="main-titulo">Facturación</h1>
+            <div class="btn-container">
+                <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>
+                <a class="btn-opc" href="{% url 'facturas:cerrar_caja' %}">Cerrar Caja</a>
+            </div>
+        </div>
+        <hr  class="main-hr"/>
+    </div>
+{% endblock titulo %}
+
+{% block main %}
+
+{% for factura in facturas %}
+    <div class="facturas-detalle">
+        <p class="facturas-detalle-pedido">Factura {{ factura.id }}</p>
+        <p>{{ factura.fecha|date:"d/m/Y" }}</p>
+        <p class="facturas-detalle-pedido">{{ factura.forma_pago|upper }}</p>
+        <p class="facturas-detalle-pedido">${{ factura.pago }}</p>
+        
+    </div>
+    <hr class="facturas-hr">  
+{% endfor %}
+
+{% endblock main %}
