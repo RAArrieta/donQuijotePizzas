@@ -8,14 +8,12 @@ from pedido.models import FormaEntrega, Pedido, PedidoProductos
 from pedido.forms import FormaEntregaForm
 from pedido.recuperar_pedidos import recuperar_pedidos, recuperar_pendientes, recuperar_entregados, recuperar_reservados
 from carro.carro import Carro
+from django.contrib import messages
+from facturas.models import Caja
 
 @login_required
-def home(request):
-    return render(request, "pedido/index.html")
-
-@login_required
-def procesar_ped(request):
-    nro_pedido = request.session.get('nro_pedido')
+def procesar_ped(request):   
+    nro_pedido = request.session.pop('nro_pedido', None)
     carro = Carro(request)
     lista_productos = list()
     pedido = None
@@ -78,26 +76,6 @@ class FormaEntregaUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("productos:home")
     
 @login_required
-def listar_pedidos(request):
-    pedidos = recuperar_pedidos()
-    return render(request, 'pedido/index.html', {'pedidos': pedidos})
-
-@login_required
-def listar_pendientes(request):
-    pedidos = recuperar_pendientes()
-    return render(request, 'pedido/index.html', {'pedidos': pedidos})
-
-@login_required
-def listar_entregados(request):
-    pedidos = recuperar_entregados()
-    return render(request, 'pedido/index.html', {'pedidos': pedidos})
-
-@login_required
-def listar_reservados(request):
-    pedidos = recuperar_reservados()
-    return render(request, 'pedido/index.html', {'pedidos': pedidos})
-
-@login_required
 def modificar_pedido(request, pedido):
     nro_pedido = pedido
     pedidos = recuperar_pedidos()
@@ -106,5 +84,36 @@ def modificar_pedido(request, pedido):
     carro.cargar_pedido(pedido)
     request.session['nro_pedido'] = nro_pedido
     return redirect("carro:carro")
+    
+@login_required
+def listar_pedidos(request):
+    pedidos = recuperar_pedidos()
+    if not pedidos:
+        messages.error(request, "No hay pedidos cargados...")
+    return render(request, 'pedido/index.html', {'pedidos': pedidos})
+
+
+@login_required
+def listar_pendientes(request):
+    pedidos = recuperar_pendientes()
+    if not pedidos:
+        messages.error(request, "No hay pedidos pendientes...")
+    return render(request, 'pedido/index.html', {'pedidos': pedidos})
+
+@login_required
+def listar_entregados(request):
+    pedidos = recuperar_entregados()
+    if not pedidos:
+        messages.error(request, "No hay pedidos entregados...")
+    return render(request, 'pedido/index.html', {'pedidos': pedidos})
+
+@login_required
+def listar_reservados(request):
+    pedidos = recuperar_reservados()
+    if not pedidos:
+        messages.error(request, "No hay pedidos reservados...")
+    return render(request, 'pedido/index.html', {'pedidos': pedidos})
+
+
     
     

@@ -32,28 +32,28 @@
     </ul>
 {% endif %}
 
-<div class="facturas-container">
-    <div class="facturas-card-container card">
-        {% for key, value in pedidos.items %}
-        <div class="facturas-detalle">
-            <p class="facturas-detalle-pedido">Pedido {{key}}</p>
-            <p class="facturas-detalle-pedido">{{ value.datos.pago|upper }}</p>
-            <p class="facturas-detalle-pedido">${{ value.datos.total }}</p>
+{% if caja_total != 0.0 %}
+    <div class="facturas-container">
+        <div class="facturas-card-container card">
+            {% for key, value in pedidos.items %}
+            <div class="facturas-detalle">
+                <p class="facturas-detalle-pedido">Pedido {{key}}</p>
+                <p class="facturas-detalle-pedido" {% if value.datos.pago == "cobrar" %}style="color:red;"{% endif %}>{{ value.datos.pago|upper }}</p>
+                <p class="facturas-detalle-pedido">${{ value.datos.total }}</p>
+            </div>
+            <hr class="facturas-hr">  
+            {% endfor %}
+            <div class="facturas-totales">
+                <h3>Efectivo: ${{caja_efectivo}}</h3>
+                <p>|</p>
+                <h3>Mercado: ${{caja_mercado}}</h3>
+                <p>|</p>
+                <h3>Naranja: ${{caja_naranja}}</h3>
+                <p>|</p>
+                <h3>Total: $ {{caja_total}}</h3>
+            </div>
+            
         </div>
-        <hr class="facturas-hr">  
-        {% endfor %}
-        <div class="facturas-totales">
-            <h3>Efectivo: ${{caja_efectivo}}</h3>
-            <p>|</p>
-            <h3>Mercado: ${{caja_mercado}}</h3>
-            <p>|</p>
-            <h3>Naranja: ${{caja_naranja}}</h3>
-            <p>|</p>
-            <h3>Total: $ {{caja_total}}</h3>
-        </div>
-        
     </div>
-</div>
-
-
+{% endif %}
 {% endblock main %}

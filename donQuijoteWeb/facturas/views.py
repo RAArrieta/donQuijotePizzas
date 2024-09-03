@@ -13,7 +13,7 @@ def home(request):
     caja_efectivo=0.0
     caja_mercado=0.0
     caja_naranja=0.0
-
+        
     for key, value in pedidos.items():
         caja_total += value["datos"]["total"]
         if value["datos"]["pago"]=="efectivo":
@@ -22,6 +22,14 @@ def home(request):
             caja_mercado += value["datos"]["total"]
         if value["datos"]["pago"]=="naranja":
             caja_naranja += value["datos"]["total"]
+            
+    estado_caja = Caja.objects.all().values_list('estado_caja', flat=True)
+
+    for estado in estado_caja:
+        if not estado:
+            messages.warning(request, "Caja cerrada...")
+        elif caja_total == 0.0:
+            messages.warning(request, "Aun no tiene pedidos entregados...")
         
     context = {
         'pedidos': pedidos,
@@ -37,27 +45,30 @@ def abrir_caja(request):
     if caja:
         caja.estado_caja = True
         caja.save() 
-    else:
-        print("No hay una instancia de Caja disponible.")
     return redirect("facturas:home")
 
 def cerrar_caja(request):
     caja = Caja.objects.first()  
     if caja:
-        caja.estado_caja = False
-        caja.save() 
         cant_pendientes = Pedido.objects.filter(estado='pendiente').count()
-        if cant_pendientes == 0:
+        cant_cobrar = Pedido.objects.filter(pago='cobrar').count()
+        if cant_pendientes == 0 and cant_cobrar == 0:
             cargar_facturas()            
             Pedido.objects.all().delete()
 
             with connection.cursor() as cursor:
                 cursor.execute("DELETE FROM sqlite_sequence WHERE name='pedidos'") 
-
+                
+            caja.estado_caja = False
+            caja.save() 
+            
             return redirect("facturas:home")  
-        else:
-            messages.warning(request, "Tienes pedidos pendientes, debes marcarlos como entregado o cancelarlos...")
+        elif cant_pendientes != 0:
+            messages.error(request, "Tienes pedidos pendientes, debes marcarlos como entregado o cancelarlos...")
             return redirect("facturas:home") 
+        elif cant_cobrar != 0:
+            messages.error(request, "Tienes pedidos por cobrar...")
+            return redirect("facturas:home")
     else:
         messages.error(request, "No hay una instancia de Caja disponible.")
         return redirect("core:home")

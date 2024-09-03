@@ -6,25 +6,34 @@ from pedido.models import FormaEntrega
 
 from .select_productos import select_productos
 from .carro import Carro
+from facturas.models import Caja
+from django.contrib import messages
 
 @login_required
 def carro(request):
-    cargar_datos(request)
-    carro=Carro(request)
-    categorias=select_productos() 
-    forma_entrega = FormaEntrega.objects.all()
-    comprobacion_pedido=carro.comprobacion_pedido()
-    cargar_pedido = request.GET.get('cargar_pedido', 'false') == 'true'
-    if cargar_pedido:
-        if comprobacion_pedido:
-            return redirect("pedido:procesar_ped")   
-    
-    context = {
-        'categorias': categorias,
-        'forma_entrega': forma_entrega,
-    }
-        
-    return render(request, "carro/carro.html", context)
+    estado_caja = Caja.objects.all().values_list('estado_caja', flat=True)
+
+    for estado in estado_caja:
+        if estado:
+            cargar_datos(request)
+            carro=Carro(request)
+            categorias=select_productos() 
+            forma_entrega = FormaEntrega.objects.all()
+            comprobacion_pedido=carro.comprobacion_pedido()
+            cargar_pedido = request.GET.get('cargar_pedido', 'false') == 'true'
+            if cargar_pedido:
+                if comprobacion_pedido:
+                    return redirect("pedido:procesar_ped")   
+            
+            context = {
+                'categorias': categorias,
+                'forma_entrega': forma_entrega,
+            }
+                
+            return render(request, "carro/carro.html", context)
+        else:
+            messages.error(request, "Debe abrir caja para crear un pedido...")
+            return redirect("pedido:home")        
 
 @login_required
 def cargar_datos(request):
