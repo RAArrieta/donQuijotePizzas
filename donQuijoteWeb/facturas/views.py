@@ -55,13 +55,11 @@ def cerrar_caja(request):
         if cant_pendientes == 0 and cant_cobrar == 0:
             cargar_facturas()            
             Pedido.objects.all().delete()
-
             with connection.cursor() as cursor:
                 cursor.execute("DELETE FROM sqlite_sequence WHERE name='pedidos'") 
                 
             caja.estado_caja = False
             caja.save() 
-            
             return redirect("facturas:home")  
         elif cant_pendientes != 0:
             messages.error(request, "Tienes pedidos pendientes, debes marcarlos como entregado o cancelarlos...")
