@@ -89,7 +89,7 @@ def modificar_pedido(request, pedido):
 def listar_pedidos(request):
     pedidos = recuperar_pedidos()
     if not pedidos:
-        messages.error(request, "No hay pedidos cargados...")
+        messages.warning(request, "No hay pedidos cargados...")
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
 
@@ -97,21 +97,21 @@ def listar_pedidos(request):
 def listar_pendientes(request):
     pedidos = recuperar_pendientes()
     if not pedidos:
-        messages.error(request, "No hay pedidos pendientes...")
+        messages.warning(request, "No hay pedidos pendientes...")
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
 @login_required
 def listar_entregados(request):
     pedidos = recuperar_entregados()
     if not pedidos:
-        messages.error(request, "No hay pedidos entregados...")
+        messages.warning(request, "No hay pedidos entregados...")
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
 @login_required
 def listar_reservados(request):
     pedidos = recuperar_reservados()
     if not pedidos:
-        messages.error(request, "No hay pedidos reservados...")
+        messages.warning(request, "No hay pedidos reservados...")
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
 
 
