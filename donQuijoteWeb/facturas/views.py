@@ -1,5 +1,3 @@
-# import calendar
-import locale
 from datetime import datetime
 from django.shortcuts import render, redirect
 from pedido.recuperar_pedidos import recuperar_entregados
