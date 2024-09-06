@@ -1,3 +1,6 @@
+# import calendar
+import locale
+from datetime import datetime
 from django.shortcuts import render, redirect
 from pedido.recuperar_pedidos import recuperar_entregados
 from django.contrib import messages
@@ -90,7 +93,7 @@ def cargar_facturas():
 def facturas(request):
     now = datetime.now()
     facturas = Facturas.objects.filter(fecha__year=now.year, fecha__month=now.month)
-    
+       
     caja_total= 0.0
     caja_efectivo=0.0
     caja_mercado=0.0
@@ -132,7 +135,7 @@ def facturas(request):
         'caja_total': caja_total,
         'caja_efectivo': caja_efectivo,
         'caja_mercado': caja_mercado, 
-        'caja_naranja': caja_naranja
+        'caja_naranja': caja_naranja,
     }
     
     return render(request, "facturas/facturas.html", context)

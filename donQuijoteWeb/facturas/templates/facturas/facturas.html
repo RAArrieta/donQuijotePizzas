@@ -9,23 +9,27 @@
     <link rel="stylesheet" href="{% static 'facturas/css/styles.css' %}">
 {% endblock css %}
 
+
+
 {% block titulo %}
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
             <h1 class="main-titulo">Facturación</h1>
             <div class="btn-container">
-                <form method="get">
+                <form method="get" class="filtro-form">
                     {{ form.as_p }}
-                    <button type="submit">Filtrar</button>
+                    <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
                 </form>
             </div>
         </div>
-        <hr  class="main-hr"/>
+        <hr class="main-hr"/>
     </div>
 {% endblock titulo %}
 
+
+
 {% block main %}
-<div class="facturas-totales">
+<div class="facturas-totales card">
     <h3>Efectivo: ${{caja_efectivo}}</h3>
     <p>|</p>
     <h3>Mercado: ${{caja_mercado}}</h3>
@@ -34,6 +38,7 @@
     <p>|</p>
     <h3>Total: $ {{caja_total}}</h3>
 </div>
+
 {% for factura in facturas %}
     <div class="facturas-detalle">
         <p class="facturas-detalle-pedido">Factura {{ factura.id }}</p>

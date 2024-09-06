@@ -300,6 +300,7 @@ body {
   background-color: #f8d7da; /* color de fondo similar a SweetAlert para mensajes de error */
   color: #721c24; /* color de texto */
   padding: 15px 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
