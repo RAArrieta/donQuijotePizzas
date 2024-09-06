@@ -4,8 +4,8 @@ from django.contrib import messages
 from .models import Caja, Facturas
 from pedido.models import Pedido
 from django.db import connection
-
-
+from datetime import datetime
+from .forms import RangoFechasForm
 
 def home(request):
     pedidos = recuperar_entregados()
@@ -24,7 +24,6 @@ def home(request):
             caja_naranja += value["datos"]["total"]
             
     estado_caja = Caja.objects.all().values_list('estado_caja', flat=True)
-
     for estado in estado_caja:
         if not estado:
             messages.warning(request, "Caja cerrada...")
@@ -89,10 +88,51 @@ def cargar_facturas():
     return redirect("core:home")
 
 def facturas(request):
-    facturas = Facturas.objects.all()
+    now = datetime.now()
+    facturas = Facturas.objects.filter(fecha__year=now.year, fecha__month=now.month)
+    
+    caja_total= 0.0
+    caja_efectivo=0.0
+    caja_mercado=0.0
+    caja_naranja=0.0
+        
+    for factura in facturas:
+        caja_total += factura.pago
+        if factura.forma_pago == "efectivo":  
+            caja_efectivo += factura.pago
+        elif factura.forma_pago == "mercado":
+            caja_mercado += factura.pago
+        elif factura.forma_pago == "naranja":
+            caja_naranja += factura.pago
+    
+    form = RangoFechasForm(request.GET or None)
+    
+    if form.is_valid():
+        fecha_inicio = form.cleaned_data['fecha_inicio']
+        fecha_fin = form.cleaned_data['fecha_fin']
+        facturas = Facturas.objects.filter(fecha__range=[fecha_inicio, fecha_fin])
+        
+        caja_total= 0.0
+        caja_efectivo=0.0
+        caja_mercado=0.0
+        caja_naranja=0.0
+        
+        for factura in facturas:
+            caja_total += factura.pago
+            if factura.forma_pago == "efectivo":  
+                caja_efectivo += factura.pago
+            elif factura.forma_pago == "mercado":
+                caja_mercado += factura.pago
+            elif factura.forma_pago == "naranja":
+                caja_naranja += factura.pago
     
     context = {
+        'form': form,
         'facturas': facturas,
-
+        'caja_total': caja_total,
+        'caja_efectivo': caja_efectivo,
+        'caja_mercado': caja_mercado, 
+        'caja_naranja': caja_naranja
     }
+    
     return render(request, "facturas/facturas.html", context)

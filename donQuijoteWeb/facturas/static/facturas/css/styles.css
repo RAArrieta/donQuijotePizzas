@@ -15,14 +15,20 @@
 }
 .facturas-detalle {
     display: flex;
-    align-items: center;
-    justify-content: space-around;
     padding: 15px;
     font-size: 20px;
 }
 .facturas-detalle-pedido {
-    width: 33%;
+    width: 25%;
     text-align: center;
+}
+.facturas-hr-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.facturas-hr {
+    width: 85%;
 }
 
 
