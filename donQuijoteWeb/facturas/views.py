@@ -52,9 +52,10 @@ def cerrar_caja(request):
     if caja:
         cant_pendientes = Pedido.objects.filter(estado='pendiente').count()
         cant_cobrar = Pedido.objects.filter(pago='cobrar').count()
-        if cant_pendientes == 0 and cant_cobrar == 0:
+        cant_reservados = Pedido.objects.filter(estado='reservado', pago='cobrar').count()
+        if cant_pendientes == 0 and (cant_cobrar == 0 or cant_reservados == cant_cobrar):
             cargar_facturas()            
-            Pedido.objects.all().delete()
+            Pedido.objects.exclude(estado='reservado').delete()
             with connection.cursor() as cursor:
                 cursor.execute("DELETE FROM sqlite_sequence WHERE name='pedidos'") 
                 
