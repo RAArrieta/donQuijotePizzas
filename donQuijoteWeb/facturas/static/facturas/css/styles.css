@@ -25,12 +25,29 @@
 }
 .facturas-detalle {
     display: flex;
+    justify-content: center;
     padding: 15px;
 }
 .facturas-detalle-pedido {
-    width: 25%;
+    width: 18%;
     text-align: center;
 }
+.facturas-detalle-icono {
+    background-color: white;
+    border: none;
+    width: 8%;
+    text-align: center;
+}
+.productos-factura {
+    background-color:  rgb(232, 247, 242);
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+.productos-detalles {
+    margin: 10px 50px;
+}
+
 .facturas-hr-container {
     display: flex;
     align-items: center;

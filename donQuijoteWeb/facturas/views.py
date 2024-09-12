@@ -77,13 +77,63 @@ def cerrar_caja(request):
         messages.error(request, "No hay una instancia de Caja disponible.")
         return redirect("core:home")
 
+# def cargar_facturas():
+#     pedidos = recuperar_entregados()
+#     lista_productos = list()
+
+#     for key, value in pedidos.items():
+#         envio, forma_pago, total = None, None, None
+        
+#         for k, v in value['datos'].items():
+#             if k == "precio_entrega":
+#                 envio = v
+#             elif k == "pago":
+#                 forma_pago = v
+#             elif k == "total":
+#                 total = v  
+                 
+#         factura = Facturas(
+#             envio=envio,
+#             forma_pago=forma_pago,
+#             pago=total,
+#         )   
+        
+#         factura.save()       
+                         
+#         for k, v in value.items():
+#             if k.isdigit():  
+#                 cantidad = None
+#                 for prod_key, prod_value in v.items():
+#                     if prod_key == "cantidad":
+#                         cantidad = prod_value
+#                         break
+                
+#                 if cantidad is not None:
+#                     lista_productos.append(FacturaProducto(
+#                         producto_id=int(k),
+#                         cantidad=float(cantidad),
+#                         factura=factura
+#                     ))
+
+#     if factura:
+#         FacturaProducto.objects.filter(factura=factura).delete()
+#         for producto in lista_productos:
+#             producto.factura = factura
+#         FacturaProducto.objects.bulk_create(lista_productos)
+        
+#     return redirect("core:home")
+
+
+
+
 def cargar_facturas():
     pedidos = recuperar_entregados()
-    lista_productos = list()
-
+    
     for key, value in pedidos.items():
         envio, forma_pago, total = None, None, None
+        lista_productos = list()  # Mover lista_productos dentro del bucle principal para que sea única por factura
         
+        # Obtener datos de la factura
         for k, v in value['datos'].items():
             if k == "precio_entrega":
                 envio = v
@@ -91,17 +141,19 @@ def cargar_facturas():
                 forma_pago = v
             elif k == "total":
                 total = v  
-                 
+        
+        # Crear factura
         factura = Facturas(
             envio=envio,
             forma_pago=forma_pago,
             pago=total,
         )   
         
-        factura.save()       
-                         
+        factura.save()  # Guardar la factura antes de asociar productos
+        
+        # Asociar productos a la factura
         for k, v in value.items():
-            if k.isdigit():  
+            if k.isdigit():  # Asegurarse de que es un ID de producto
                 cantidad = None
                 for prod_key, prod_value in v.items():
                     if prod_key == "cantidad":
@@ -112,21 +164,23 @@ def cargar_facturas():
                     lista_productos.append(FacturaProducto(
                         producto_id=int(k),
                         cantidad=float(cantidad),
-                        factura=factura
+                        factura=factura  # Asociar producto a la factura actual
                     ))
-
-    if factura:
-        FacturaProducto.objects.filter(factura=factura).delete()
-        for producto in lista_productos:
-            producto.factura = factura
+        
+        # Guardar todos los productos de esta factura
         FacturaProducto.objects.bulk_create(lista_productos)
         
     return redirect("core:home")
 
+
+
+
+
 def facturas(request):
     now = datetime.now()
     facturas = Facturas.objects.filter(fecha__year=now.year, fecha__month=now.month)
-       
+    productos_factura = FacturaProducto.objects.all()
+    
     caja_total= 0.0
     caja_efectivo=0.0
     caja_mercado=0.0
@@ -161,10 +215,11 @@ def facturas(request):
                 caja_mercado += factura.pago
             elif factura.forma_pago == "naranja":
                 caja_naranja += factura.pago
-    
+        
     context = {
         'form': form,
         'facturas': facturas,
+        'productos_factura': productos_factura,
         'caja_total': caja_total,
         'caja_efectivo': caja_efectivo,
         'caja_mercado': caja_mercado, 
