@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Facturas, Caja
+from .models import Facturas, Caja, FacturaProducto
 
 class FacturasAdmin(admin.ModelAdmin):
     list_display = ("nro_factura", "formas_pago", "pago")
@@ -15,3 +15,4 @@ class FacturasAdmin(admin.ModelAdmin):
     
 admin.site.register(Facturas, FacturasAdmin)
 admin.site.register(Caja)
+admin.site.register(FacturaProducto)

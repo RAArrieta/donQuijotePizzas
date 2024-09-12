@@ -64,8 +64,7 @@ def recuperar_pendientes():
                 "cantidad": pedido.cantidad_emp,
                 "subtotal_emp": pedido.subtotal_emp,
             }
-        } 
-        for pedido in pedidos_datos
+        } for pedido in pedidos_datos
     }
     
     for key, value in pedidos.items():
@@ -107,8 +106,7 @@ def recuperar_entregados():
                 "cantidad": pedido.cantidad_emp,
                 "subtotal_emp": pedido.subtotal_emp,
             }
-        } 
-        for pedido in pedidos_datos
+        } for pedido in pedidos_datos
     }
     
     for key, value in pedidos.items():
@@ -150,8 +148,7 @@ def recuperar_reservados():
                 "cantidad": pedido.cantidad_emp,
                 "subtotal_emp": pedido.subtotal_emp,
             }
-        } 
-        for pedido in pedidos_datos
+        } for pedido in pedidos_datos
     }
     
     for key, value in pedidos.items():

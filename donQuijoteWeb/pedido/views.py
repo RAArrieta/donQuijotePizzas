@@ -37,6 +37,7 @@ def procesar_ped(request):
                 pedido.estado = value["estado"]
                 pedido.pago = value["pago"]
                 pedido.forma_entrega = forma_entrega_obj
+                pedido.precio_entrega= value["precio_entrega"]
                 pedido.nombre = value["nombre"]
                 pedido.direccion = value["direccion"]
                 pedido.observacion = value["observacion"]
@@ -46,6 +47,7 @@ def procesar_ped(request):
                     estado=value["estado"],
                     pago=value["pago"],
                     forma_entrega=forma_entrega_obj,
+                    precio_entrega=value["precio_entrega"],
                     nombre=value["nombre"],
                     direccion=value["direccion"],
                     observacion=value["observacion"],

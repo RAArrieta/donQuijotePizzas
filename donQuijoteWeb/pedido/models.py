@@ -32,6 +32,7 @@ class Pedido(models.Model):
     estado=models.CharField(max_length=10, choices=ESTADO_CHOICES)
     pago=models.CharField(max_length=10, choices=PAGO_CHOICES)
     forma_entrega=models.ForeignKey(FormaEntrega, on_delete=models.SET_NULL, null=True, blank=True)
+    precio_entrega=models.FloatField(null=True, blank=True)
     hora=models.DateTimeField(auto_now_add=True)
     nombre=models.CharField(max_length=50, blank=True, null=True)
     direccion=models.CharField(max_length=100, blank=True, null=True)
