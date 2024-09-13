@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'carro',
     'pedido',
     'facturas',
+    'estadisticas',
 ]
 
 MIDDLEWARE = [
