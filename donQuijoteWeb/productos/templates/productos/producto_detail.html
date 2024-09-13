@@ -40,10 +40,10 @@
             {% endif %}            
             <p class="detalle-producto">Precio Unitario: ${{ object.precio_unit }}</p>
             {% if object.precio_media %}
-            <p class="detalle-producto">Precio Unitario: ${{ object.precio_media }}</p>
+            <p class="detalle-producto">Precio Media: ${{ object.precio_media }}</p>
             {% endif %}
             {% if object.precio_doc %}
-                <p class="detalle-producto">Precio Unitario: ${{ object.precio_doc }}</p>
+                <p class="detalle-producto">Precio Docena: ${{ object.precio_doc }}</p>
             {% endif %}
             <div class="btn-container">
                 <a class="btn-success" href="{% url 'productos:home' %}">Volver</a>
