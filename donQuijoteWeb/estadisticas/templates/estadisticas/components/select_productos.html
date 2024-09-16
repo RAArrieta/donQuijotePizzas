@@ -3,19 +3,18 @@
         {% csrf_token %}
         <h3>Categorías</h3>
         <div class="select-container">
-            <select class="selects" name="categoria" id="categoria" onchange="deseleccionarOtrosYEnviar(event, 'categoria')">
+            <select class="selects" name="categoria">
                 <option disabled selected>Selecciona una categoría</option>
                 {% for categoria, productos in categorias.items %}
                     <option value="{{ categoria }}">{{ categoria }}</option>
                 {% endfor %}
             </select>
         </div>
-        <input type="hidden" name="categoria_id" id="categoria_id" value="">
 
         <h3>Productos</h3>
         {% for categoria, productos in categorias.items %}
             <div class="select-container">
-                <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtrosYEnviar(event, 'producto')">
+                <select class="selects" name="producto_id">
                     <option disabled selected>{{ categoria }}</option>
                     {% for producto in productos %}
                         <option value="{{ producto.id }}">{{ producto.nombre }}</option>
@@ -23,53 +22,44 @@
                 </select>
             </div>
         {% endfor %}
-        <input type="hidden" name="producto_id" id="producto_id" value="">
+
+        <div>
+            <label for="fecha_inicio">Fecha de inicio:</label>
+            <input type="date" name="fecha_inicio" id="fecha_inicio">
+        </div>
+        <div>
+            <label for="fecha_fin">Fecha de fin:</label>
+            <input type="date" name="fecha_fin" id="fecha_fin">
+        </div>
+
+        <div>
+            <label for="dia_semana">Día de la semana:</label>
+            <select name="dia_semana">
+                <option disabled selected>Selecciona un día</option>
+                <option value="2">Lunes</option>
+                <option value="3">Martes</option>
+                <option value="4">Miércoles</option>
+                <option value="5">Jueves</option>
+                <option value="6">Viernes</option>
+                <option value="7">Sábado</option>
+                <option value="1">Domingo</option>
+            </select>
+        </div>
+
+        <button type="submit">Filtrar</button>
     </div>
-    <button type="submit" style="display:none;">enviar</button> <!-- Se oculta el botón -->
 </form>
 
 <div>
     {% if categoria_seleccionada %}
         <h4>Filtrar por {{categoria_seleccionada}}</h4>
+        {% if cantidad_vendida %}
+            <p>Cantidad de {{categoria_seleccionada}}: {{cantidad_vendida}}</p>
+        {% endif %}
     {% elif producto_seleccionado %}
         <h4>Filtrar por {{producto_seleccionado}}</h4>
         {% if cantidad_vendida %}
             <p>Cantidad de {{producto_seleccionado}}: {{cantidad_vendida}}</p>
-            
         {% endif %}
     {% endif %}
 </div>
-
-<script>
-    const selects = document.querySelectorAll('.selects');
-    const inputCategoriaId = document.getElementById('categoria_id');
-    const inputProductoId = document.getElementById('producto_id');
-    const form = document.getElementById('form-productos');
-
-    function deseleccionarOtrosYEnviar(event, tipo) {
-        const selectActual = event.target;
-
-        // Deseleccionar otros selects
-        selects.forEach(select => {
-            if (select !== selectActual) {
-                select.selectedIndex = 0;  
-            }
-        });
-
-        // Actualizar inputs ocultos según el tipo seleccionado
-        if (tipo === 'categoria') {
-            inputCategoriaId.value = selectActual.value;
-            inputProductoId.value = '';
-        } else if (tipo === 'producto') {
-            inputProductoId.value = selectActual.value;
-            inputCategoriaId.value = ''; 
-        }
-
-        // Enviar el formulario automáticamente
-        form.submit();
-    }
-</script>
-
-
-
-
