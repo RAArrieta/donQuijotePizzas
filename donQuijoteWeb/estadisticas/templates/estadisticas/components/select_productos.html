@@ -1,9 +1,17 @@
-<form method="post" id="form-productos" action="{% url 'estadisticas:home' %}">
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<form method="post" id="form-productos" action="{% url 'estadisticas:cargar_datos' %}">
     <div class="carro-select-container">
         {% csrf_token %}
         <h3>Categorías</h3>
         <div class="select-container">
-            <select class="selects" name="categoria">
+            <select id="categoria-select" class="selects" name="categoria">
                 <option disabled selected>Selecciona una categoría</option>
                 {% for categoria, productos in categorias.items %}
                     <option value="{{ categoria }}">{{ categoria }}</option>
@@ -14,7 +22,7 @@
         <h3>Productos</h3>
         {% for categoria, productos in categorias.items %}
             <div class="select-container">
-                <select class="selects" name="producto_id">
+                <select id="producto-select-{{ categoria }}" class="selects" name="producto_id">
                     <option disabled selected>{{ categoria }}</option>
                     {% for producto in productos %}
                         <option value="{{ producto.id }}">{{ producto.nombre }}</option>
@@ -34,7 +42,7 @@
 
         <div>
             <label for="dia_semana">Día de la semana:</label>
-            <select name="dia_semana">
+            <select name="dia_semana" id="dia_semana-select">
                 <option disabled selected>Selecciona un día</option>
                 <option value="2">Lunes</option>
                 <option value="3">Martes</option>
@@ -50,16 +58,71 @@
     </div>
 </form>
 
-<div>
-    {% if categoria_seleccionada %}
-        <h4>Filtrar por {{categoria_seleccionada}}</h4>
-        {% if cantidad_vendida %}
-            <p>Cantidad de {{categoria_seleccionada}}: {{cantidad_vendida}}</p>
-        {% endif %}
-    {% elif producto_seleccionado %}
-        <h4>Filtrar por {{producto_seleccionado}}</h4>
-        {% if cantidad_vendida %}
-            <p>Cantidad de {{producto_seleccionado}}: {{cantidad_vendida}}</p>
-        {% endif %}
-    {% endif %}
-</div>
+{% if estadisticas %}
+    <p>Producto Seleccionado: {{ estadisticas.producto_nombre }}</p>
+    <p>Categoría Seleccionada: {{ estadisticas.categoria }}</p>
+    <p>Fecha de Inicio: {{ estadisticas.fecha_inicio }}</p>
+    <p>Fecha de Fin: {{ estadisticas.fecha_fin }}</p>
+    <p>Día Seleccionado: {{ estadisticas.dia_semana }}</p>
+    <hr>
+    <p>Cantidad Vendida: {{estadisticas.cantidad_vendida}}</p>
+    <p>Cantidad de Días: {{estadisticas.cantidad_dias}}</p>
+{% else %}
+    <p>Sin solicitud...</p>
+{% endif %}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoriaSelect = document.getElementById('categoria-select');
+        const productoSelects = document.querySelectorAll('[id^="producto-select-"]');
+        const fechaInicio = document.getElementById('fecha_inicio');
+        const fechaFin = document.getElementById('fecha_fin');
+        const diaSemanaSelect = document.getElementById('dia_semana-select');
+        const formProductos = document.getElementById('form-productos');
+
+        // Desmarcar producto si se selecciona categoría
+        categoriaSelect.addEventListener('change', function() {
+            productoSelects.forEach(function(productoSelect) {
+                productoSelect.selectedIndex = 0; // Desmarcar producto
+            });
+        });
+
+        // Desmarcar categoría si se selecciona producto
+        productoSelects.forEach(function(productoSelect) {
+            productoSelect.addEventListener('change', function() {
+                categoriaSelect.selectedIndex = 0; // Desmarcar categoría
+            });
+        });
+
+        // Desmarcar día de la semana si se selecciona fecha de inicio o fin
+        fechaInicio.addEventListener('change', function() {
+            diaSemanaSelect.selectedIndex = 0; // Desmarcar día de la semana
+        });
+
+        fechaFin.addEventListener('change', function() {
+            diaSemanaSelect.selectedIndex = 0; // Desmarcar día de la semana
+        });
+
+        // Desmarcar fechas si se selecciona un día de la semana
+        diaSemanaSelect.addEventListener('change', function() {
+            fechaInicio.value = ''; // Desmarcar fecha de inicio
+            fechaFin.value = '';    // Desmarcar fecha de fin
+        });
+
+        // Validar fechas antes de enviar el formulario
+        formProductos.addEventListener('submit', function(event) {
+            const inicio = new Date(fechaInicio.value);
+            const fin = new Date(fechaFin.value);
+
+            if ((fechaInicio.value && !fechaFin.value) || (!fechaInicio.value && fechaFin.value)) {
+                alert("Debes ingresar ambas fechas (inicio y fin)...");
+                event.preventDefault(); // Evitar el envío del formulario
+            } else if (fechaInicio.value && fechaFin.value && inicio > fin) {
+                alert("La fecha de inicio debe ser anterior a la fecha de fin...");
+                event.preventDefault(); // Evitar el envío del formulario
+            }
+        });
+    });
+</script>
+

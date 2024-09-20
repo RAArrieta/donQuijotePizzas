@@ -5,4 +5,5 @@ app_name="estadisticas"
 
 urlpatterns = [
     path('', views.home, name="home"),
+    path('cargar_datos/', views.cargar_datos, name="cargar_datos"),
 ]
