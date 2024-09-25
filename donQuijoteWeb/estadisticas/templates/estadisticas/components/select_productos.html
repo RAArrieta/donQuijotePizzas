@@ -1,3 +1,4 @@
+{% load static %}
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -54,6 +55,19 @@
             </select>
         </div>
 
+        <div>
+            <label for="media_semana">Media Semana</label>
+            <select name="media_semana" id="media_semana">
+                <option disabled selected>Selecciona media</option>
+                <option value="m_j">Martes a Jueves</option>
+                <option value="v_d">Viernes a Domingos</option>
+            </select>
+        </div>
+
+        <div class="btn-container">
+            {{ form.as_p }}
+        </div>
+
         <button type="submit">Filtrar</button>
     </div>
 </form>
@@ -67,10 +81,10 @@
     <hr>
     <p>Cantidad Vendida: {{estadisticas.cantidad_vendida}}</p>
     <p>Cantidad de Días: {{estadisticas.cantidad_dias}}</p>
+    <p>Cantidad Promedio: {{estadisticas.cantidad_promedio}}</p>
 {% else %}
     <p>Sin solicitud...</p>
 {% endif %}
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -79,6 +93,9 @@
         const fechaInicio = document.getElementById('fecha_inicio');
         const fechaFin = document.getElementById('fecha_fin');
         const diaSemanaSelect = document.getElementById('dia_semana-select');
+        const mediaSemanaSelect = document.getElementById('media_semana');
+        const mesSelect = document.getElementById('id_mes');  // Campo de mes
+        const anoSelect = document.getElementById('id_ano');  // Campo de año
         const formProductos = document.getElementById('form-productos');
 
         // Desmarcar producto si se selecciona categoría
@@ -95,19 +112,43 @@
             });
         });
 
-        // Desmarcar día de la semana si se selecciona fecha de inicio o fin
+        // Desmarcar día de la semana y media semana si se selecciona fecha de inicio o fin
         fechaInicio.addEventListener('change', function() {
             diaSemanaSelect.selectedIndex = 0; // Desmarcar día de la semana
+            mediaSemanaSelect.selectedIndex = 0; // Desmarcar media semana
         });
 
         fechaFin.addEventListener('change', function() {
             diaSemanaSelect.selectedIndex = 0; // Desmarcar día de la semana
+            mediaSemanaSelect.selectedIndex = 0; // Desmarcar media semana
         });
 
-        // Desmarcar fechas si se selecciona un día de la semana
+        // Desmarcar fechas si se selecciona un día de la semana o media semana
         diaSemanaSelect.addEventListener('change', function() {
             fechaInicio.value = ''; // Desmarcar fecha de inicio
             fechaFin.value = '';    // Desmarcar fecha de fin
+            mediaSemanaSelect.selectedIndex = 0; // Desmarcar media semana
+        });
+
+        mediaSemanaSelect.addEventListener('change', function() {
+            fechaInicio.value = ''; // Desmarcar fecha de inicio
+            fechaFin.value = '';    // Desmarcar fecha de fin
+            diaSemanaSelect.selectedIndex = 0; // Desmarcar día de la semana
+        });
+
+        // Desmarcar fecha de inicio, fecha de fin, día de la semana y media semana cuando se seleccione mes o año
+        mesSelect.addEventListener('change', function() {
+            fechaInicio.value = ''; // Desmarcar fecha de inicio
+            fechaFin.value = '';    // Desmarcar fecha de fin
+            diaSemanaSelect.selectedIndex = 0; // Desmarcar día de la semana
+            mediaSemanaSelect.selectedIndex = 0; // Desmarcar media semana
+        });
+
+        anoSelect.addEventListener('change', function() {
+            fechaInicio.value = ''; // Desmarcar fecha de inicio
+            fechaFin.value = '';    // Desmarcar fecha de fin
+            diaSemanaSelect.selectedIndex = 0; // Desmarcar día de la semana
+            mediaSemanaSelect.selectedIndex = 0; // Desmarcar media semana
         });
 
         // Validar fechas antes de enviar el formulario
@@ -116,7 +157,7 @@
             const fin = new Date(fechaFin.value);
 
             if ((fechaInicio.value && !fechaFin.value) || (!fechaInicio.value && fechaFin.value)) {
-                alert("Debes ingresar ambas fechas (inicio y fin)...");
+                alert("Debes ingresar ambas fechas (inicio y fin)..."); 
                 event.preventDefault(); // Evitar el envío del formulario
             } else if (fechaInicio.value && fechaFin.value && inicio > fin) {
                 alert("La fecha de inicio debe ser anterior a la fecha de fin...");
@@ -125,4 +166,7 @@
         });
     });
 </script>
+
+
+
 
