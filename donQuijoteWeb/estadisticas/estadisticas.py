@@ -29,7 +29,7 @@ class Estadisticas:
                 self.cantidad_vendida = productos_vendidos.aggregate(total_vendido=Sum('cantidad'))['total_vendido'] or 0  
                 Estadisticas.calcular_cantidad_dias(self, productos_vendidos)
                 if self.cantidad_dias > 0 and self.cantidad_vendida > 0:
-                    self.cantidad_promedio = self.cantidad_vendida / self.cantidad_dias
+                    self.cantidad_promedio = round(self.cantidad_vendida / self.cantidad_dias, 1)
                 else:
                     self.cantidad_promedio = 0
             except Producto.DoesNotExist:

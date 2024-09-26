@@ -69,7 +69,7 @@ def procesar_ped(request):
         PedidoProductos.objects.bulk_create(lista_productos)
 
     carro.limpiar_carro()
-    return redirect("pedido:home")
+    return redirect("pedido:listar_pendientes")
    
 
 class FormaEntregaUpdate(LoginRequiredMixin, UpdateView):
