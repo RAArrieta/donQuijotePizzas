@@ -8,83 +8,86 @@
 {% endif %}
 
 <form method="post" id="form-productos" action="{% url 'estadisticas:cargar_datos' %}">
-    <div class="carro-select-container">
-        {% csrf_token %}
-        <h3>Categorías</h3>
-        <div class="select-container">
-            <select id="categoria-select" class="selects" name="categoria">
-                <option disabled selected>Selecciona una categoría</option>
+
+        <div class="estadisticas-container2">
+            {% csrf_token %}
+            <div class="estadisticas-producto-container">
+                <h3 class="titulo-h3">Productos</h3>
                 {% for categoria, productos in categorias.items %}
-                    <option value="{{ categoria }}">{{ categoria }}</option>
+                    <div class="select-container">
+                        <select id="producto-select-{{ categoria }}" class="selects" name="producto_id">
+                            <option disabled selected>{{ categoria }}</option>
+                            {% for producto in productos %}
+                                <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 {% endfor %}
-            </select>
-        </div>
+                <hr class="est-hr">
 
-        <h3>Productos</h3>
-        {% for categoria, productos in categorias.items %}
-            <div class="select-container">
-                <select id="producto-select-{{ categoria }}" class="selects" name="producto_id">
-                    <option disabled selected>{{ categoria }}</option>
-                    {% for producto in productos %}
-                        <option value="{{ producto.id }}">{{ producto.nombre }}</option>
-                    {% endfor %}
-                </select>
+                <h3 class="titulo-h3">Categorías</h3>
+                <div class="select-container">
+                    <select id="categoria-select" class="selects" name="categoria">
+                        <option disabled selected>Selecciona una categoría</option>
+                        {% for categoria, productos in categorias.items %}
+                            <option value="{{ categoria }}">{{ categoria }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+
             </div>
-        {% endfor %}
 
-        <div>
-            <label for="fecha_inicio">Fecha de inicio:</label>
-            <input type="date" name="fecha_inicio" id="fecha_inicio">
-        </div>
-        <div>
-            <label for="fecha_fin">Fecha de fin:</label>
-            <input type="date" name="fecha_fin" id="fecha_fin">
-        </div>
+            <div class="estadisticas-producto-container">
+                <h3 class="titulo-h3">Filtrar por</h3>
+                    <label for="fecha_inicio">Fecha inicio / fin:</label>
+                    <input type="date" name="fecha_inicio" id="fecha_inicio">
+                    <input type="date" name="fecha_fin" id="fecha_fin">
 
-        <div>
-            <label for="dia_semana">Día de la semana:</label>
-            <select name="dia_semana" id="dia_semana-select">
-                <option disabled selected>Selecciona un día</option>
-                <option value="2">Lunes</option>
-                <option value="3">Martes</option>
-                <option value="4">Miércoles</option>
-                <option value="5">Jueves</option>
-                <option value="6">Viernes</option>
-                <option value="7">Sábado</option>
-                <option value="1">Domingo</option>
-            </select>
-        </div>
+                <hr class="est-hr">
 
-        <div>
-            <label for="media_semana">Media Semana</label>
-            <select name="media_semana" id="media_semana">
-                <option disabled selected>Selecciona media</option>
-                <option value="m_j">Martes a Jueves</option>
-                <option value="v_d">Viernes a Domingos</option>
-            </select>
-        </div>
+                <label for="dia_semana">Día de la semana:</label>
+                <select name="dia_semana" id="dia_semana-select">
+                    <option disabled selected>Selecciona un día</option>
+                    <option value="2">Lunes</option>
+                    <option value="3">Martes</option>
+                    <option value="4">Miércoles</option>
+                    <option value="5">Jueves</option>
+                    <option value="6">Viernes</option>
+                    <option value="7">Sábado</option>
+                    <option value="1">Domingo</option>
+                </select>
 
-        <div class="btn-container">
-            {{ form.as_p }}
-        </div>
+                <hr class="est-hr">
 
-        <button type="submit">Filtrar</button>
-    </div>
+                <label for="media_semana">Media Semana</label>
+                <select name="media_semana" id="media_semana">
+                    <option disabled selected>Selecciona media</option>
+                    <option value="m_j">Martes a Jueves</option>
+                    <option value="v_d">Viernes a Domingos</option>
+                </select>
+
+                <hr class="est-hr">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form.mes.label_tag }} {{ form.mes }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.ano.label_tag }} {{ form.ano }}
+                    </div>
+                </div>
+
+            </div>
+        </div>  
+
+        <div class="btn-buscar">
+            <button type="submit" class="btn-success">Buscar</button>
+        </div>
+        
+
+
 </form>
-
-{% if estadisticas %}
-    <p>Producto Seleccionado: {{ estadisticas.producto_nombre }}</p>
-    <p>Categoría Seleccionada: {{ estadisticas.categoria }}</p>
-    <p>Fecha de Inicio: {{ estadisticas.fecha_inicio }}</p>
-    <p>Fecha de Fin: {{ estadisticas.fecha_fin }}</p>
-    <p>Día Seleccionado: {{ estadisticas.dia_semana }}</p>
-    <hr>
-    <p>Cantidad Vendida: {{estadisticas.cantidad_vendida}}</p>
-    <p>Cantidad de Días: {{estadisticas.cantidad_dias}}</p>
-    <p>Cantidad Promedio: {{estadisticas.cantidad_promedio}}</p>
-{% else %}
-    <p>Sin solicitud...</p>
-{% endif %}
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

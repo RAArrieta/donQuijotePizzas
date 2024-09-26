@@ -9,10 +9,10 @@ MESES = [
 ]
 
 class MesAnoForm(forms.Form):
-    mes = forms.ChoiceField(choices=MESES, label='', widget=forms.Select(attrs={'class': 'form-control'}))
+    mes = forms.ChoiceField(choices=MESES, label='Mes', widget=forms.Select(attrs={'class': 'select'}))
     ano = forms.IntegerField(
-        label='',
-        widget=forms.Select(choices=[(year, year) for year in range(2024, 2044)], attrs={'class': 'form-control'})
+        label='Año',
+        widget=forms.Select(choices=[(year, year) for year in range(2024, 2044)], attrs={'class': 'select'})
     )
 
     def __init__(self, *args, **kwargs):
@@ -20,4 +20,5 @@ class MesAnoForm(forms.Form):
         now = datetime.datetime.now()
         self.fields['mes'].initial = now.month
         self.fields['ano'].initial = now.year
+
 

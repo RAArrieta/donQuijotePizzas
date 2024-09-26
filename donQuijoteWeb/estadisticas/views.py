@@ -10,11 +10,43 @@ def home(request):
     categorias = select_productos()
     estadisticas = request.session.get('estadisticas', None)
     form = MesAnoForm(request.POST or None)
-  
+    
+      # Diccionario que asocia los números con los nombres de los días de la semana
+    dias_semana = {
+        '1': 'Domingo',
+        '2': 'Lunes',
+        '3': 'Martes',
+        '4': 'Miércoles',
+        '5': 'Jueves',
+        '6': 'Viernes',
+        '7': 'Sábado',
+    }
+    
+    mes = {
+        '0': 'Todo el año',
+        '1': 'Enero',
+        '2': 'Febrero',
+        '3': 'Marzo',
+        '4': 'Abril',
+        '5': 'Mayo',
+        '6': 'Junio',
+        '7': 'Julio',
+        '8': 'Agosto',
+        '9': 'Septiembre',
+        '10': 'Octubre',
+        '11': 'Noviembre',
+        '12': 'Diciembre',  
+    }
+
+    dia_semana_nombre = dias_semana.get(str(estadisticas.get('dia_semana', '')), '') if estadisticas else ''
+    mes_nombre = mes.get(str(estadisticas.get('mes', '')), '') if estadisticas else ''
+ 
     context = {
         'categorias': categorias,
         'estadisticas': estadisticas,  
         'form': form,
+        'dia_semana_nombre': dia_semana_nombre,
+        'mes_nombre': mes_nombre,
     }
     
     return render(request, "estadisticas/index.html", context)

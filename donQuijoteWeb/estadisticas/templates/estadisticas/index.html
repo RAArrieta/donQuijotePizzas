@@ -6,30 +6,51 @@
 {% endblock title %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'facturas/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'estadisticas/css/styles.css' %}">
 {% endblock css %}
 
 {% block titulo %}
     <div class="main-titulo-container">
         <div class="titulo-opciones-container">
             <h1 class="main-titulo">Estadisticas</h1>
-            <div class="btn-container">
-                <a class="btn-opc" href="#">Opcion 1</a>
-                <a class="btn-opc" href="#">Opcion 2</a>
-            </div>
         </div>
         <hr  class="main-hr"/>
     </div>
 {% endblock titulo %}
 
 {% block main %}
-<div class="card">
+<div>
+    {% if estadisticas %}
+        {% if estadisticas.producto_nombre %}
+            <h3>{{estadisticas.producto_nombre}}</h3>
+        {% elif estadisticas.categoria %}
+            <h3>{{estadisticas.categoria}}</h3>
+        {% endif %}
+
+        {% if estadisticas.fecha_inicio %}
+            <p>
+                Desde el {{ estadisticas.fecha_inicio|slice:"8:10" }}-{{ estadisticas.fecha_inicio|slice:"5:7" }}-{{ estadisticas.fecha_inicio|slice:"0:4" }}
+                hasta el {{ estadisticas.fecha_fin|slice:"8:10" }}-{{ estadisticas.fecha_fin|slice:"5:7" }}-{{ estadisticas.fecha_fin|slice:"0:4" }}
+            </p>
+          
+        {% elif dia_semana_nombre %}
+            <p>Día: {{dia_semana_nombre}}</p>
+        {% elif estadisticas.media_semana == "m_j" %}
+            <p>De Martes a Jueves</p>
+        {% elif estadisticas.media_semana == "v_d" %}
+            <p>De Viernes a Domingos</p>
+        {% else %}
+            <p>En {{mes_nombre}} de {{estadisticas.ano}}</p>
+        {% endif %}
+        <p>Cantidad de días: {{estadisticas.cantidad_dias}}</p>
+        <p>Cantidad Vendida: {{estadisticas.cantidad_vendida}}</p>
+        <p>Cantidad Promedio: {{estadisticas.cantidad_promedio}}</p>
+    {% endif %}
+   
+
+    
+</div>
+<div class="card estadisticas-container">
     {% include 'estadisticas/components/select_productos.html' %}
 </div>
-
-{% for prod_vend in productos_vendidos %}
-    <p>{{prod_vend.cantidad}} {{prod_vend.producto}}</p>
-    
-{% endfor %}
-
 {% endblock main %}
