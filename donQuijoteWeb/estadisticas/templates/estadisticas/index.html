@@ -19,38 +19,49 @@
 {% endblock titulo %}
 
 {% block main %}
-<div>
+
+
+<div class="card estadisticas-container">
     {% if estadisticas %}
+    <div class="estadisticas-datos">
+
         {% if estadisticas.producto_nombre %}
-            <h3>{{estadisticas.producto_nombre}}</h3>
+            <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.producto_nombre }}</h3>
         {% elif estadisticas.categoria %}
-            <h3>{{estadisticas.categoria}}</h3>
+            <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.categoria }}</h3>
         {% endif %}
+        <hr class="est-hr">
 
         {% if estadisticas.fecha_inicio %}
-            <p>
-                Desde el {{ estadisticas.fecha_inicio|slice:"8:10" }}-{{ estadisticas.fecha_inicio|slice:"5:7" }}-{{ estadisticas.fecha_inicio|slice:"0:4" }}
+            <p class="est-datos"><strong>Rango de días:</strong> 
+                Desde el {{ estadisticas.fecha_inicio|slice:"8:10" }}-{{ estadisticas.fecha_inicio|slice:"5:7" }}-{{ estadisticas.fecha_inicio|slice:"0:4" }} 
                 hasta el {{ estadisticas.fecha_fin|slice:"8:10" }}-{{ estadisticas.fecha_fin|slice:"5:7" }}-{{ estadisticas.fecha_fin|slice:"0:4" }}
             </p>
-          
-        {% elif dia_semana_nombre %}
-            <p>Día: {{dia_semana_nombre}}</p>
-        {% elif estadisticas.media_semana == "m_j" %}
-            <p>De Martes a Jueves</p>
-        {% elif estadisticas.media_semana == "v_d" %}
-            <p>De Viernes a Domingos</p>
-        {% else %}
-            <p>En {{mes_nombre}} de {{estadisticas.ano}}</p>
-        {% endif %}
-        <p>Cantidad de días: {{estadisticas.cantidad_dias}}</p>
-        <p>Cantidad Vendida: {{estadisticas.cantidad_vendida}}</p>
-        <p>Cantidad Promedio: {{estadisticas.cantidad_promedio}}</p>
-    {% endif %}
-   
 
-    
-</div>
-<div class="card estadisticas-container">
+        {% elif dia_semana_nombre %}
+            <p class="est-datos"><strong>Día filtrado:</strong> {{ dia_semana_nombre }}</p>
+
+        {% elif estadisticas.media_semana == "m_j" %}
+            <p class="est-datos"><strong>Rango de días:</strong> Martes a Jueves</p>
+
+        {% elif estadisticas.media_semana == "v_d" %}
+            <p class="est-datos"><strong>Rango de días:</strong> Viernes a Domingos</p>
+
+
+        {% else %}
+            <p class="est-datos"><strong>Rango:</strong> {{ mes_nombre }} de {{ estadisticas.ano }}</p>
+        {% endif %}
+        
+
+        <p class="est-datos"><strong>Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
+        <p class="est-datos"><strong>Cantidad total vendida:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %}</p>
+        <p class="est-datos"><strong>Promedio diario de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %}</p>
+
+    </div>
+    <hr class="main-hr">
+{% endif %}
+
+
     {% include 'estadisticas/components/select_productos.html' %}
 </div>
 {% endblock main %}
