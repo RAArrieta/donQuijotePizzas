@@ -12,7 +12,7 @@
         <div class="estadisticas-container2">
             {% csrf_token %}
             <div class="estadisticas-producto-container">
-                <h3 class="titulo-h3">Productos</h3>
+                <h3 class="titulo-h3">Buscar por Productos</h3>
                 {% for categoria, productos in categorias.items %}
                     <div class="select-container">
                         <select id="producto-select-{{ categoria }}" class="selects" name="producto_id">
@@ -25,7 +25,7 @@
                 {% endfor %}
                 <hr class="est-hr">
 
-                <h3 class="titulo-h3">Categorías</h3>
+                <h3 class="titulo-h3">Buscar por Categorías</h3>
                 <div class="select-container">
                     <select id="categoria-select" class="selects" name="categoria">
                         <option disabled selected>Selecciona una categoría</option>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="estadisticas-producto-container">
-                <h3 class="titulo-h3">Filtrar por</h3>
+                <h3 class="titulo-h3">Filtrar Fechas</h3>
                     <label for="fecha_inicio">Fecha inicio / fin:</label>
                     <input type="date" name="fecha_inicio" id="fecha_inicio">
                     <input type="date" name="fecha_fin" id="fecha_fin">

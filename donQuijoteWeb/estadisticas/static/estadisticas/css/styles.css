@@ -18,6 +18,8 @@
 .estadisticas-producto-container {
   flex: 1;
   min-width: 300px;
+  border: #ccc solid 1px;
+  padding: 20px;
 }
 
 /* Selectores */
@@ -80,6 +82,9 @@
   margin: 15px auto; 
   padding: 20px;
   border: #ccc solid 1px;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .est-datos {

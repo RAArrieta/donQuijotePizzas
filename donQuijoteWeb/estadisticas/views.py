@@ -14,7 +14,6 @@ def home(request):
       # Diccionario que asocia los números con los nombres de los días de la semana
     dias_semana = {
         '1': 'Domingo',
-        '2': 'Lunes',
         '3': 'Martes',
         '4': 'Miércoles',
         '5': 'Jueves',
@@ -79,6 +78,8 @@ def cargar_datos(request):
                 categoria=categoria,
                 cantidad_vendida=0, 
                 cantidad_promedio=0,
+                dia_venta=0,
+                dia_no_venta=0,
                 fecha_inicio=fecha_inicio,
                 fecha_fin=fecha_fin,
                 dia_semana=dia_semana,
@@ -87,8 +88,6 @@ def cargar_datos(request):
                 ano=ano if (fecha_inicio is None and dia_semana is None and media_semana is None) else None,
                 cantidad_dias=0
             )
-            
-            estadisticas.calcular_cantidad_vendida() 
 
             request.session['estadisticas'] = {
                 'producto_id': producto_id,
@@ -96,6 +95,8 @@ def cargar_datos(request):
                 'categoria': categoria,
                 'cantidad_vendida': estadisticas.cantidad_vendida, 
                 'cantidad_promedio': estadisticas.cantidad_promedio,
+                'dia_venta': estadisticas.dia_venta,
+                'dia_no_venta': estadisticas.dia_no_venta,
                 'fecha_inicio': str(fecha_inicio) if fecha_inicio else None,
                 'fecha_fin': str(fecha_fin) if fecha_fin else None,
                 'dia_semana': dia_semana,
@@ -106,5 +107,7 @@ def cargar_datos(request):
             }
         else:
             messages.warning(request, "Debe seleccionar un producto o categoría y filtrar una fecha...")
+            
+        estadisticas.calcular_estadisticas() 
     
     return redirect('estadisticas:home')
