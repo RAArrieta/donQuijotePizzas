@@ -37,29 +37,38 @@
                 Desde el {{ estadisticas.fecha_inicio|slice:"8:10" }}-{{ estadisticas.fecha_inicio|slice:"5:7" }}-{{ estadisticas.fecha_inicio|slice:"0:4" }} 
                 hasta el {{ estadisticas.fecha_fin|slice:"8:10" }}-{{ estadisticas.fecha_fin|slice:"5:7" }}-{{ estadisticas.fecha_fin|slice:"0:4" }}
             </p>
+            <p class="est-datos"><strong>Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
         {% elif dia_semana_nombre %}
             <p class="est-datos"><strong>Día filtrado:</strong> {{ dia_semana_nombre }}</p>
+            <p class="est-datos"><strong>Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
         {% elif estadisticas.media_semana == "m_j" %}
             <p class="est-datos"><strong>Rango de días:</strong> Martes a Jueves</p>
+            <p class="est-datos"><strong>Cantidad de rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
         {% elif estadisticas.media_semana == "v_d" %}
             <p class="est-datos"><strong>Rango de días:</strong> Viernes a Domingos</p>
+            <p class="est-datos"><strong>Cantidad de rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
         {% else %}
             <p class="est-datos"><strong>Rango:</strong> {{ mes_nombre }} de {{ estadisticas.ano }}</p>
+            <p class="est-datos"><strong>Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
+        {% endif %}
+
+        
+
+        {% if estadisticas.media_semana  == "m_j" %}
+        <p class="est-datos"><strong>Promedio de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por rango</p>
+        {% elif  estadisticas.media_semana  == "v_d"  %}
+        <p class="est-datos"><strong>Promedio de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por rango</p>
+        {% else %}    
+        <p class="est-datos"><strong>Promedio diario de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por día</p>
         {% endif %}
 
         <p class="est-datos"><strong>Cantidad total vendida:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %}</p>
-        <p class="est-datos"><strong>Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
-        
-        {% if estadisticas.media_semana  == "m_j" %}
-        <p class="est-datos"><strong>Promedio de ventas de Martes a Jueves:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %}</p>
-        {% elif  estadisticas.media_semana  == "v_d"  %}
-        <p class="est-datos"><strong>Promedio de ventas de Viernes a Domingos:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %}</p>
-        {% else %}    
-        <p class="est-datos"><strong>Promedio diario de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %}</p>
-        {% endif %}
 
-        <p class="est-datos"><strong>Cantidad de días con ventas:</strong> {{ estadisticas.dia_venta }} días</p>
-        <p class="est-datos"><strong>Cantidad de días sin ventas:</strong> {{ estadisticas.dia_no_venta }} días</p>
+        {% if not estadisticas.media_semana %}
+            <p class="est-datos"><strong>Cantidad de días con ventas:</strong> {{ estadisticas.dia_venta }} días</p>
+            <p class="est-datos"><strong>Cantidad de días sin ventas:</strong> {{ estadisticas.dia_no_venta }} días</p>
+        {% endif %}
+       
 
         
         

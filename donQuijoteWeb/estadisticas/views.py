@@ -88,7 +88,9 @@ def cargar_datos(request):
                 ano=ano if (fecha_inicio is None and dia_semana is None and media_semana is None) else None,
                 cantidad_dias=0
             )
-
+            
+            estadisticas.estadisticas() 
+            
             request.session['estadisticas'] = {
                 'producto_id': producto_id,
                 'producto_nombre': producto_nombre,
@@ -97,8 +99,8 @@ def cargar_datos(request):
                 'cantidad_promedio': estadisticas.cantidad_promedio,
                 'dia_venta': estadisticas.dia_venta,
                 'dia_no_venta': estadisticas.dia_no_venta,
-                'fecha_inicio': str(fecha_inicio) if fecha_inicio else None,
-                'fecha_fin': str(fecha_fin) if fecha_fin else None,
+                'fecha_inicio': str(estadisticas.fecha_inicio) if fecha_inicio else None,
+                'fecha_fin': str(estadisticas.fecha_fin) if fecha_fin else None,
                 'dia_semana': dia_semana,
                 'media_semana': media_semana,
                 'mes': mes if (fecha_inicio is None and dia_semana is None and mes and ano) else None,
@@ -108,6 +110,6 @@ def cargar_datos(request):
         else:
             messages.warning(request, "Debe seleccionar un producto o categoría y filtrar una fecha...")
             
-        estadisticas.calcular_estadisticas() 
+        
     
     return redirect('estadisticas:home')
