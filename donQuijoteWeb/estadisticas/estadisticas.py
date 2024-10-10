@@ -6,14 +6,14 @@ from productos.models import Producto, ProductoCategoria
 from django.db.models import Sum, Min, Max, Avg, Count
 
 class Estadisticas:
-    def __init__(self, producto_id,  producto_nombre, categoria, cantidad_vendida, cantidad_promedio, dia_venta, dia_no_venta, fecha_inicio, fecha_fin, dia_semana, media_semana, mes, ano, cantidad_dias):
+    def __init__(self, producto_id,  producto_nombre, categoria, cantidad_vendida, cantidad_promedio, cantidad_minima, cantidad_maxima, dia_venta, dia_no_venta, fecha_inicio, fecha_fin, dia_semana, media_semana, mes, ano, cantidad_dias):
         self.producto_id = producto_id
         self.producto_nombre = producto_nombre
         self.categoria= categoria
         self.cantidad_vendida = cantidad_vendida
         self.cantidad_promedio = cantidad_promedio
-        # self.cantidad_minima = cantidad_minima
-        # self.cantidad_maxima = cantidad_maxima
+        self.cantidad_minima = cantidad_minima
+        self.cantidad_maxima = cantidad_maxima
         self.dia_venta = dia_venta
         self.dia_no_venta = dia_no_venta
         self.fecha_inicio = fecha_inicio
@@ -168,7 +168,20 @@ class Estadisticas:
             else:
                 productos_vendidos = productos_vendidos.filter(factura__fecha__week_day__in=[6, 7, 1])
         
+        print(f"PRODUCTOS VENDIDOS: {productos_vendidos}")
         self.cantidad_vendida = productos_vendidos.aggregate(total_vendido=Sum('cantidad'))['total_vendido'] or 0  
+        if self.producto_id:
+            self.cantidad_minima = productos_vendidos.filter(cantidad__gt=0).aggregate(min_vendida=Min('cantidad'))['min_vendida'] or 0
+            self.cantidad_maxima = productos_vendidos.aggregate(max_vendida=Max('cantidad'))['max_vendida'] or 0  
+        elif self.categoria:
+            # Agrupar por fecha y sumar las cantidades de productos vendidos
+            ventas_por_fecha = FacturaProducto.objects.values('factura__fecha').annotate(total_vendido=Sum('cantidad')).filter(total_vendido__gt=0)
+
+            # Encontrar el día con menos ventas
+            self.cantidad_minima = ventas_por_fecha.order_by('total_vendido').first()
+
+            # Encontrar el día con más ventas
+            self.cantidad_maxima = ventas_por_fecha.order_by('-total_vendido').first()
         
     def calculo_cantidad_promedio(self):           
         if self.cantidad_dias > 0 and self.cantidad_vendida > 0:
@@ -183,26 +196,9 @@ class Estadisticas:
             self.dia_venta = len(list(rango_fechas))
             self.dia_no_venta = self.cantidad_dias - self.dia_venta
             
-        # if self.media_semana:
-        #     self.dia_venta = None
-        #     self.dia_no_venta = None
-            
         if self.dia_semana:
             dias_coincidentes = [fecha for fecha in rango_fechas if fecha.weekday() == int(self.dia_semana) - 2]
 
             self.dia_venta = len(dias_coincidentes)
             self.dia_no_venta = int(self.cantidad_dias - self.dia_venta)
 
-            
-          
-
-    
-
-    def calcular_dia_no_venta():
-        pass
-
-    def calcular_promedio():
-        pass
-
-    def calcular_no_vendidos():
-        pass

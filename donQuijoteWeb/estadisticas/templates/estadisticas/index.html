@@ -32,6 +32,15 @@
         {% endif %}
         <hr class="est-hr">
 
+        
+        {% if estadisticas.media_semana  == "m_j" %}
+        <p class="est-datos"><strong>Promedio de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por rango</p>
+        {% elif  estadisticas.media_semana  == "v_d"  %}
+        <p class="est-datos"><strong>Promedio de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por rango</p>
+        {% else %}    
+        <p class="est-datos"><strong>Promedio diario de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por día</p>
+        {% endif %}
+        
         {% if estadisticas.fecha_inicio %}
             <p class="est-datos"><strong>Rango de días:</strong> 
                 Desde el {{ estadisticas.fecha_inicio|slice:"8:10" }}-{{ estadisticas.fecha_inicio|slice:"5:7" }}-{{ estadisticas.fecha_inicio|slice:"0:4" }} 
@@ -54,13 +63,6 @@
 
         
 
-        {% if estadisticas.media_semana  == "m_j" %}
-        <p class="est-datos"><strong>Promedio de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por rango</p>
-        {% elif  estadisticas.media_semana  == "v_d"  %}
-        <p class="est-datos"><strong>Promedio de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por rango</p>
-        {% else %}    
-        <p class="est-datos"><strong>Promedio diario de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por día</p>
-        {% endif %}
 
         <p class="est-datos"><strong>Cantidad total vendida:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %}</p>
 
@@ -68,7 +70,9 @@
             <p class="est-datos"><strong>Cantidad de días con ventas:</strong> {{ estadisticas.dia_venta }} días</p>
             <p class="est-datos"><strong>Cantidad de días sin ventas:</strong> {{ estadisticas.dia_no_venta }} días</p>
         {% endif %}
-       
+
+        <p class="est-datos"><strong>Cantidad minima vendida:</strong> {{ estadisticas.cantidad_minima }}</p>
+        <p class="est-datos"><strong>Cantidad maxima vendida:</strong> {{ estadisticas.cantidad_maxima }}</p>
 
         
         
