@@ -32,6 +32,7 @@ class Estadisticas:
                 Estadisticas.calculo_cantidad_vendida(self, productos_vendidos)
                 Estadisticas.calculo_cantidad_promedio(self)
                 Estadisticas.calculo_dia_venta(self, productos_vendidos)
+                Estadisticas.calculo_min_max(self, productos_vendidos)
                         
             except Producto.DoesNotExist:
                 print(f"Producto {self.producto_nombre} no existe.")
@@ -155,7 +156,7 @@ class Estadisticas:
                     productos_vendidos = productos_vendidos.filter(factura__fecha__month=mes, factura__fecha__year=ano)
                 else:
                     productos_vendidos = productos_vendidos.filter(factura__fecha__year=ano)
-
+        print(productos_vendidos)
         return productos_vendidos
     
     def calculo_cantidad_vendida(self, productos_vendidos):
@@ -169,19 +170,9 @@ class Estadisticas:
                 productos_vendidos = productos_vendidos.filter(factura__fecha__week_day__in=[6, 7, 1])
         
         print(f"PRODUCTOS VENDIDOS: {productos_vendidos}")
-        self.cantidad_vendida = productos_vendidos.aggregate(total_vendido=Sum('cantidad'))['total_vendido'] or 0  
-        if self.producto_id:
-            self.cantidad_minima = productos_vendidos.filter(cantidad__gt=0).aggregate(min_vendida=Min('cantidad'))['min_vendida'] or 0
-            self.cantidad_maxima = productos_vendidos.aggregate(max_vendida=Max('cantidad'))['max_vendida'] or 0  
-        elif self.categoria:
-            # Agrupar por fecha y sumar las cantidades de productos vendidos
-            ventas_por_fecha = FacturaProducto.objects.values('factura__fecha').annotate(total_vendido=Sum('cantidad')).filter(total_vendido__gt=0)
+        self.cantidad_vendida = productos_vendidos.aggregate(total_vendido=Sum('cantidad'))['total_vendido'] or 0
+          
 
-            # Encontrar el día con menos ventas
-            self.cantidad_minima = ventas_por_fecha.order_by('total_vendido').first()
-
-            # Encontrar el día con más ventas
-            self.cantidad_maxima = ventas_por_fecha.order_by('-total_vendido').first()
         
     def calculo_cantidad_promedio(self):           
         if self.cantidad_dias > 0 and self.cantidad_vendida > 0:
@@ -202,3 +193,66 @@ class Estadisticas:
             self.dia_venta = len(dias_coincidentes)
             self.dia_no_venta = int(self.cantidad_dias - self.dia_venta)
 
+    def calculo_min_max(self, productos_vendidos):
+
+        if (self.fecha_inicio and self.fecha_fin) or self.ano:
+                 # Agrupar por fecha y calcular el total vendido por día
+                productos_vendidos_por_dia = (productos_vendidos
+                    .values('factura__fecha')
+                    .annotate(total_vendido=Sum('cantidad'))
+                    .filter(total_vendido__gt=0)  # Filtrar solo las ventas mayores a 0
+                    .order_by('total_vendido')
+                )
+
+                cantidad_minima = productos_vendidos_por_dia.first()
+                self.cantidad_minima = cantidad_minima['total_vendido']
+                cantidad_maxima = productos_vendidos_por_dia.last()
+                self.cantidad_maxima = cantidad_maxima['total_vendido']
+        
+        # if self.producto_id:
+        #     if self.fecha_inicio and self.fecha_fin:
+        #         self.cantidad_minima = 11
+        #         self.cantidad_maxima = 12
+        #     elif self.dia_semana:
+        #         self.cantidad_minima = 21
+        #         self.cantidad_maxima = 22
+        #     elif self.media_semana:
+        #         self.cantidad_minima = 31
+        #         self.cantidad_maxima = 32
+                
+        # if self.categoria:
+        #     if self.fecha_inicio and self.fecha_fin:
+        #          # Agrupar por fecha y calcular el total vendido por día
+        #         productos_vendidos_por_dia = (productos_vendidos
+        #             .values('factura__fecha')
+        #             .annotate(total_vendido=Sum('cantidad'))
+        #             .filter(total_vendido__gt=0)  # Filtrar solo las ventas mayores a 0
+        #             .order_by('total_vendido')
+        #         )
+
+        #         # # Obtener la cantidad mínima vendida mayor que cero
+        #         cantidad_minima = productos_vendidos_por_dia.first()
+        #         self.cantidad_minima = cantidad_minima['total_vendido']
+        #         cantidad_maxima = productos_vendidos_por_dia.last()
+        #         self.cantidad_maxima = cantidad_maxima['total_vendido']
+                
+        #     elif self.dia_semana:
+        #         self.cantidad_minima = 121
+        #         self.cantidad_maxima = 122
+        #     elif self.media_semana:
+        #         self.cantidad_minima = 131
+        #         self.cantidad_maxima = 132
+                
+                
+        # if self.producto_id:
+        #     self.cantidad_minima = productos_vendidos.filter(cantidad__gt=0).aggregate(min_vendida=Min('cantidad'))['min_vendida'] or 0
+        #     self.cantidad_maxima = productos_vendidos.aggregate(max_vendida=Max('cantidad'))['max_vendida'] or 0  
+        # elif self.categoria:
+        #     # Agrupar por fecha y sumar las cantidades de productos vendidos
+        #     ventas_por_fecha = FacturaProducto.objects.values('factura__fecha').annotate(total_vendido=Sum('cantidad')).filter(total_vendido__gt=0)
+
+        #     # Encontrar el día con menos ventas
+        #     self.cantidad_minima = ventas_por_fecha.order_by('total_vendido').first()
+
+        #     # Encontrar el día con más ventas
+        #     self.cantidad_maxima = ventas_por_fecha.order_by('-total_vendido').first()
