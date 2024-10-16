@@ -35,8 +35,6 @@
         
         {% if estadisticas.media_semana  == "m_j" %}
         <p class="est-datos"><strong>Promedio de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por rango</p>
-        {% elif  estadisticas.media_semana  == "v_d"  %}
-        <p class="est-datos"><strong>Promedio de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por rango</p>
         {% else %}    
         <p class="est-datos"><strong>Promedio diario de ventas:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% else %}{{ estadisticas.categoria }}{% endif %} por día</p>
         {% endif %}

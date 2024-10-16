@@ -32,7 +32,7 @@ class Estadisticas:
                 Estadisticas.calculo_cantidad_vendida(self, productos_vendidos)
                 Estadisticas.calculo_cantidad_promedio(self)
                 Estadisticas.calculo_dia_venta(self, productos_vendidos)
-                Estadisticas.calculo_min_max(self, productos_vendidos)
+                # Estadisticas.calculo_min_max(self, productos_vendidos)
                         
             except Producto.DoesNotExist:
                 print(f"Producto {self.producto_nombre} no existe.")
@@ -169,8 +169,20 @@ class Estadisticas:
             else:
                 productos_vendidos = productos_vendidos.filter(factura__fecha__week_day__in=[6, 7, 1])
         
-        print(f"PRODUCTOS VENDIDOS: {productos_vendidos}")
+        
         self.cantidad_vendida = productos_vendidos.aggregate(total_vendido=Sum('cantidad'))['total_vendido'] or 0
+        
+        productos_vendidos_por_dia = (productos_vendidos
+                    .values('factura__fecha')
+                    .annotate(total_vendido=Sum('cantidad'))
+                    .filter(total_vendido__gt=0)  # Filtrar solo las ventas mayores a 0
+                    .order_by('total_vendido')
+                )
+
+        cantidad_minima = productos_vendidos_por_dia.first()
+        self.cantidad_minima = cantidad_minima['total_vendido']
+        cantidad_maxima = productos_vendidos_por_dia.last()
+        self.cantidad_maxima = cantidad_maxima['total_vendido']
           
 
         
@@ -195,7 +207,9 @@ class Estadisticas:
 
     def calculo_min_max(self, productos_vendidos):
 
-        if (self.fecha_inicio and self.fecha_fin) or self.ano:
+        if (self.fecha_inicio and self.fecha_fin) or self.dia_semana or self.ano:
+                for producto in productos_vendidos:
+                    print(f"PRODUCTO: {producto}")
                  # Agrupar por fecha y calcular el total vendido por día
                 productos_vendidos_por_dia = (productos_vendidos
                     .values('factura__fecha')
