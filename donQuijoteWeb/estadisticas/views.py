@@ -61,7 +61,7 @@ def cargar_datos(request):
                 producto_nombre = None
         else:
             producto_nombre = None
-        
+        envios = request.POST.get('envios', None)
         fecha_inicio = request.POST.get("fecha_inicio", None)
         fecha_fin = request.POST.get("fecha_fin", None)
         fecha_inicio = parse_date(fecha_inicio) if fecha_inicio else None
@@ -71,11 +71,12 @@ def cargar_datos(request):
         mes = request.POST.get("mes", None)
         ano = request.POST.get("ano", None)
               
-        if producto_id or categoria:
+        if producto_id or categoria or envios:
             estadisticas = Estadisticas(
                 producto_id=producto_id,
                 producto_nombre=producto_nombre,
                 categoria=categoria,
+                envios=0,
                 cantidad_vendida=0, 
                 cantidad_promedio=0,
                 cantidad_minima=0,
@@ -97,6 +98,7 @@ def cargar_datos(request):
                 'producto_id': producto_id,
                 'producto_nombre': producto_nombre,
                 'categoria': categoria,
+                'envios': envios,
                 'cantidad_vendida': estadisticas.cantidad_vendida, 
                 'cantidad_promedio': estadisticas.cantidad_promedio,
                 'cantidad_minima': estadisticas.cantidad_minima,

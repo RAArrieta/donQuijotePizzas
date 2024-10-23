@@ -1,15 +1,17 @@
 import calendar
-from datetime import timedelta, date
+from datetime import timedelta
 from django.utils import timezone
-from facturas.models import FacturaProducto
-from productos.models import Producto, ProductoCategoria
-from django.db.models import Sum, Min, Max, Avg, Count
+from facturas.models import FacturaProducto, Facturas
+from productos.models import Producto
+from django.db.models import Sum
 
 class Estadisticas:
-    def __init__(self, producto_id,  producto_nombre, categoria, cantidad_vendida, cantidad_promedio, cantidad_minima, cantidad_maxima, dia_venta, dia_no_venta, fecha_inicio, fecha_fin, dia_semana, media_semana, mes, ano, cantidad_dias):
+    env = False
+    def __init__(self, producto_id,  producto_nombre, categoria, envios, cantidad_vendida, cantidad_promedio, cantidad_minima, cantidad_maxima, dia_venta, dia_no_venta, fecha_inicio, fecha_fin, dia_semana, media_semana, mes, ano, cantidad_dias):
         self.producto_id = producto_id
         self.producto_nombre = producto_nombre
         self.categoria= categoria
+        self.envios = envios
         
         self.cantidad_vendida = cantidad_vendida
         self.cantidad_promedio = cantidad_promedio
@@ -35,7 +37,7 @@ class Estadisticas:
                 Estadisticas.calculo_cantidad_vendida(self, productos_vendidos)
                 Estadisticas.calculo_cantidad_promedio(self)
                 Estadisticas.calculo_dia_venta(self, productos_vendidos)
-                        
+                print(f"Cantidad de envios desde estadisticas: {self.envios}")       
             except Producto.DoesNotExist:
                 print(f"Producto {self.producto_nombre} no existe.")
                 
@@ -138,11 +140,15 @@ class Estadisticas:
         ultima_fecha = rango_facturado["ultima_fecha"]
 
         if self.producto_id:
-            producto_seleccionado = Producto.objects.get(id=self.producto_id)
+            producto_seleccionado = Producto.objects.get(id=self.producto_id) #aqui creo producto_seleccionado solo con el producto
             productos_vendidos = FacturaProducto.objects.filter(producto=producto_seleccionado)
         elif self.categoria:
-            productos_categoria = Producto.objects.filter(categoria__nombre=self.categoria)
-            productos_vendidos = FacturaProducto.objects.filter(producto__in=productos_categoria)
+            productos_categoria = Producto.objects.filter(categoria__nombre=self.categoria)#aqui creo producto_categoria solo con la categoria seleccionada
+            productos_vendidos = FacturaProducto.objects.filter(producto__in=productos_categoria)           
+        else:
+            self.env = True
+            facturas_con_envio = Facturas.objects.filter(envio__gt=0)   #aqui solo quiero traer las facturas con envios sin productos ni categoria para luego poder contabilizar
+            productos_vendidos = FacturaProducto.objects.filter(factura__in=facturas_con_envio)
 
         if productos_vendidos.exists():
             if self.fecha_inicio and self.fecha_fin:                
@@ -158,7 +164,6 @@ class Estadisticas:
                     productos_vendidos = productos_vendidos.filter(factura__fecha__month=mes, factura__fecha__year=ano)
                 else:
                     productos_vendidos = productos_vendidos.filter(factura__fecha__year=ano)
-        
         return productos_vendidos
     
     def calculo_cantidad_vendida(self, productos_vendidos):
@@ -175,7 +180,7 @@ class Estadisticas:
                     .annotate(total_vendido=Sum('cantidad'))\
                     .filter(total_vendido__gt=0)\
                     .order_by('total_vendido')
-            print(productos_vendidos_por_semana)
+
             self.cantidad_minima = productos_vendidos_por_semana.first()['total_vendido'] if productos_vendidos_por_semana.exists() else 0
             self.cantidad_maxima = productos_vendidos_por_semana.last()['total_vendido'] if productos_vendidos_por_semana.exists() else 0
         else:
@@ -190,6 +195,10 @@ class Estadisticas:
             self.cantidad_minima = cantidad_minima['total_vendido']
             cantidad_maxima = productos_vendidos_por_dia.last()
             self.cantidad_maxima = cantidad_maxima['total_vendido']
+        
+        if self.env == True:
+                self.envios = productos_vendidos.values('factura').distinct().count()
+                self.env == False
                 
         self.cantidad_vendida = productos_vendidos.aggregate(total_vendido=Sum('cantidad'))['total_vendido'] or 0    
         
