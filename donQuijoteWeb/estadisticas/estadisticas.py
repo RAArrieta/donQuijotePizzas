@@ -3,15 +3,14 @@ from datetime import timedelta
 from django.utils import timezone
 from facturas.models import FacturaProducto, Facturas
 from productos.models import Producto
-from django.db.models import Sum
+from django.db.models import Sum, Count
 
 class Estadisticas:
     env = False
-    def __init__(self, producto_id,  producto_nombre, categoria, envios, cantidad_vendida, cantidad_promedio, cantidad_minima, cantidad_maxima, dia_venta, dia_no_venta, fecha_inicio, fecha_fin, dia_semana, media_semana, mes, ano, cantidad_dias):
+    def __init__(self, producto_id,  producto_nombre, categoria, cantidad_vendida, cantidad_promedio, cantidad_minima, cantidad_maxima, dia_venta, dia_no_venta, fecha_inicio, fecha_fin, dia_semana, media_semana, mes, ano, cantidad_dias):
         self.producto_id = producto_id
         self.producto_nombre = producto_nombre
         self.categoria= categoria
-        self.envios = envios
         
         self.cantidad_vendida = cantidad_vendida
         self.cantidad_promedio = cantidad_promedio
@@ -37,7 +36,7 @@ class Estadisticas:
                 Estadisticas.calculo_cantidad_vendida(self, productos_vendidos)
                 Estadisticas.calculo_cantidad_promedio(self)
                 Estadisticas.calculo_dia_venta(self, productos_vendidos)
-                print(f"Cantidad de envios desde estadisticas: {self.envios}")       
+ 
             except Producto.DoesNotExist:
                 print(f"Producto {self.producto_nombre} no existe.")
                 
@@ -167,40 +166,58 @@ class Estadisticas:
         return productos_vendidos
     
     def calculo_cantidad_vendida(self, productos_vendidos):
-        if self.dia_semana:
+        if self.dia_semana:            
             productos_vendidos = productos_vendidos.filter(factura__fecha__week_day=int(self.dia_semana))
         
-        if self.media_semana:
+        if self.media_semana:            
             if self.media_semana == "m_j":
                 productos_vendidos = productos_vendidos.filter(factura__fecha__week_day__in=[3, 4, 5])
             else:
-                productos_vendidos = productos_vendidos.filter(factura__fecha__week_day__in=[6, 7, 1])
-            
+                productos_vendidos = productos_vendidos.filter(factura__fecha__week_day__in=[6, 7, 1])          
+                                
             productos_vendidos_por_semana = productos_vendidos.values('factura__fecha__week')\
-                    .annotate(total_vendido=Sum('cantidad'))\
-                    .filter(total_vendido__gt=0)\
-                    .order_by('total_vendido')
-
+                .annotate(total_vendido=Sum('cantidad'))\
+                .filter(total_vendido__gt=0)\
+                .order_by('total_vendido')
+                
             self.cantidad_minima = productos_vendidos_por_semana.first()['total_vendido'] if productos_vendidos_por_semana.exists() else 0
             self.cantidad_maxima = productos_vendidos_por_semana.last()['total_vendido'] if productos_vendidos_por_semana.exists() else 0
+
         else:
             productos_vendidos_por_dia = (productos_vendidos
                     .values('factura__fecha')
                     .annotate(total_vendido=Sum('cantidad'))
                     .filter(total_vendido__gt=0) 
                     .order_by('total_vendido')
-                )
+                )               
 
             cantidad_minima = productos_vendidos_por_dia.first()
             self.cantidad_minima = cantidad_minima['total_vendido']
             cantidad_maxima = productos_vendidos_por_dia.last()
             self.cantidad_maxima = cantidad_maxima['total_vendido']
         
+        self.cantidad_vendida = productos_vendidos.aggregate(total_vendido=Sum('cantidad'))['total_vendido'] or 0 
+            
         if self.env == True:
-                self.envios = productos_vendidos.values('factura').distinct().count()
-                self.env == False
-                
-        self.cantidad_vendida = productos_vendidos.aggregate(total_vendido=Sum('cantidad'))['total_vendido'] or 0    
+            self.cantidad_vendida = productos_vendidos.values('factura').distinct().count()
+
+            if self.media_semana:
+                envios_por_dia = productos_vendidos.values('factura__fecha__week')\
+                    .annotate(cantidad_facturas=Count('factura', distinct=True))\
+                    .filter(cantidad_facturas__gt=0)\
+                    .order_by('cantidad_facturas')
+                self.cantidad_minima = envios_por_dia.first()['cantidad_facturas'] if envios_por_dia.exists() else 0
+                self.cantidad_maxima = envios_por_dia.last()['cantidad_facturas'] if envios_por_dia.exists() else 0
+            else:
+                envios_por_dia = productos_vendidos.filter(factura__envio__gt=0) \
+                    .values('factura__fecha') \
+                    .annotate(cantidad_facturas=Count('factura', distinct=True)) \
+                    .order_by('cantidad_facturas')
+            
+                self.cantidad_minima = envios_por_dia.first().get('cantidad_facturas', 0)
+                self.cantidad_maxima = envios_por_dia.last().get('cantidad_facturas', 0)
+
+            self.env == False            
         
     def calculo_cantidad_promedio(self):           
         if self.cantidad_dias > 0 and self.cantidad_vendida > 0:

@@ -10,8 +10,7 @@ def home(request):
     categorias = select_productos()
     estadisticas = request.session.get('estadisticas', None)
     form = MesAnoForm(request.POST or None)
-    
-      # Diccionario que asocia los números con los nombres de los días de la semana
+
     dias_semana = {
         '1': 'Domingo',
         '3': 'Martes',
@@ -76,7 +75,6 @@ def cargar_datos(request):
                 producto_id=producto_id,
                 producto_nombre=producto_nombre,
                 categoria=categoria,
-                envios=0,
                 cantidad_vendida=0, 
                 cantidad_promedio=0,
                 cantidad_minima=0,
@@ -98,7 +96,6 @@ def cargar_datos(request):
                 'producto_id': producto_id,
                 'producto_nombre': producto_nombre,
                 'categoria': categoria,
-                'envios': envios,
                 'cantidad_vendida': estadisticas.cantidad_vendida, 
                 'cantidad_promedio': estadisticas.cantidad_promedio,
                 'cantidad_minima': estadisticas.cantidad_minima,
