@@ -1,3 +1,5 @@
+{% load static %}
+
 <form method="post" id="form-datos" class="carro-datos" action="{% url 'carro:cargar_datos' %}">
     <h3 class="carro-titulo">Datos</h3>
     {% csrf_token %}
@@ -41,14 +43,7 @@
     {% endfor %}
 </form>
     
-<script>
-    document.getElementById('form-datos').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            this.submit();
-        }
-    });
-</script>
+<script src="{% static 'carro/js/carro_enter.js' %}"></script>
     
 
 
