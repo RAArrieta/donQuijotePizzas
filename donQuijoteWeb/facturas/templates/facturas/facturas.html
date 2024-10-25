@@ -9,24 +9,9 @@
     <link rel="stylesheet" href="{% static 'facturas/css/styles.css' %}">
 {% endblock css %}
 
-
-
 {% block titulo %}
-    <div class="main-titulo-container">
-        <div class="titulo-opciones-container">
-            <h1 class="main-titulo">Facturación</h1>
-            <div class="btn-container">
-                <form method="get" class="filtro-form">
-                    {{ form.as_p }}
-                    <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
-                </form>
-            </div>
-        </div>
-        <hr class="main-hr"/>
-    </div>
+    {% include 'facturas/components/facturas_titulos.html' with titulo_texto="Facturación" %}
 {% endblock titulo %}
-
-
 
 {% block main %}
 <div class="facturas-totales card">
@@ -46,13 +31,11 @@
         <p class="facturas-detalle-pedido">{{ factura.forma_pago|upper }}</p>
         <p class="facturas-detalle-pedido">${{ factura.pago }}</p>
 
-        <!-- Botón para mostrar/ocultar productos -->
         <button onclick="toggleProductos('{{ factura.id }}')" class="facturas-detalle-icono">
             <img class="icono-opc" src="{% static 'facturas/img/lupa.webp' %}" alt="Detalle Factura">
         </button>
     </div>
 
-        <!-- Sección de productos, inicialmente oculta -->
     <div id="productos-{{ factura.id }}" class="card productos-factura" style="display: none;">
         {% for producto in productos_factura %}
             {% if factura.id == producto.factura.id %}
@@ -66,19 +49,6 @@
     </div>
 {% endfor %}
 
-<script>
-    function toggleProductos(facturaId) {
-        var productosDiv = document.getElementById('productos-' + facturaId);
-        if (productosDiv.style.display === 'none') {
-            productosDiv.style.display = 'block';
-        } else {
-            productosDiv.style.display = 'none';
-        }
-    }
-    </script>
-    
-
-
-
+<script src="{% static 'facturas/js/visualizar_productos.js' %}"></script>
 
 {% endblock main %}

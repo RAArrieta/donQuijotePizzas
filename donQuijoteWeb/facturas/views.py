@@ -9,8 +9,6 @@ from django.db import connection
 from datetime import datetime
 from .forms import RangoFechasForm
 
-
-
 def home(request):
     pedidos = recuperar_entregados()
     caja_total= 0.0
