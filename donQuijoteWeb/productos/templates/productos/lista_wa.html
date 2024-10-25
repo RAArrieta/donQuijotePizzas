@@ -15,30 +15,24 @@
 
 {% block main %}
     {% regroup object_list by categoria.nombre as categorias %}
-
     <section class="categorias-container">
         {% for categoria in categorias %}
         <div class="card card-wa">
             <div class="titulo-opciones-container">
                 {% if categoria.grouper == "Pizzas" %}
-                    <h1 class="categoria-titulo">🍕 &nbsp;*{{ categoria.grouper|upper }}* &nbsp;🍕</h1>
-                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                    <h1 class="categoria-titulo">🍕 &nbsp;*{{ categoria.grouper|upper }}* &nbsp;🍕</h1>                  
                 {% elif categoria.grouper == "Empanadas" %}
                     <h1 class="categoria-titulo">🥟 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🥟</h1>
-                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
                 {% elif categoria.grouper == "Sandwichs" %}
                     <h1 class="categoria-titulo">🍔 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍔</h1>
-                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
                 {% elif categoria.grouper == "Minutas" %}
-                    <h1 class="categoria-titulo">🍝 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍝</h1>
-                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                    <h1 class="categoria-titulo">🍝 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍝</h1>  
                 {% elif categoria.grouper == "Bebidas" %}
                     <h1 class="categoria-titulo">🍻 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍻</h1>
-                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
                 {% elif categoria.grouper == "Postres" %}
                     <h1 class="categoria-titulo">🍮 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍮</h1>
-                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
-                {% endif %}               
+                {% endif %}   
+                <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>            
             </div>
             <div class="categoria-info">
                 {% for producto in categoria.list %}
@@ -55,37 +49,7 @@
         {% endfor %}
     </section>   
 
-    <script>
-        function copiarAlPortapapeles(button) {
-            var categoriaContainer = button.closest('.card');
-
-            var titulo = categoriaContainer.querySelector('.categoria-titulo').innerText;
-
-            var informacionContainer = categoriaContainer.querySelector('.categoria-info');
-
-            var informacion = informacionContainer.innerText;
-
-            var textoACopiar = titulo + "\n" + informacion;
-
-            var lineas = textoACopiar.split('\n');
-            var textoFiltrado = lineas.filter(function(linea) {
-                return linea.trim() !== '';
-            }).join('\n');
-
-            var tempInput = document.createElement('textarea');
-            tempInput.value = textoFiltrado;
-            document.body.appendChild(tempInput);
-
-            tempInput.select();
-            tempInput.setSelectionRange(0, 99999); 
-
-            document.execCommand('copy');
-
-            document.body.removeChild(tempInput);
-
-            alert('Información copiada al portapapeles');
-        }
-    </script>
+    <script src="{% static 'productos/js/copiarPortapapeles.js' %}"></script>
 {% endblock main %}
 
 

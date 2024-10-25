@@ -14,31 +14,29 @@
 {% endblock titulo %}
 
 {% block main %}
-    <section class="card eliminar">
-        
-            <div class="productos">
-                <h1 class="producto-card-titulo">{{ object.nombre }}</h1>
-                <div class="producto-opc">
-                    <a href="{% url 'productos:productos_update' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
-                    <a href="{% url 'productos:productos_delete' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
-                </div>
+    <section class="card eliminar">      
+        <div class="productos">
+            <h1 class="producto-card-titulo">{{ object.nombre }}</h1>
+            <div class="producto-opc">
+                <a href="{% url 'productos:productos_update' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+                <a href="{% url 'productos:productos_delete' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
             </div>
-            <hr class="categoria-hr">
-            <p class="detalle-producto">Categoria: {{ object.categoria }}</p>
-            {% if object.descripcion %}
-                <p class="detalle-producto">Descripción: {{ object.descripcion }}</p>
-            {% endif %}            
-            <p class="detalle-producto">Precio Unitario: ${{ object.precio_unit }}</p>
-            {% if object.precio_media %}
+        </div>
+        <hr class="categoria-hr">
+        <p class="detalle-producto">Categoria: {{ object.categoria }}</p>
+        {% if object.descripcion %}
+            <p class="detalle-producto">Descripción: {{ object.descripcion }}</p>
+        {% endif %}            
+        <p class="detalle-producto">Precio Unitario: ${{ object.precio_unit }}</p>
+        {% if object.precio_media %}
             <p class="detalle-producto">Precio Media: ${{ object.precio_media }}</p>
-            {% endif %}
-            {% if object.precio_doc %}
-                <p class="detalle-producto">Precio Docena: ${{ object.precio_doc }}</p>
-            {% endif %}
-            <div class="btn-container">
-                <a class="btn-success" href="{% url 'productos:home' %}">Volver</a>
-            </div> 
-     
+        {% endif %}
+        {% if object.precio_doc %}
+            <p class="detalle-producto">Precio Docena: ${{ object.precio_doc }}</p>
+        {% endif %}
+        <div class="btn-container">
+            <a class="btn-success" href="{% url 'productos:home' %}">Volver</a>
+        </div>     
     </section>
    
 {% endblock main %}

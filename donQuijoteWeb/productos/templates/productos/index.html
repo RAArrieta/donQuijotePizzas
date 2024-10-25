@@ -15,7 +15,6 @@
 
 {% block main %}
     {% regroup object_list by categoria.nombre as categorias %}
-
     <section class="categorias-container">
         {% for categoria in categorias %}
             <div class="card">           

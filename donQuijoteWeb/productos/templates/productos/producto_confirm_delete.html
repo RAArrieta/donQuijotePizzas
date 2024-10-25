@@ -16,6 +16,7 @@
 {% block main %}
     <section class="card eliminar colum-center">
         <p>¿Confirma eliminar "{{ object.nombre }}"?</p>
+        <p>Al eliminar el producto se borrara de las facturas y perderas todas las estadisticas del mismo.-</p>
 
         <form method="post">
             {% csrf_token %}
@@ -24,5 +25,6 @@
                 <a class="btn-success" href="{% url 'productos:home' %}">Volver</a>
             </div>                
         </form>
+
     </section>
 {% endblock main %}
