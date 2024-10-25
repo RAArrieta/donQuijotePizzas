@@ -9,7 +9,6 @@ from pedido.forms import FormaEntregaForm
 from pedido.recuperar_pedidos import recuperar_pedidos, recuperar_pendientes, recuperar_entregados, recuperar_reservados
 from carro.carro import Carro
 from django.contrib import messages
-from facturas.models import Caja
 
 @login_required
 def procesar_ped(request):   

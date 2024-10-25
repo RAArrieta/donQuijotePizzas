@@ -10,19 +10,7 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="main-titulo-container">
-        <div class="titulo-opciones-container">
-            <h1 class="main-titulo">Pedidos</h1>
-            <div class="btn-container">
-                <a class="btn-opc" href="{% url 'carro:carro' %}">Nuevo Pedido</a>
-                <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
-                <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
-                <a class="btn-opc" href="{% url 'pedido:listar_reservados' %}">Reservados</a>
-                <a class="btn-opc" href="{% url 'pedido:home' %}">Todos</a>
-            </div>
-        </div>
-        <hr  class="main-hr"/>
-    </div>
+    {% include 'pedido/components/pedido_titulos.html' with titulo_texto="Pedidos" %}
 {% endblock titulo %}
 
 {% block main %}
