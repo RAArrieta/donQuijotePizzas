@@ -14,21 +14,11 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="main-titulo-container">
-        <div class="titulo-opciones-container">
-        {% if form.instance.pk %}
-            <h1 class="main-titulo">Modificar Categoria</h1>
-        {% else %}
-            <h1 class="main-titulo">Crear Categoria</h1>            
-        {% endif %}  
-            <div class="btn-container">
-                <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
-                <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
-                <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
-            </div>
-        </div>
-        <hr  class="main-hr"/>
-    </div>
+    {% if form.instance.pk %}
+        {% include "productos/components/productos_titulos.html" with titulo_texto="Modificar Categoria" %}
+    {% else %}
+        {% include "productos/components/productos_titulos.html" with titulo_texto="Crear Categoria" %}        
+    {% endif %}  
 {% endblock titulo %}
 
 {% block main %}

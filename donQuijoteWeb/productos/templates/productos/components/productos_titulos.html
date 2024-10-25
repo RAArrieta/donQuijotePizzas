@@ -1,0 +1,24 @@
+<div class="main-titulo-container">
+    <div class="titulo-opciones-container">
+        <h1 class="main-titulo">{{ titulo_texto }}</h1>
+        <div class="btn-container">
+        {% if titulo_texto == "Productos" %}
+            <a class="btn-opc" href="{% url 'productos:productos_create' %}">Crear Producto</a>
+            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>  
+        {% elif titulo_texto == "Categorias" %}        
+            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+            <a class="btn-opc" href="{% url 'productos:categorias_create' %}">Crear Categoria</a>
+            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>     
+        {% elif titulo_texto == "Eliminar Producto" or titulo_texto == "Detalle Producto" or titulo_texto == "Modificar Producto" or titulo_texto == "Crear Producto" or titulo_texto == "Eliminar Categoria" or titulo_texto == "Modificar Categoria" or titulo_texto == "Crear Categoria" %}        
+            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>       
+        {% elif titulo_texto == "Lista Whatsapp" %}
+            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+        {% endif %}
+        </div>       
+    </div>
+    <hr  class="main-hr"/>
+</div>

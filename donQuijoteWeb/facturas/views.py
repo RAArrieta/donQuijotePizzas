@@ -3,13 +3,12 @@ from django.shortcuts import render, redirect
 from pedido.recuperar_pedidos import recuperar_entregados
 from django.contrib import messages
 from .models import Caja, Facturas, FacturaProducto
-from productos.models import Producto
 
-from pedido.models import Pedido, PedidoProductos
+from pedido.models import Pedido
 from django.db import connection
 from datetime import datetime
 from .forms import RangoFechasForm
-from django.db import IntegrityError
+
 
 
 def home(request):
@@ -77,63 +76,13 @@ def cerrar_caja(request):
         messages.error(request, "No hay una instancia de Caja disponible.")
         return redirect("core:home")
 
-# def cargar_facturas():
-#     pedidos = recuperar_entregados()
-#     lista_productos = list()
-
-#     for key, value in pedidos.items():
-#         envio, forma_pago, total = None, None, None
-        
-#         for k, v in value['datos'].items():
-#             if k == "precio_entrega":
-#                 envio = v
-#             elif k == "pago":
-#                 forma_pago = v
-#             elif k == "total":
-#                 total = v  
-                 
-#         factura = Facturas(
-#             envio=envio,
-#             forma_pago=forma_pago,
-#             pago=total,
-#         )   
-        
-#         factura.save()       
-                         
-#         for k, v in value.items():
-#             if k.isdigit():  
-#                 cantidad = None
-#                 for prod_key, prod_value in v.items():
-#                     if prod_key == "cantidad":
-#                         cantidad = prod_value
-#                         break
-                
-#                 if cantidad is not None:
-#                     lista_productos.append(FacturaProducto(
-#                         producto_id=int(k),
-#                         cantidad=float(cantidad),
-#                         factura=factura
-#                     ))
-
-#     if factura:
-#         FacturaProducto.objects.filter(factura=factura).delete()
-#         for producto in lista_productos:
-#             producto.factura = factura
-#         FacturaProducto.objects.bulk_create(lista_productos)
-        
-#     return redirect("core:home")
-
-
-
-
 def cargar_facturas():
     pedidos = recuperar_entregados()
     
     for key, value in pedidos.items():
         envio, forma_pago, total = None, None, None
-        lista_productos = list()  # Mover lista_productos dentro del bucle principal para que sea única por factura
+        lista_productos = list()  
         
-        # Obtener datos de la factura
         for k, v in value['datos'].items():
             if k == "precio_entrega":
                 envio = v
@@ -142,18 +91,16 @@ def cargar_facturas():
             elif k == "total":
                 total = v  
         
-        # Crear factura
         factura = Facturas(
             envio=envio,
             forma_pago=forma_pago,
             pago=total,
         )   
         
-        factura.save()  # Guardar la factura antes de asociar productos
-        
-        # Asociar productos a la factura
+        factura.save()  
+
         for k, v in value.items():
-            if k.isdigit():  # Asegurarse de que es un ID de producto
+            if k.isdigit(): 
                 cantidad = None
                 for prod_key, prod_value in v.items():
                     if prod_key == "cantidad":
@@ -164,17 +111,12 @@ def cargar_facturas():
                     lista_productos.append(FacturaProducto(
                         producto_id=int(k),
                         cantidad=float(cantidad),
-                        factura=factura  # Asociar producto a la factura actual
+                        factura=factura  
                     ))
         
-        # Guardar todos los productos de esta factura
         FacturaProducto.objects.bulk_create(lista_productos)
         
     return redirect("core:home")
-
-
-
-
 
 def facturas(request):
     now = datetime.now()

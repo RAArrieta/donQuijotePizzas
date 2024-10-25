@@ -3,13 +3,12 @@
         {% if user.is_authenticated %}
             <li class="list-link"><a class="link-app" href="{% url 'core:home' %}">Escritorio</a></li>
             <li class="list-link"><a class="link-app" href="{% url 'pedido:listar_pendientes' %}">Pedidos</a></li>
-            <li class="list-link"><a class="link-app" href="{% url 'productos:home' %}">Productos</a></li>  
             <li class="list-link"><a class="link-app" href="{% url 'facturas:home' %}">Caja</a></li>
             <li class="list-link"><a class="link-app" href="{% url 'facturas:facturas' %}">Facturación</a></li>
-            <li class="list-link"><a class="link-app" href="#">Gastos y Compras</a></li>
-            <li class="list-link"><a class="link-app" href="#">Contabilidad</a></li>
             <li class="list-link"><a class="link-app" href="{% url 'estadisticas:home' %}">Estadisticas</a></li>
-              
+            <li class="list-link"><a class="link-app" href="{% url 'productos:home' %}">Productos</a></li>  
+            <li class="list-link"><a class="link-app" href="#">Gastos y Compras</a></li>
+            <li class="list-link"><a class="link-app" href="#">Contabilidad</a></li>     
             <li class="list-link"><a class="link-app" href="#">Costos</a></li>
         {% endif %}    
     </ul>

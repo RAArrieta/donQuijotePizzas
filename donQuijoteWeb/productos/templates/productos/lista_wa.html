@@ -10,17 +10,7 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="main-titulo-container">
-        <div class="titulo-opciones-container">
-            <h1 class="main-titulo">Lista Whatsapp</h1>
-            <div class="btn-container">
-                <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
-                <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
-                <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
-            </div>
-        </div>
-        <hr  class="main-hr"/>
-    </div>
+    {% include "productos/components/productos_titulos.html" with titulo_texto="Lista Whatsapp" %}
 {% endblock titulo %}
 
 {% block main %}
@@ -30,17 +20,34 @@
         {% for categoria in categorias %}
         <div class="card card-wa">
             <div class="titulo-opciones-container">
-                <h1 class="categoria-titulo">*{{ categoria.grouper }}*</h1>
-                <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                {% if categoria.grouper == "Pizzas" %}
+                    <h1 class="categoria-titulo">🍕 &nbsp;*{{ categoria.grouper|upper }}* &nbsp;🍕</h1>
+                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                {% elif categoria.grouper == "Empanadas" %}
+                    <h1 class="categoria-titulo">🥟 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🥟</h1>
+                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                {% elif categoria.grouper == "Sandwichs" %}
+                    <h1 class="categoria-titulo">🍔 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍔</h1>
+                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                {% elif categoria.grouper == "Minutas" %}
+                    <h1 class="categoria-titulo">🍝 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍝</h1>
+                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                {% elif categoria.grouper == "Bebidas" %}
+                    <h1 class="categoria-titulo">🍻 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍻</h1>
+                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                {% elif categoria.grouper == "Postres" %}
+                    <h1 class="categoria-titulo">🍮 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍮</h1>
+                    <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>
+                {% endif %}               
             </div>
             <div class="categoria-info">
                 {% for producto in categoria.list %}
                     {% if producto.precio_doc %}
-                        <p>*{{ producto.nombre }}:* _Doc: ${{producto.precio_doc}} | c/u: ${{producto.precio_unit}}_</p>
+                        <p>*{{ producto.nombre }}:*&nbsp; _Doc: ${{producto.precio_doc}} | c/u: ${{producto.precio_unit}}_</p>
                     {% elif producto.precio_media %}
-                        <p>*{{ producto.nombre }}:* _1/2: ${{producto.precio_media}} | c/u: ${{producto.precio_unit}}_</p>
+                        <p>*{{ producto.nombre }}:*&nbsp; _1/2: ${{producto.precio_media}} | c/u: ${{producto.precio_unit}}_</p>
                     {% else %}
-                        <p>*{{ producto.nombre }}:* _${{producto.precio_unit}}_</p>
+                        <p>*{{ producto.nombre }}:*&nbsp; _${{producto.precio_unit}}_</p>
                     {% endif %} 
                 {% endfor %}
             </div>   
