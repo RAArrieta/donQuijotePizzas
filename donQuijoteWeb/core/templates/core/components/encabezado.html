@@ -1,3 +1,5 @@
+{% load static %}
+
 <div class="main-titulo-container">
     <div class="titulo-opciones-container">
         <h1 class="main-titulo">{{ titulo_texto }}</h1>
@@ -17,6 +19,31 @@
         {% elif titulo_texto == "Lista Whatsapp" %}
             <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
             <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+
+        {% elif titulo_texto == "Pedidos" %}
+            <a class="btn-opc" href="{% url 'carro:carro' %}">Nuevo Pedido</a>
+            <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
+            <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
+            <a class="btn-opc" href="{% url 'pedido:listar_reservados' %}">Reservados</a>
+            <a class="btn-opc" href="{% url 'pedido:home' %}">Todos</a>
+        {% elif titulo_texto == "Modificar Forma de Entrega" %}
+            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>  
+
+        {% elif titulo_texto == "Caja Diaria" %}
+            <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>
+            <a class="btn-opc" href="{% url 'facturas:cerrar_caja' %}">Cerrar Caja</a>
+        {% elif titulo_texto == "Facturación" %}
+            <form method="get" class="filtro-form">
+                {{ form.as_p }}
+                <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
+            </form>
+
+        {% elif titulo_texto == "Pedido" %}
+            <a class="btn-opc" href="{% url 'pedido:home' %}">Pedidos</a>
+            <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
+            <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
         {% endif %}
         </div>       
     </div>

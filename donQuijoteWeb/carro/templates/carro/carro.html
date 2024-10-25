@@ -10,17 +10,7 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="main-titulo-container">
-        <div class="titulo-opciones-container">
-            <h1 class="main-titulo">Pedidos</h1>
-            <div class="btn-container">
-                <a class="btn-opc" href="{% url 'pedido:home' %}">Pedidos</a>
-                <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
-                <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
-            </div>
-        </div>
-        <hr  class="main-hr"/>
-    </div>
+{% include 'core/components/encabezado.html' with titulo_texto="Pedido" %}
 {% endblock titulo %}
 
 {% block main %}   

@@ -15,9 +15,9 @@
 
 {% block titulo %}
     {% if form.instance.pk %}
-        {% include "productos/components/productos_titulos.html" with titulo_texto="Modificar Producto" %}
+        {% include 'core/components/encabezado.html' with titulo_texto="Modificar Producto" %}
     {% else %}
-        {% include "productos/components/productos_titulos.html" with titulo_texto="Crear Producto" %}        
+        {% include 'core/components/encabezado.html' with titulo_texto="Crear Producto" %}        
     {% endif %}  
 {% endblock titulo %}
 

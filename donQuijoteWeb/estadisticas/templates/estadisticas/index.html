@@ -10,12 +10,7 @@
 {% endblock css %}
 
 {% block titulo %}
-    <div class="main-titulo-container">
-        <div class="titulo-opciones-container">
-            <h1 class="main-titulo">Estadisticas</h1>
-        </div>
-        <hr  class="main-hr"/>
-    </div>
+{% include 'core/components/encabezado.html' with titulo_texto="Estadisticas"%}
 {% endblock titulo %}
 
 {% block main %}
