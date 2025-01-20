@@ -17,7 +17,7 @@
 {% endif %}
 {% endblock titulo %}
 
-{% block main %} 
+{% block main %}
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -25,19 +25,20 @@
         {% endfor %}
     </ul>
 {% endif %}
-  
-    <section class="carro-section-conteiner card">
-        <div class="carro-widget-selects">
-            {% include "carro/components/widget.html" %}
-            {% include 'carro/components/select_productos.html' %}
-        </div>
-        <div class="carro-widget-selects">
+
+<div class="carro-container">
+    <div class="widget-container card">
+        {% include "carro/components/widget.html" %}
+    </div>
+    <div class="productos-datos-container card">
+        {% include 'carro/components/select_productos.html' %}
+        <div class="datos-container">
             {% include "carro/components/carro_datos.html" %}
             <div class="btn-container">
                 <a class="btn-success" href="{% url 'carro:carro' %}?cargar_pedido=true">Guardar</a>
                 <a class="btn-delete" href="{% url 'carro:limpiar' %}">Cancelar</a>
             </div>
         </div>
-                          
-    </section> 
+    </div>
+</div>
 {% endblock main %}

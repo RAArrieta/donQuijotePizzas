@@ -1,4 +1,4 @@
-/* LISTA DE PRODUCTOS */
+/* index.html */
 .categorias-container {
     width: 90%;
     margin: 0 auto; 
@@ -21,7 +21,6 @@
     background-color: #2C3E50;
     margin: 0 auto 5px;
 }
-
 .productos {
     margin-top: 8px;
     display: grid;
@@ -29,7 +28,6 @@
     grid-template-areas: "nom prc opc";
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
 }
 .producto-nombre {
     grid-area: nom;
@@ -56,32 +54,23 @@
 .icono-opc:hover {
     transform: scale(1.2);
 }
-
-/* WHATSAPP */
+/* lista_wa.html */
 .card-wa {
     padding: 25px;
 }
 
-/* ELIMINAR */
+/* producto_detail.html */
 .eliminar {
     width: 60%;
     max-width: 600px;
     height: auto;
     margin: 50px auto;
 }
-.colum-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
 .eliminar p {
     font-size: 18px;
     color: #333;
     margin-bottom: 20px;
 }
-
-/* DETAIL */
 .producto-card-titulo {
     font-size: 28px;
     color: #2C3E50;
@@ -92,8 +81,7 @@
     color: #555;
     margin: 10px;
 }
-
-/* FORM CATEGORIA */
+/* producto_form.html */
 .form-container {
     width: 100%;
     height: calc(100vh - 17vh);

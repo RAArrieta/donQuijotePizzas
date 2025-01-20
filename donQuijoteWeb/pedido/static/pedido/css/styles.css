@@ -1,3 +1,4 @@
+/* index.html */
 .section-pedido-container {
     width: 100%;
     height: 100%;
@@ -7,7 +8,6 @@
     row-gap: 6%;
     justify-content: center;
 }
-
 .pedido-container {
     width: 29.33%;
     height: 48%;
@@ -15,7 +15,6 @@
     flex-direction: column;
     justify-content: space-between;
 }
-
 .encabezado {
     width: 100%;
     display: flex;
@@ -30,14 +29,11 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    
 }
-
 .producto-pedido {
     width: 100%;
     display: flex;
-    padding-left: 5%;
-    
+    padding-left: 5%;  
 }
 .prod-cant {
     width: 15%;
@@ -55,4 +51,3 @@
     align-items: center;
     justify-content: space-around;
 }
-

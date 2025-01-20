@@ -10,9 +10,12 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def home(request):
     productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()
+    categorias = ProductoCategoria.objects.all()
     forma_entrega = FormaEntrega.objects.all()
+    
     context = {
         'object_list': productos,
+        'categorias': categorias,
         'forma_entrega': forma_entrega
     }
     return render(request, 'productos/index.html', context)

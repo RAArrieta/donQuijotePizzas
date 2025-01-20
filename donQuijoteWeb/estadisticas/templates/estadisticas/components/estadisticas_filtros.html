@@ -9,19 +9,21 @@
 {% endif %}
 
 <form method="post" id="form-productos" action="{% url 'estadisticas:cargar_datos' %}">
-        <div class="estadisticas-container2">
+        <div class="estadisticas-filtro-container">
             {% csrf_token %}
             <div class="estadisticas-producto-container">
                 <h3 class="titulo-h3">Buscar por Productos</h3>
                 {% for categoria, productos in categorias.items %}
-                    <div class="select-container">
-                        <select id="producto-select-{{ categoria }}" class="selects" name="producto_id">
-                            <option disabled selected>{{ categoria }}</option>
-                            {% for producto in productos %}
-                                <option value="{{ producto.id }}">{{ producto.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                    {% if categoria.estado %}
+                        <div class="select-container">
+                            <select id="producto-select-{{ categoria }}" class="selects" name="producto_id">
+                                <option disabled selected>{{ categoria }}</option>
+                                {% for producto in productos %}
+                                    <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
                 {% endfor %}
                 <hr class="est-hr">
 
@@ -30,7 +32,9 @@
                     <select id="categoria-select" class="selects" name="categoria">
                         <option disabled selected>Selecciona una categoría</option>
                         {% for categoria, productos in categorias.items %}
-                            <option value="{{ categoria }}">{{ categoria }}</option>
+                            {% if categoria.estado %}
+                                <option value="{{ categoria }}">{{ categoria }}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
@@ -45,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="estadisticas-producto-container">
+            <div class="estadisticas-fechas-container">
                 <h3 class="titulo-h3">Filtrar Fechas</h3>
                     <label for="fecha_inicio">Fecha inicio / fin:</label>
                     <input type="date" name="fecha_inicio" id="fecha_inicio">
@@ -55,6 +59,7 @@
                 <label for="dia_semana">Día de la semana:</label>
                 <select name="dia_semana" id="dia_semana-select">
                     <option disabled selected>Selecciona un día</option>
+                    <option value="0">Hoy</option>
                     <option value="3">Martes</option>
                     <option value="4">Miércoles</option>
                     <option value="5">Jueves</option>
@@ -64,9 +69,10 @@
                 </select>
                 <hr class="est-hr">
 
-                <label for="media_semana">Media Semana</label>
+                <label for="media_semana">Semana</label>
                 <select name="media_semana" id="media_semana">
                     <option disabled selected>Selecciona media</option>
+                    <option value="sem">Semana Completa</option>
                     <option value="m_j">Martes a Jueves</option>
                     <option value="v_d">Viernes a Domingos</option>
                 </select>
@@ -83,9 +89,10 @@
             </div>
         </div>  
 
-        <div class="btn-buscar">
-            <button type="submit" class="btn-success">Buscar</button>
+        <div class="btn-buscar est-btn-buscar">
+            <button type="submit" class="btn-success" onclick="openModal()">Buscar</button>
         </div>
+        
 </form>
 
 <script src="{% static 'estadisticas/js/estadisticas_selects.js' %}"></script>

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    dQ | Caja Diaria
+    dS | Caja Diaria
 {% endblock title %}
 
 {% block css %}
@@ -14,8 +14,7 @@
 {% endblock titulo %}
 
 {% block main %}
-{% if messages %}
-    
+{% if messages %} 
     <ul class="messages">
         {% for message in messages %}
             <li class="{{ message.tags }}">{{ message }}</li>

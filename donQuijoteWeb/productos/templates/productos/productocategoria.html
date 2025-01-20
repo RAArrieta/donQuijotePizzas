@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    dQ | Categorias
+    dS | Categorias
 {% endblock title %}
 
 {% block css %}
@@ -14,17 +14,14 @@
 {% endblock titulo %}
 
 {% block main %}
-    <div class="categorias-container">
+    <div class="categorias-container card">
         {% for categoria in categorias %}
-        <div class="card">
             <div class="productos">
                 <h1 class="categoria-titulo">{{ categoria }}</h1>
                 <div class="producto-opc">
                     <a href="{% url 'productos:categorias_update' categoria.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
-                    <a href="{% url 'productos:categorias_delete' categoria.id%}"><img class="icono-opc" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
                 </div>
             </div>     
-        </div>
         {% endfor %}
     </div>
 {% endblock main %}

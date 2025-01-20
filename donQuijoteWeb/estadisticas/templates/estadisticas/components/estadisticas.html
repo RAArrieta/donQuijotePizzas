@@ -1,4 +1,24 @@
 {% if estadisticas %}
+    
+    {% if estadisticas.dia_semana == "0" %}
+    <div class="estadisticas-datos">
+
+        {% if estadisticas.producto_nombre %}
+            <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.producto_nombre }}</h3>
+        {% elif estadisticas.categoria %}
+            <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.categoria }}</h3>
+        {% else %}
+            <h3 class="titulo-h3">Informe de Envíos</h3>
+        {% endif %}
+        <hr class="est-hr">
+        
+        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad total:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
+        <hr class="est-hr">
+        
+        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Día seleccionado:</strong> {{ dia_semana_nombre }}</p>
+        
+    </div>
+    {% else %}
     <div class="estadisticas-datos">
 
         {% if estadisticas.producto_nombre %}
@@ -29,6 +49,9 @@
         {% elif dia_semana_nombre %}
             <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Día seleccionado:</strong> {{ dia_semana_nombre }}</p>
             <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
+        {% elif estadisticas.media_semana == "sem" %}
+            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Rango de días:</strong> Semana completa</p>
+            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
         {% elif estadisticas.media_semana == "m_j" %}
             <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Rango de días:</strong> Martes a Jueves</p>
             <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
@@ -46,5 +69,5 @@
         {% endif %}
 
     </div>
-    <hr class="main-hr">
+    {% endif %}
 {% endif %}

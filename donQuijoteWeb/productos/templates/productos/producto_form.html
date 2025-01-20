@@ -3,9 +3,9 @@
 
 {% block title %}
     {% if form.instance.pk %}
-        dQ | Modificar Producto   
+        dS | Modificar Producto   
     {% else %}
-        dQ | Crear Producto
+        dS | Crear Producto
     {% endif %} 
 {% endblock title %}
 
@@ -28,7 +28,7 @@
             {{ form }}
             <div class="btn-container">
                 <button class="btn-success" type="submit">Guardar</button>
-                <a class="btn-success" href="{% url 'productos:home' %}">Volver</a>
+                <a class="btn-delete" href="{% url 'productos:home' %}">Cancelar</a>
             </div> 
         </form>
     </section>

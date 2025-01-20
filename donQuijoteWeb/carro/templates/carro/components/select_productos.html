@@ -1,39 +1,26 @@
-<form method="post" id="form-productos" action="{% url 'carro:nuevo_producto' 0 %}">
-    <div class="carro-select-container">
-        {% csrf_token %}
-        {% for categoria, productos in categorias.items %}
-            <div class="select-container">
-                <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtrosYEnviar(event)">
-                    <option disabled selected>{{ categoria }}</option>
-                    {% for producto in productos %}
-                        {% if producto.precio_doc %}
-                            <option value="{{ producto.id }}">{{ producto.nombre }} c/u: ${{ producto.precio_unit }} | 1/2: ${{ producto.precio_media }} | Doc: ${{ producto.precio_doc }} </option>
-                        {% elif producto.precio_media and not producto.precio_doc%}
-                            <option value="{{ producto.id }}">{{ producto.nombre }} 1/2: ${{ producto.precio_media }} | c/u: ${{ producto.precio_unit }}</option>
-                        {% else %}
-                            <option value="{{ producto.id }}">{{ producto.nombre }} c/u: ${{ producto.precio_unit }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
-        {% endfor %}
-        <input type="hidden" name="producto_id" id="producto_id" value="">
-    </div>
+{% load static %}
+
+<form class="select-productos-container" method="post" id="form-productos" action="{% url 'carro:nuevo_producto' 0 %}">
+    <h3 class="carro-titulo">Productos</h3>
+    {% csrf_token %}
+    {% for categoria, productos in categorias.items %}
+        {% if categoria.estado == True %}
+            <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtrosYEnviar(event)">
+                <option disabled selected>{{ categoria }}</option>
+                {% for producto in productos %}
+                    {% if producto.precio_doc %}
+                        <option value="{{ producto.id }}">{{ producto.nombre }} c/u: ${{ producto.precio_unit }} | 1/2: ${{ producto.precio_media }} | Doc: ${{ producto.precio_doc }} </option>
+                    {% elif producto.precio_media and not producto.precio_doc%}
+                        <option value="{{ producto.id }}">{{ producto.nombre }} 1/2: ${{ producto.precio_media }} | c/u: ${{ producto.precio_unit }}</option>
+                    {% else %}
+                        <option value="{{ producto.id }}">{{ producto.nombre }} c/u: ${{ producto.precio_unit }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        {% endif %}  
+    {% endfor %}
+    <input type="hidden" name="producto_id" id="producto_id" value="">
 </form>
 
-<script>
-    const selects = document.querySelectorAll('.selects');
-
-    function deseleccionarOtrosYEnviar(event) {
-        const selectActual = event.target;
-        
-        selects.forEach(select => {
-            if (select !== selectActual) {
-                select.selectedIndex = 0;
-            }
-        });
-
-        document.getElementById('form-productos').submit();
-    }
-</script>
+<script src="{% static 'carro/js/enviar_selects.js' %}"></script>
 

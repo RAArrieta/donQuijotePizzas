@@ -1,19 +1,9 @@
+/* index.html */
 .facturas-container {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.facturas-card-container {
-    width: 80%;
-}
-.facturas-totales {
-    background-color: rgb(215, 250, 238);
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    margin-top: 15px;
-    margin-bottom: 15px;
 }
 .cajas-detalle {
     display: flex;
@@ -23,6 +13,24 @@
     width: 33%;
     text-align: center;
 }
+.facturas-hr-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.facturas-hr {
+    width: 85%;
+}
+
+/* facturas.html */
+.facturas-totales {
+    background-color: rgb(215, 250, 238);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 15px;
+    margin-bottom: 15px;
+} 
 .facturas-detalle {
     display: flex;
     justify-content: center;
@@ -48,13 +56,9 @@
     margin: 10px 50px;
 }
 
-.facturas-hr-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-}
-.facturas-hr {
-    width: 85%;
+
+.facturas-card-container {
+    width: 80%;
 }
 
 /* FORMULARIO FILTRO */
@@ -85,6 +89,3 @@
     width: 100%;
     font-family: 'Merriweather', serif;
   }
-
-
-

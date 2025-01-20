@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    dQ | Productos
+    dS | Productos
 {% endblock title %}
 
 {% block css %}
@@ -14,40 +14,54 @@
 {% endblock titulo %}
 
 {% block main %}
-    {% regroup object_list by categoria.nombre as categorias %}
-    <section class="categorias-container">
-        {% for categoria in categorias %}
-            <div class="card">           
-                <h1 class="categoria-titulo">{{ categoria.grouper }}</h1>
-                <hr class="categoria-hr">
-                {% for producto in categoria.list %}
-                    <div class="productos">
-                        <p class="producto-nombre">{{ producto.nombre }}</p>
-                        <p class="producto-precio">${{ producto.precio_unit }}</p>
-                        <div class="producto-opc">
-                            <a href="{% url 'productos:productos_detail' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/lupa.webp' %}" alt="Detalle Producto"></a>
-                            <a href="{% url 'productos:productos_update' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
-                            <a href="{% url 'productos:productos_delete' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
-                        </div>
-                    </div>     
-                {% endfor %}  
-            </div>
-        {% endfor %}
-        <div class="card">           
-            <h1 class="categoria-titulo">Formas de entrega</h1>
-            <hr class="categoria-hr">
-            {% for entrega in forma_entrega %}
-                <div class="productos">
-                    <p class="producto-nombre">{{entrega.forma_entrega}}</p>
-                    {% if entrega.precio != None %}
-                        <p class="producto-precio">${{entrega.precio}}</p>
-                    {% endif %}
-                    <div class="producto-opc">
-                        <a href="{% url 'pedido:formaentrega_update' entrega.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
+<section class="categorias-container">
+    {% regroup object_list by categoria.nombre as categorias_productos %}
+
+    {% for categoria in categorias_productos %}
+        {% with categoria.grouper as nombre_categoria %}
+            {% for cat in categorias %}
+                {% if cat.nombre == nombre_categoria and cat.estado %} 
+                    <div class="card">           
+                        <h1 class="categoria-titulo">{{ nombre_categoria }}</h1>  
+                        <hr class="categoria-hr">
+                        {% for producto in categoria.list %}
+                            <div class="productos">
+                                <p class="producto-nombre">{{ producto.nombre }}</p>
+                                <p class="producto-precio">${{ producto.precio_unit }}</p>
+                                <div class="producto-opc">
+                                    <a href="{% url 'productos:productos_detail' producto.id %}">
+                                        <img class="icono-opc" src="{% static 'productos/img/lupa.webp' %}" alt="Detalle Producto">
+                                    </a>
+                                    <a href="{% url 'productos:productos_update' producto.id %}">
+                                        <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto">
+                                    </a>
+                                </div>
+                            </div>     
+                        {% endfor %}
                     </div>
-            </div>    
+                {% endif %}
             {% endfor %}
-        </div>      
-    </section>
+        {% endwith %}
+    {% endfor %}
+    
+    <div class="card">           
+        <h1 class="categoria-titulo">Formas de entrega</h1>
+        <hr class="categoria-hr">
+        {% for entrega in forma_entrega %}
+            <div class="productos">
+                <p class="producto-nombre">{{ entrega.forma_entrega }}</p>
+                {% if entrega.precio != None %}
+                    <p class="producto-precio">${{ entrega.precio }}</p>
+                {% endif %}
+                <div class="producto-opc">
+                    <a href="{% url 'pedido:formaentrega_update' entrega.id %}">
+                        <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto">
+                    </a>
+                </div>
+            </div>    
+        {% endfor %}
+    </div>      
+</section>
+
 {% endblock main %}
 

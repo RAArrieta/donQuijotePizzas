@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    dQ | Lista Whatsapp
+    dS | Lista Whatsapp
 {% endblock title %}
 
 {% block css %}
@@ -31,6 +31,10 @@
                     <h1 class="categoria-titulo">🍻 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍻</h1>
                 {% elif categoria.grouper == "Postres" %}
                     <h1 class="categoria-titulo">🍮 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍮</h1>
+                {% elif categoria.grouper == "Promos" %}
+                    <h1 class="categoria-titulo">✨ &nbsp;*{{ categoria.grouper|upper }}*&nbsp; ✨</h1>
+                {% elif categoria.grouper == "Sabores Patrios" %}
+                    <h1 class="categoria-titulo">🇦🇷 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🇦🇷</h1>
                 {% endif %}   
                 <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>            
             </div>

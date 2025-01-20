@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    dQ | Detalle Producto
+    dS | Detalle Producto
 {% endblock title %}
 
 {% block css %}
@@ -19,7 +19,7 @@
             <h1 class="producto-card-titulo">{{ object.nombre }}</h1>
             <div class="producto-opc">
                 <a href="{% url 'productos:productos_update' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto"></a>
-                <a href="{% url 'productos:productos_delete' producto.id%}"><img class="icono-opc" src="{% static 'productos/img/borrar.webp' %}" alt="Borrar Producto"></a>
+               
             </div>
         </div>
         <hr class="categoria-hr">
