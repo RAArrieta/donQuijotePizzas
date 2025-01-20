@@ -10,10 +10,22 @@
 {% endblock css %}
 
 {% block titulo %}
-{% include 'core/components/encabezado.html' with titulo_texto="Pedido" %}
+{% if pedido and pedido|length > 0 %}
+{% include 'core/components/encabezado.html' with titulo_texto=pedido %}
+{% else %}
+{% include 'core/components/encabezado.html' with titulo_texto="Nuevo Pedido" %}
+{% endif %}
 {% endblock titulo %}
 
-{% block main %}   
+{% block main %} 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+  
     <section class="carro-section-conteiner card">
         <div class="carro-widget-selects">
             {% include "carro/components/widget.html" %}

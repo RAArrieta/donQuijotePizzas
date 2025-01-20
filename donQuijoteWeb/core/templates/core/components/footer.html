@@ -1,3 +1,10 @@
+{% if cant_envios > 0 %}
 <footer class="footer-container">
-    <p class="footer-info">PEDIDOS: {{cant_pedidos}} / PENDIENTES: {{cant_pendientes}} / ENTREGADOS: {{cant_entregados}} / RESERVADOS: {{cant_reservados}}</p>
-</footer>
+    <p class="footer-info">ENVIOS: {{cant_envios}}</p>
+    <p class="footer-info">{% if cant_pedidos %}PEDIDOS: {{cant_pedidos}}{% endif %}{% if cant_pendientes %} | PENDIENTES: {{cant_pendientes}}{% endif %} {% if cant_entregados %}  | ENTREGADOS: {{cant_entregados}}{% endif %} {% if cant_reservados %}  | RESERVADOS: {{cant_reservados}}{% endif %} </p>
+</footer>  
+{% else %}
+<footer class="footer-pedidos">
+    <p class="footer-info">{% if cant_pedidos %}PEDIDOS: {{cant_pedidos}}{% endif %}{% if cant_pendientes %} | PENDIENTES: {{cant_pendientes}}{% endif %} {% if cant_entregados %}  | ENTREGADOS: {{cant_entregados}}{% endif %} {% if cant_reservados %}  | RESERVADOS: {{cant_reservados}}{% endif %} </p>
+</footer> 
+{% endif %}

@@ -52,10 +52,12 @@ def abrir_caja(request):
 def cerrar_caja(request):
     caja = Caja.objects.first()  
     if caja:
-        cant_pendientes = Pedido.objects.filter(estado='pendiente').count()
         cant_cobrar = Pedido.objects.filter(pago='cobrar').count()
+        cant_pendientes = Pedido.objects.filter(estado='pendiente').count()        
         cant_reservados = Pedido.objects.filter(estado='reservado', pago='cobrar').count()
-        if cant_pendientes == 0 and (cant_cobrar == 0 or cant_reservados == cant_cobrar):
+        cant_cancelados = Pedido.objects.filter(estado='cancelado', pago='cobrar').count()
+        cant_reser_cancel = cant_reservados + cant_cancelados
+        if cant_pendientes == 0 and (cant_cobrar == 0 or cant_reservados == cant_cobrar or cant_cancelados == cant_cobrar or cant_reser_cancel == cant_cobrar):
             cargar_facturas()            
             Pedido.objects.exclude(estado='reservado').delete()
             with connection.cursor() as cursor:

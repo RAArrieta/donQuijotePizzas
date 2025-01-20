@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 from productos.models import Producto
 from pedido.models import FormaEntrega
@@ -12,28 +13,40 @@ from django.contrib import messages
 @login_required
 def carro(request):
     estado_caja = Caja.objects.all().values_list('estado_caja', flat=True)
-
+    carro = Carro(request)
+    comprobacion_pedido = carro.comprobacion_pedido()
+    cargar_pedido = request.GET.get('cargar_pedido', 'false') == 'true'
+    
     for estado in estado_caja:
-        if estado:
-            cargar_datos(request)
-            carro=Carro(request)
-            categorias=select_productos() 
-            forma_entrega = FormaEntrega.objects.all()
-            comprobacion_pedido=carro.comprobacion_pedido()
-            cargar_pedido = request.GET.get('cargar_pedido', 'false') == 'true'
-            if cargar_pedido:
-                if comprobacion_pedido:
-                    return redirect("pedido:procesar_ped")   
-            
-            context = {
-                'categorias': categorias,
-                'forma_entrega': forma_entrega,
-            }
-                
-            return render(request, "carro/carro.html", context)
-        else:
+        if not estado:
             messages.error(request, "Debe abrir caja para crear un pedido...")
-            return redirect("pedido:home")        
+            return redirect("pedido:listar_pendientes")
+
+    if cargar_pedido and comprobacion_pedido:
+        return redirect("pedido:procesar_ped")
+
+    nro_pedido = request.session.get('nro_pedido', None)
+    pedido=None
+    
+    if nro_pedido is not None: 
+        pedido= "Pedido " + str(nro_pedido)
+        if request.path != reverse("pedido:modificar_pedido", args=[nro_pedido]):
+            messages.warning(request, "Debe Guardar o Cancelar la modificación...") 
+    else:  
+        if 'nro_pedido' in request.session:
+            del request.session['nro_pedido']
+    
+    cargar_datos(request)
+    carro = Carro(request)
+    categorias = select_productos() 
+    forma_entrega = FormaEntrega.objects.all()
+    
+    context = {
+        'categorias': categorias,
+        'forma_entrega': forma_entrega,
+        'pedido': pedido,
+    }      
+    return render(request, "carro/carro.html", context)
 
 @login_required
 def cargar_datos(request):
@@ -105,4 +118,6 @@ def eliminar_producto(request, producto_id):
 def limpiar_carro(request):
     carro=Carro(request)
     carro.limpiar_carro()
-    return redirect("pedido:home")
+    if 'nro_pedido' in request.session:
+                    del request.session['nro_pedido']
+    return redirect("pedido:listar_pendientes")

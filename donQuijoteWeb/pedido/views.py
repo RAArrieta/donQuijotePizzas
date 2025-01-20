@@ -1,4 +1,4 @@
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -66,33 +66,36 @@ def procesar_ped(request):
         for producto in lista_productos:
             producto.pedido = pedido
         PedidoProductos.objects.bulk_create(lista_productos)
-
-    carro.limpiar_carro()
+        
+    carro.limpiar_carro()  
     return redirect("pedido:listar_pendientes")
-   
 
 class FormaEntregaUpdate(LoginRequiredMixin, UpdateView):
     model = FormaEntrega
     form_class = FormaEntregaForm
     success_url = reverse_lazy("productos:home")
-    
+
 @login_required
 def modificar_pedido(request, pedido):
-    nro_pedido = pedido
+    nro_pedido_actual = request.session.get('nro_pedido')  
+    nro_pedido_nuevo = pedido 
+    
+    if nro_pedido_actual is not None and str(nro_pedido_actual) != str(nro_pedido_nuevo):
+        return redirect(reverse("pedido:modificar_pedido", args=[nro_pedido_actual]))
+    
     pedidos = recuperar_pedidos()
-    pedido = pedidos[nro_pedido]
+    pedido = pedidos[nro_pedido_nuevo]
     carro = Carro(request)
     carro.cargar_pedido(pedido)
-    request.session['nro_pedido'] = nro_pedido
+    request.session['nro_pedido'] = nro_pedido_nuevo
     return redirect("carro:carro")
-    
+
 @login_required
 def listar_pedidos(request):
     pedidos = recuperar_pedidos()
     if not pedidos:
         messages.warning(request, "No hay pedidos cargados...")
     return render(request, 'pedido/index.html', {'pedidos': pedidos})
-
 
 @login_required
 def listar_pendientes(request):
