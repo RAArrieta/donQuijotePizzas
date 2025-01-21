@@ -50,7 +50,10 @@
             </form>
 
         {% elif titulo_texto == "Gastos" %}
+            <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
+            <a class="btn-opc" href="{% url 'gastos:listar_proveedores' %}">Proveedores</a>
             <a class="btn-opc" href="{% url 'gastos:insumos_create' %}">Crear Insumo</a>
+            <a class="btn-opc" href="{% url 'gastos:proveedor_create' %}">Crear Proveedor</a>
 
         {% endif %}
         </div>       

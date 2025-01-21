@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Insumos
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'gastos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    {% include 'core/components/encabezado.html' with titulo_texto="Insumos" %}
+{% endblock titulo %}
+
+{% block main %}
+<section class="proveedores-container">
+    {% regroup object_list by proveedor.nombre as insumos_por_proveedor %}
+
+    {% for grupo in insumos_por_proveedor %}
+        {% with grupo.grouper as nombre_proveedor %}
+            {% for proveedor in proveedores %}
+                {% if proveedor.nombre == nombre_proveedor and proveedor.estado %}
+                    <div class="card">
+                        <h1 class="proveedores-titulo">{{ nombre_proveedor }}</h1>
+                        <hr class="proveedores-hr">
+                        {% for insumo in grupo.list %}
+                            <div class="insumos">
+                                <p class="insumo-nombre">{{ insumo.nombre }}</p>
+                                <p class="insumo-precio">${{ insumo.precio }} x {{ insumo.unidad }}</p>
+                                <div class="insumo-opc">
+                                    <a href="{% url 'gastos:insumos_update' insumo.id %}">
+                                        <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Insumo">
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+    {% endfor %}
+
+    
+   
+</section>
+
+{% endblock main %}

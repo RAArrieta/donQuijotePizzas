@@ -45,14 +45,6 @@ class ProductoCategoriaUpdate(LoginRequiredMixin, UpdateView):
     form_class=forms.ProductoCategoriaForm
     success_url = reverse_lazy("productos:categorias")
     
-class ProductoDelete(LoginRequiredMixin, DeleteView):
-    model = models.Producto
-    success_url = reverse_lazy("productos:home")
-    
-class ProductoCategoriaDelete(LoginRequiredMixin, DeleteView):
-    model = models.ProductoCategoria
-    success_url = reverse_lazy("productos:categorias")
-    
 class ProductoDetail(LoginRequiredMixin, DetailView):
     model = models.Producto
 
