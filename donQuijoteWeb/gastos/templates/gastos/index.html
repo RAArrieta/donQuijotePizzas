@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Gastos
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'gastos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    {% include 'core/components/encabezado.html' with titulo_texto="Gastos" %}
+{% endblock titulo %}
+
+{% block main %}
+<h1 class="gastos">Gastos</h1>
+<h2>{{saludo}}</h2>
+
+
+{% endblock main %}
