@@ -48,6 +48,10 @@
                 {{ form.as_p }}
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
+
+        {% elif titulo_texto == "Gastos" %}
+            <a class="btn-opc" href="{% url 'gastos:insumos_create' %}">Crear Insumo</a>
+
         {% endif %}
         </div>       
     </div>

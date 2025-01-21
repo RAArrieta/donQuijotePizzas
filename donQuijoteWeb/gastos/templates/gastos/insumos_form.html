@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        dQ | Modificar Insumo   
+    {% else %}
+        dQ | Crear Insumo
+    {% endif %} 
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'gastos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    {% if form.instance.pk %}
+        {% include 'core/components/encabezado.html' with titulo_texto="Modificar Insumo" %}
+    {% else %}
+        {% include 'core/components/encabezado.html' with titulo_texto="Crear Insumo" %}        
+    {% endif %}  
+{% endblock titulo %}
+
+{% block main %}
+    <section class="form-container">
+        <form class="card" action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <div class="btn-container">
+                <button class="btn-success" type="submit">Guardar</button>
+                <a class="btn-delete" href="{% url 'gastos:home' %}">Cancelar</a>
+            </div> 
+        </form>
+    </section>
+{% endblock main %}
