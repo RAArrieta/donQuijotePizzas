@@ -1,15 +1,15 @@
 from django.shortcuts import render
-from .models import Insumos, Proveedores
+from .models import Insumos, Proveedores, Gastos
 from django.views.generic import (CreateView, DeleteView, DetailView, UpdateView,)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from . import forms, models
 
 def home(request):
-    saludo = "Hooooola Gastos"
+    gastos = Gastos.objects.all()
         
     context = {
-        'saludo': saludo,
+        'gastos': gastos,
     }
     return render(request, "gastos/index.html", context)
 

@@ -15,7 +15,30 @@
 
 {% block main %}
 <h1 class="gastos">Gastos</h1>
-<h2>{{saludo}}</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Insumo</th>
+            <th>Cantidad</th>
+            <th>Monto</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for gasto in gastos %}
+            <tr>
+                <td>{{ gasto.insumo.nombre }}</td>
+                <td>{{ gasto.cantidad }}</td>
+                <td>${{ gasto.monto }}</td>
+                <td>{{ gasto.fecha }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No hay gastos registrados.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 
 {% endblock main %}

@@ -1,10 +1,11 @@
 from django.db import models
 from productos.models import Producto
+from django.utils.timezone import now
 
 class Facturas(models.Model):
     forma_pago = models.CharField(max_length=50)
     pago = models.FloatField()
-    fecha = models.DateField(auto_now_add=True)
+    fecha = models.DateField(default=now)
     envio = models.FloatField(null=True, blank=True)
         
     class Meta:
