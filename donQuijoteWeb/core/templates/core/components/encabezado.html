@@ -49,7 +49,11 @@
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
 
-        {% elif titulo_texto == "Gastos" %}
+        {% elif titulo_texto == "Pagos" %}
+            <form method="get" class="filtro-form">
+                {{ form.as_p }}
+                <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
+            </form>
             <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
             <a class="btn-opc" href="{% url 'gastos:listar_proveedores' %}">Proveedores</a>
             <a class="btn-opc" href="{% url 'gastos:insumos_create' %}">Crear Insumo</a>

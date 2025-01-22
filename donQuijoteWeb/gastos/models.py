@@ -33,6 +33,7 @@ class Gastos(models.Model):
     cantidad=models.FloatField(verbose_name="Cantidad")
     monto=models.FloatField(verbose_name="Monto")
     fecha = models.DateField(default=now)
+    forma_pago = models.CharField(max_length=50)
     
     def __str__(self):
         return self.insumo.nombre

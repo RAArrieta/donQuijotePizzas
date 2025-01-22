@@ -10,35 +10,34 @@
 {% endblock css %}
 
 {% block titulo %}
-    {% include 'core/components/encabezado.html' with titulo_texto="Gastos" %}
+    {% include 'core/components/encabezado.html' with titulo_texto="Pagos" %}
 {% endblock titulo %}
 
 {% block main %}
-<h1 class="gastos">Gastos</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Insumo</th>
-            <th>Cantidad</th>
-            <th>Monto</th>
-            <th>Fecha</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for gasto in gastos %}
-            <tr>
-                <td>{{ gasto.insumo.nombre }}</td>
-                <td>{{ gasto.cantidad }}</td>
-                <td>${{ gasto.monto }}</td>
-                <td>{{ gasto.fecha }}</td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="4">No hay gastos registrados.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="insumos-totales card">
+    <h3>Efectivo: ${{caja_efectivo}}</h3>
+    <p>|</p>
+    <h3>Mercado: ${{caja_mercado}}</h3>
+    <p>|</p>
+    <h3>Naranja: ${{caja_naranja}}</h3>
+    <p>|</p>
+    <h3>Total: $ {{caja_total}}</h3>
+</div>
+{% for gasto in gastos %}
+<div class="insumos-detalle">
+    <p class="insumos-detalle-pedido">{{ gasto.fecha|date:"d/m/Y" }}</p>
+    <p class="insumos-detalle-pedido">{{ gasto.insumo.proveedor }}</p>
+    <p class="insumos-detalle-pedido">{{ gasto.cantidad }}</p>
+    <p class="insumos-detalle-pedido">{{ gasto.insumo.nombre }}</p>
+    <p class="insumos-detalle-pedido">{{ gasto.forma_pago|upper}}</p>
+    <p class="insumos-detalle-pedido">${{ gasto.monto }}</p>
+</div>
+<div class="insumos-hr-container">
+    <hr class="insumos-hr">  
+</div>
+{% empty %}
+<h2>No hay gastos registrados.</h2>
+{% endfor %}
 
 
 {% endblock main %}
