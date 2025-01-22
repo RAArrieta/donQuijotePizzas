@@ -54,13 +54,32 @@
                 {{ form.as_p }}
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
+            <a class="btn-opc" href="{% url 'gastos:cargar_pagos' %}">Cargar Pagos</a>
             <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
+
+        {% elif titulo_texto == "Insumos" %}
+            <a class="btn-opc" href="{% url 'gastos:home' %}">Pagos</a>
             <a class="btn-opc" href="{% url 'gastos:listar_proveedores' %}">Proveedores</a>
             <a class="btn-opc" href="{% url 'gastos:insumos_create' %}">Crear Insumo</a>
             <a class="btn-opc" href="{% url 'gastos:proveedor_create' %}">Crear Proveedor</a>
 
+        {% elif titulo_texto == "Carga de Pagos" %}
+            <a class="btn-opc" href="{% url 'gastos:home' %}">Pagos</a>
+            <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
+
+        {% elif titulo_texto == "Crear Insumo" %}
+            <a class="btn-opc" href="{% url 'gastos:home' %}">Pagos</a>
+            <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
+        {% elif titulo_texto == "Crear Proveedor" %}
+            <a class="btn-opc" href="{% url 'gastos:home' %}">Pagos</a>
+            <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
         {% endif %}
+
+        
+
+        
         </div>       
     </div>
     <hr  class="main-hr"/>
 </div>
+

@@ -53,9 +53,12 @@
 .icono-opc:hover {
     transform: scale(1.2);
 }
+.form-gastos {
+    width: 60%;
+    padding: 40px;
+}
 .form-container {
     width: 100%;
-    height: calc(100vh - 17vh);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,7 +115,7 @@
   .filtro-form button:hover {
     background-color: #bdc3c7;
   }
-  .form-contrl {
+  .form-control {
     width: 100%;
     font-family: 'Merriweather', serif;
   }
@@ -132,3 +135,12 @@
     border-color: #2C3E50;
     box-shadow: 0 0 5px rgba(44, 62, 80, 0.5);
 }
+.insumo-elim {
+    text-decoration: none;
+    width: 5%;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }

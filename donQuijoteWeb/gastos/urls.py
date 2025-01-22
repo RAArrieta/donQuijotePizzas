@@ -11,4 +11,6 @@ urlpatterns = [
     path("proveedor_create/", views.ProveedoresCreate.as_view(), name="proveedor_create"),
     path("insumos_update/<int:pk>", views.InsumosUpdate.as_view(), name="insumos_update"),
     path("proveedores_update/<int:pk>", views.ProveedoresUpdate.as_view(), name="proveedores_update"),
+    path("cargar_pagos/", views.cargar_pagos, name="cargar_pagos"),
+    path('eliminar_pago/<int:gasto_id>/', views.eliminar_pago, name='eliminar_pago'),
 ]
