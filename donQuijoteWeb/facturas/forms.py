@@ -9,3 +9,17 @@ class RangoFechasForm(forms.Form):
         widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-contrl'}),
         label=''
     )
+    OPCIONES_FORMA_PAGO = [
+        ('', 'Forma de Pago'),
+        ('efectivo', 'Efectivo'),
+        ('mercado', 'Mercado'),
+        ('naranja', 'Naranja'),
+    ]
+    forma_pago = forms.ChoiceField(
+        choices=OPCIONES_FORMA_PAGO,
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-contrl'}),
+        label=""
+    )
+
+    
