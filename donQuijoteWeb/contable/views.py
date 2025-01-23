@@ -12,11 +12,7 @@ def home(request):
     hoy = date.today()
     inicio_mes = date(hoy.year, hoy.month, 1)
     
-    gastos = Gastos.objects.all()
-    facturas = Facturas.objects.all()
-    
     gastos_xdia = Gastos.objects.filter(fecha__gte=inicio_mes).values('fecha').annotate(total_gastado=Sum('monto'), nombre=Value('PAGOS')).order_by('fecha')
-    # gastos_xdia = Gastos.objects.values('fecha').annotate(total_gastado=Sum('monto'), nombre=Value('PAGOS')).order_by('fecha')
     facturas_xdia = Facturas.objects.filter(fecha__gte=inicio_mes).values('fecha').annotate(total_gastado=Sum('pago'), nombre=Value('FACTURACION')).order_by('fecha')
     
     gastos_facturas_xdia = sorted(
