@@ -22,7 +22,6 @@ def home(request):
         fecha_inicio = form.cleaned_data.get('fecha_inicio')
         fecha_fin = form.cleaned_data.get('fecha_fin')
         forma_pago = form.cleaned_data.get('forma_pago')
-        insumo = form.cleaned_data.get('insumo')
         proveedor = form.cleaned_data.get('proveedor')
         
         if fecha_inicio and fecha_fin:
@@ -34,12 +33,9 @@ def home(request):
         
         if forma_pago:
             gastos = gastos.filter(forma_pago=forma_pago)
-        
-        if insumo:
-            gastos = gastos.filter(insumo=insumo)
-        
+             
         if proveedor:
-            gastos = gastos.filter(insumo__proveedor=proveedor)
+            gastos = gastos.filter(proveedor=proveedor)
     
     for gasto in gastos:
         caja_total += gasto.monto
@@ -111,13 +107,11 @@ def cargar_pagos(request):
 
     
     if request.method == "POST":
-        # Procesar el formulario enviado
         form = GastosForm(request.POST)
         if form.is_valid():
-            form.save()  # Guarda los datos del formulario en la base de datos
+            form.save() 
             return redirect('gastos:cargar_pagos')  # Redirige a la misma vista para evitar reenvíos
     else:
-        # Crear un formulario vacío para mostrar en el template
         form = GastosForm(request.GET or None)
        
     for gasto in gastos_hoy:
@@ -140,12 +134,6 @@ def cargar_pagos(request):
     return render(request, "gastos/carga_pagos.html", context)
 
 def eliminar_pago(request, gasto_id):
-        # Obtiene el gasto por ID o muestra un error 404 si no existe
     gasto = get_object_or_404(Gastos, id=gasto_id)
-    
-    # Elimina el gasto
     gasto.delete()
-    
-
-
     return redirect('gastos:cargar_pagos')

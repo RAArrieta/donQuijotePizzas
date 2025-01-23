@@ -26,9 +26,7 @@
 {% for gasto in gastos %}
 <div class="insumos-detalle">
     <p class="insumos-detalle-pedido">{{ gasto.fecha|date:"d/m/Y" }}</p>
-    <p class="insumos-detalle-pedido">{{ gasto.insumo.proveedor }}</p>
-    <p class="insumos-detalle-pedido">{{ gasto.cantidad }}</p>
-    <p class="insumos-detalle-pedido">{{ gasto.insumo.nombre }}</p>
+    <p class="insumos-detalle-pedido">{{ gasto.proveedor }}</p>
     <p class="insumos-detalle-pedido">{{ gasto.forma_pago|upper}}</p>
     <p class="insumos-detalle-pedido">${{ gasto.monto }}</p>
 </div>

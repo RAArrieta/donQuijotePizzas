@@ -31,13 +31,13 @@ class RangoFechasGastosForm(forms.Form):
         empty_label="Proveedores"
     )
    
-    insumo = forms.ModelChoiceField(
-        queryset=Insumos.objects.all(),
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        label="",
-        empty_label="Insumos" 
-    )
+    # insumo = forms.ModelChoiceField(
+    #     queryset=Insumos.objects.all(),
+    #     required=False,
+    #     widget=forms.Select(attrs={'class': 'form-control'}),
+    #     label="",
+    #     empty_label="Insumos" 
+    # )
 
 class ProveedoresForm(forms.ModelForm):
     class Meta:
@@ -63,7 +63,7 @@ class GastosForm(forms.ModelForm):
         model = models.Gastos
         exclude = ["fecha"]
         widgets = {
-            "insumo": forms.Select(attrs={"class": "form-control"}),  
+            "proveedor": forms.Select(attrs={"class": "form-control"}),  
             "cantidad": forms.NumberInput(attrs={"class": "form-control"}),
             "monto": forms.NumberInput(attrs={"class": "form-control"}),
             "forma_pago": forms.Select(attrs={"class": "form-control"}),
