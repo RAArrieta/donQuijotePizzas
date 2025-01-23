@@ -10,4 +10,5 @@ urlpatterns = [
     path('facturas/', include('facturas.urls')),
     path('estadisticas/', include('estadisticas.urls')),
     path('gastos/', include('gastos.urls')),
+    path('contable/', include('contable.urls')),
 ]
