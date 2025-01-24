@@ -426,3 +426,10 @@ body {
   background-color: #cce5ff; /* color de fondo para mensajes de información */
   color: #004085;
 }
+
+
+
+.vacio {
+  padding-left: 100px;
+  padding-top: 20px;
+}

@@ -19,14 +19,16 @@ class FechasForm(forms.Form):
         widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
         label=''
     )
-    
+
 class FechasPagosForm(forms.Form):
     fecha_inicio = forms.DateField(
         widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
+        required=False,
         label=''
     )
     fecha_fin = forms.DateField(
         widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
+        required=False,
         label=''
     )
     OPCIONES_FORMA_PAGO = [
@@ -45,10 +47,12 @@ class FechasPagosForm(forms.Form):
 class FechasPagosProvForm(forms.Form):
     fecha_inicio = forms.DateField(
         widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
+        required=False,
         label=''
     )
     fecha_fin = forms.DateField(
         widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
+        required=False,
         label=''
     )
     OPCIONES_FORMA_PAGO = [
