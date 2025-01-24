@@ -43,6 +43,7 @@
         {% elif titulo_texto == "Caja Diaria" %}
             <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>
             <a class="btn-opc" href="{% url 'facturas:cerrar_caja' %}">Cerrar Caja</a>
+
         {% elif titulo_texto == "Facturación" %}
             <form method="get" class="filtro-form">
                 {{ form.as_p }}
@@ -57,6 +58,12 @@
             <a class="btn-opc" href="{% url 'gastos:cargar_pagos' %}">Cargar Pagos</a>
         {% elif titulo_texto == "Carga de Pagos" %}
             <a class="btn-opc" href="{% url 'gastos:home' %}">Pagos</a>
+
+        {% elif titulo_texto == "Contabilidad" %}
+            <form method="get" class="filtro-form">
+                {{ form.as_p }}
+                <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
+            </form>
 
         {% elif titulo_texto == "Insumos" %}
             <a class="btn-opc" href="{% url 'gastos:listar_proveedores' %}">Proveedores</a>

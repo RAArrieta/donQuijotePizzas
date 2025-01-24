@@ -2,11 +2,11 @@ from django import forms
 
 class RangoFechasForm(forms.Form):
     fecha_inicio = forms.DateField(
-        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-contrl'}),
+        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
         label=''
     )
     fecha_fin = forms.DateField(
-        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-contrl'}),
+        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
         label=''
     )
     OPCIONES_FORMA_PAGO = [
@@ -18,8 +18,10 @@ class RangoFechasForm(forms.Form):
     forma_pago = forms.ChoiceField(
         choices=OPCIONES_FORMA_PAGO,
         required=False,
-        widget=forms.Select(attrs={'class': 'form-contrl'}),
+        widget=forms.Select(attrs={'class': 'form-control'}),
         label=""
     )
+    
+
 
     

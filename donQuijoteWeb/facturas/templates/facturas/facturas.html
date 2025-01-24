@@ -47,7 +47,10 @@
     <div class="facturas-hr-container">
         <hr class="facturas-hr">  
     </div>
+    {% empty %}
+    <h2>No hay Facturas en este rango de fechas.</h2>
 {% endfor %}
+
 
 <script src="{% static 'facturas/js/visualizar_productos.js' %}"></script>
 
