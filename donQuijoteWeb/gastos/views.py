@@ -1,22 +1,18 @@
 from datetime import date, datetime
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import Insumos, Proveedores, Gastos
-from django.views.generic import (CreateView, DeleteView, DetailView, UpdateView,)
+from django.views.generic import (CreateView, UpdateView,)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from . import forms, models
-from .forms import RangoFechasGastosForm, GastosForm
+from .forms import GastosForm
+from core.forms import FechasPagosProvForm
 
 def home(request):
     gastos = Gastos.objects.all()
     now = datetime.now()
-    
-    caja_total = 0.0
-    caja_efectivo = 0.0
-    caja_mercado = 0.0
-    caja_naranja = 0.0
-    
-    form = RangoFechasGastosForm(request.GET or None)
+       
+    form = FechasPagosProvForm(request.GET or None)
     
     if form.is_valid():
         fecha_inicio = form.cleaned_data.get('fecha_inicio')
@@ -26,16 +22,17 @@ def home(request):
         
         if fecha_inicio and fecha_fin:
             gastos = gastos.filter(fecha__range=[fecha_inicio, fecha_fin])
-        elif fecha_inicio:
-            gastos = gastos.filter(fecha__gte=fecha_inicio)
-        elif fecha_fin:
-            gastos = gastos.filter(fecha__lte=fecha_fin)
-        
+               
         if forma_pago:
             gastos = gastos.filter(forma_pago=forma_pago)
              
         if proveedor:
             gastos = gastos.filter(proveedor=proveedor)
+    
+    caja_total = 0.0
+    caja_efectivo = 0.0
+    caja_mercado = 0.0
+    caja_naranja = 0.0
     
     for gasto in gastos:
         caja_total += gasto.monto
@@ -110,10 +107,15 @@ def cargar_pagos(request):
         form = GastosForm(request.POST)
         if form.is_valid():
             form.save() 
-            return redirect('gastos:cargar_pagos')  # Redirige a la misma vista para evitar reenvíos
+            return redirect('gastos:cargar_pagos') 
     else:
         form = GastosForm(request.GET or None)
        
+    caja_total = 0.0
+    caja_efectivo = 0.0
+    caja_mercado = 0.0
+    caja_naranja = 0.0  
+     
     for gasto in gastos_hoy:
         caja_total += gasto.monto
         if gasto.forma_pago == "efectivo":  

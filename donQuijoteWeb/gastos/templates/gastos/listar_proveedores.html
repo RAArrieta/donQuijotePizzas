@@ -23,7 +23,9 @@
                 <div class="insumo-opc">
                     <a href="{% url 'gastos:proveedores_update' proveedor.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Proveedor"></a>
                 </div>
-            </div>     
+            </div>
+            {% empty %}
+            <h2>No hay Proveedores cargados</h2>     
         {% endfor %}
     </div>
 </section>

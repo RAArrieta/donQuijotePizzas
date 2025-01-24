@@ -7,7 +7,8 @@ from .models import Caja, Facturas, FacturaProducto
 from pedido.models import Pedido
 from django.db import connection
 from datetime import datetime
-from .forms import RangoFechasForm
+from core.forms import FechasPagosForm
+from django.db.models import Sum, Q
 
 def home(request):
     pedidos = recuperar_entregados()
@@ -26,6 +27,7 @@ def home(request):
             caja_naranja += value["datos"]["total"]
             
     estado_caja = Caja.objects.all().values_list('estado_caja', flat=True)
+    
     for estado in estado_caja:
         if not estado:
             messages.warning(request, "Caja cerrada...")
@@ -50,13 +52,15 @@ def abrir_caja(request):
     return redirect("facturas:home")
 
 def cerrar_caja(request):
-    caja = Caja.objects.first()  
+    caja = Caja.objects.first() 
+     
     if caja:
         cant_cobrar = Pedido.objects.filter(pago='cobrar').count()
         cant_pendientes = Pedido.objects.filter(estado='pendiente').count()        
         cant_reservados = Pedido.objects.filter(estado='reservado', pago='cobrar').count()
         cant_cancelados = Pedido.objects.filter(estado='cancelado', pago='cobrar').count()
         cant_reser_cancel = cant_reservados + cant_cancelados
+        
         if cant_pendientes == 0 and (cant_cobrar == 0 or cant_reservados == cant_cobrar or cant_cancelados == cant_cobrar or cant_reser_cancel == cant_cobrar):
             cargar_facturas()            
             Pedido.objects.exclude(estado='reservado').delete()
@@ -91,11 +95,7 @@ def cargar_facturas():
             elif k == "total":
                 total = v  
         
-        factura = Facturas(
-            envio=envio,
-            forma_pago=forma_pago,
-            pago=total,
-        )   
+        factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, )   
         
         factura.save()  
 
@@ -123,12 +123,7 @@ def facturas(request):
     facturas = Facturas.objects.filter(fecha__year=now.year, fecha__month=now.month)
     productos_factura = FacturaProducto.objects.all()
     
-    caja_total = 0.0
-    caja_efectivo = 0.0
-    caja_mercado = 0.0
-    caja_naranja = 0.0
-    
-    form = RangoFechasForm(request.GET or None)
+    form = FechasPagosForm(request.GET or None)
     
     if form.is_valid():
         fecha_inicio = form.cleaned_data.get('fecha_inicio')
@@ -137,23 +132,27 @@ def facturas(request):
         
         if fecha_inicio and fecha_fin:
             facturas = Facturas.objects.filter(fecha__range=[fecha_inicio, fecha_fin])
-        elif fecha_inicio:
-            facturas = facturas.filter(fecha__gte=fecha_inicio)
-        elif fecha_fin:
-            facturas = facturas.filter(fecha__lte=fecha_fin)
         
         if forma_pago:
             facturas = facturas.filter(forma_pago=forma_pago)
-    
-    for factura in facturas:
-        caja_total += factura.pago
-        if factura.forma_pago == "efectivo":  
-            caja_efectivo += factura.pago
-        elif factura.forma_pago == "mercado":
-            caja_mercado += factura.pago
-        elif factura.forma_pago == "naranja":
-            caja_naranja += factura.pago
-    
+  
+    caja_total = 0.0
+    caja_efectivo = 0.0
+    caja_mercado = 0.0
+    caja_naranja = 0.0
+       
+    facturas_aggregates = facturas.aggregate(
+        total=Sum('pago'),
+        efectivo=Sum('pago', filter=Q(forma_pago="efectivo")),
+        mercado=Sum('pago', filter=Q(forma_pago="mercado")),
+        naranja=Sum('pago', filter=Q(forma_pago="naranja"))
+    )
+
+    caja_total = (facturas_aggregates['total'] or 0) 
+    caja_efectivo = (facturas_aggregates['efectivo'] or 0) 
+    caja_mercado = (facturas_aggregates['mercado'] or 0)
+    caja_naranja = (facturas_aggregates['naranja'] or 0) 
+ 
     context = {
         'form': form,
         'facturas': facturas,
