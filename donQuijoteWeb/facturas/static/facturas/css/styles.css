@@ -12,8 +12,12 @@
     padding: 15px;
 }
 .cajas-detalle-pedido {
-    width: 33%;
+    width: 25%;
     text-align: center;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+
 }
 .facturas-hr-container {
     display: flex;
@@ -49,3 +53,29 @@
 .productos-detalles {
     margin: 10px 50px;
 }
+
+.no-check {
+    cursor: pointer;
+    width: 20px; /* Cambia el tamaño según lo necesario */
+    height: 20px; /* Igual que el ancho */
+    color: red; /* Color del texto o icono dentro del contenedor */
+    background-color: red;
+    border-radius: 50%; /* Hace que tenga forma circular */
+    display: flex; /* Centra el contenido dentro del círculo */
+    justify-content: center;
+    align-items: center;
+}
+
+
+.check {
+    cursor: pointer;
+    width: 20px; /* Cambia el tamaño según lo necesario */
+    height: 20px; /* Igual que el ancho */
+    color: green; /* Color del texto o icono dentro del contenedor */
+    background-color: green;
+    border-radius: 50%; /* Hace que tenga forma circular */
+    display: flex; /* Centra el contenido dentro del círculo */
+    justify-content: center;
+    align-items: center;
+}
+

@@ -43,6 +43,13 @@
         {% elif titulo_texto == "Caja Diaria" %}
             <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>
             <a class="btn-opc" href="{% url 'facturas:cerrar_caja' %}">Cerrar Caja</a>
+            {% if caja_total > 0.0 %}
+            <form method="get" class="filtro-form">
+                {{ form.as_p }}
+                <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
+            </form>
+            {% endif %}
+            
 
         {% elif titulo_texto == "Facturación" %}
             <form method="get" class="filtro-form">

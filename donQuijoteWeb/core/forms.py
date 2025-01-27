@@ -19,6 +19,20 @@ class FechasForm(forms.Form):
         widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
         label=''
     )
+    
+class PagosForm(forms.Form):
+    OPCIONES_FORMA_PAGO = [
+        ('', 'Forma de Pago'),
+        ('efectivo', 'Efectivo'),
+        ('mercado', 'Mercado'),
+        ('naranja', 'Naranja'),
+    ]
+    forma_pago = forms.ChoiceField(
+        choices=OPCIONES_FORMA_PAGO,
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label=""
+    )
 
 class FechasPagosForm(forms.Form):
     fecha_inicio = forms.DateField(
@@ -74,10 +88,3 @@ class FechasPagosProvForm(forms.Form):
         label="",
         empty_label="Proveedores"
     )
-    # insumo = forms.ModelChoiceField(
-    #     queryset=Insumos.objects.all(),
-    #     required=False,
-    #     widget=forms.Select(attrs={'class': 'form-control'}),
-    #     label="",
-    #     empty_label="Insumos" 
-    # )

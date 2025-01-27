@@ -7,11 +7,13 @@ from .models import Caja, Facturas, FacturaProducto
 from pedido.models import Pedido
 from django.db import connection
 from datetime import datetime
-from core.forms import FechasPagosForm
+from core.forms import FechasPagosForm, PagosForm
 from django.db.models import Sum, Q
+
 
 def home(request):
     pedidos = recuperar_entregados()
+    pedidos_pago = None
     caja_total= 0.0
     caja_efectivo=0.0
     caja_mercado=0.0
@@ -33,9 +35,23 @@ def home(request):
             messages.warning(request, "Caja cerrada...")
         elif caja_total == 0.0:
             messages.warning(request, "Aun no tiene pedidos entregados...")
+            
+    form = PagosForm(request.GET or None)
+    
+    if form.is_valid():
+        forma_pago = form.cleaned_data.get('forma_pago')
+        print(f"FORMA DE PAGO: {forma_pago}")      
+        if forma_pago:
+            pedidos_pago = {
+                key: value for key, value in pedidos.items() 
+                if value["datos"].get("pago") == forma_pago
+            }
+            pedidos = None
         
     context = {
+        'form': form,
         'pedidos': pedidos,
+        'pedidos_pago': pedidos_pago,
         'caja_total': caja_total,
         'caja_efectivo': caja_efectivo,
         'caja_mercado': caja_mercado, 
