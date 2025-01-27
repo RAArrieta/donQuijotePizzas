@@ -2,58 +2,58 @@
 {% load static %}
 
 {% block title %}
-    dQ | Lista Whatsapp
+dQ | Lista Whatsapp
 {% endblock title %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
 {% endblock css %}
 
 {% block titulo %}
-    {% include 'core/components/encabezado.html' with titulo_texto="Lista Whatsapp" %}
+{% include 'core/components/encabezado.html' with titulo_texto="Lista Whatsapp" %}
 {% endblock titulo %}
 
 {% block main %}
-    {% regroup object_list by categoria.nombre as categorias %}
-    <section class="categorias-container">
-        {% for categoria in categorias %}
-        <div class="card card-wa">
-            <div class="titulo-opciones-container">
-                {% if categoria.grouper == "Pizzas" %}
-                    <h1 class="categoria-titulo">🍕 &nbsp;*{{ categoria.grouper|upper }}* &nbsp;🍕</h1>                  
-                {% elif categoria.grouper == "Empanadas" %}
-                    <h1 class="categoria-titulo">🥟 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🥟</h1>
-                {% elif categoria.grouper == "Sandwichs" %}
-                    <h1 class="categoria-titulo">🍔 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍔</h1>
-                {% elif categoria.grouper == "Minutas" %}
-                    <h1 class="categoria-titulo">🍝 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍝</h1>  
-                {% elif categoria.grouper == "Bebidas" %}
-                    <h1 class="categoria-titulo">🍻 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍻</h1>
-                {% elif categoria.grouper == "Postres" %}
-                    <h1 class="categoria-titulo">🍮 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍮</h1>
-                {% elif categoria.grouper == "Promos" %}
-                    <h1 class="categoria-titulo">✨ &nbsp;*{{ categoria.grouper|upper }}*&nbsp; ✨</h1>
-                {% elif categoria.grouper == "Sabores Patrios" %}
-                    <h1 class="categoria-titulo">🇦🇷 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🇦🇷</h1>
-                {% endif %}   
-                <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>            
-            </div>
-            <div class="categoria-info">
-                {% for producto in categoria.list %}
-                    {% if producto.precio_doc %}
-                        <p>*{{ producto.nombre }}:*&nbsp; _Doc: ${{producto.precio_doc}} | c/u: ${{producto.precio_unit}}_</p>
-                    {% elif producto.precio_media %}
-                        <p>*{{ producto.nombre }}:*&nbsp; _1/2: ${{producto.precio_media}} | c/u: ${{producto.precio_unit}}_</p>
-                    {% else %}
-                        <p>*{{ producto.nombre }}:*&nbsp; _${{producto.precio_unit}}_</p>
-                    {% endif %} 
-                {% endfor %}
-            </div>   
+{% regroup object_list by categoria.nombre as categorias %}
+<section class="categorias-container">
+    {% for categoria in categorias %}
+    <div class="card card-wa">
+        <div class="titulo-opciones-container">
+            {% if categoria.grouper == "Pizzas" %}
+                <h1 class="categoria-titulo">🍕 &nbsp;*{{ categoria.grouper|upper }}* &nbsp;🍕</h1>                  
+            {% elif categoria.grouper == "Empanadas" %}
+                <h1 class="categoria-titulo">🥟 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🥟</h1>
+            {% elif categoria.grouper == "Sandwichs" %}
+                <h1 class="categoria-titulo">🍔 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍔</h1>
+            {% elif categoria.grouper == "Minutas" %}
+                <h1 class="categoria-titulo">🍝 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍝</h1>  
+            {% elif categoria.grouper == "Bebidas" %}
+                <h1 class="categoria-titulo">🍻 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍻</h1>
+            {% elif categoria.grouper == "Postres" %}
+                <h1 class="categoria-titulo">🍮 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🍮</h1>
+            {% elif categoria.grouper == "Promos" %}
+                <h1 class="categoria-titulo">✨ &nbsp;*{{ categoria.grouper|upper }}*&nbsp; ✨</h1>
+            {% elif categoria.grouper == "Sabores Patrios" %}
+                <h1 class="categoria-titulo">🇦🇷 &nbsp;*{{ categoria.grouper|upper }}*&nbsp; 🇦🇷</h1>
+            {% endif %}   
+            <button class="btn-success" onclick="copiarAlPortapapeles(this)">Copiar</button>            
         </div>
-        {% endfor %}
-    </section>   
+        <div class="categoria-info">
+            {% for producto in categoria.list %}
+                {% if producto.precio_doc %}
+                    <p>*{{ producto.nombre }}:*&nbsp; _Doc: ${{producto.precio_doc}} | c/u: ${{producto.precio_unit}}_</p>
+                {% elif producto.precio_media %}
+                    <p>*{{ producto.nombre }}:*&nbsp; _1/2: ${{producto.precio_media}} | c/u: ${{producto.precio_unit}}_</p>
+                {% else %}
+                    <p>*{{ producto.nombre }}:*&nbsp; _${{producto.precio_unit}}_</p>
+                {% endif %} 
+            {% endfor %}
+        </div>   
+    </div>
+    {% endfor %}
+</section>   
 
-    <script src="{% static 'productos/js/copiarPortapapeles.js' %}"></script>
+<script src="{% static 'productos/js/copiarPortapapeles.js' %}"></script>
 {% endblock main %}
 
 

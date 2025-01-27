@@ -2,15 +2,15 @@
 {% load static %}
 
 {% block title %}
-    dQ | Productos
+dQ | Productos
 {% endblock title %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
 {% endblock css %}
 
 {% block titulo %}
-    {% include 'core/components/encabezado.html' with titulo_texto="Productos" %}
+{% include 'core/components/encabezado.html' with titulo_texto="Productos" %}
 {% endblock titulo %}
 
 {% block main %}
@@ -62,6 +62,5 @@
         {% endfor %}
     </div>      
 </section>
-
 {% endblock main %}
 
