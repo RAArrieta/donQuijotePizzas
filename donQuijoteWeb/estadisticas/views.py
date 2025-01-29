@@ -52,15 +52,31 @@ def home(request):
 
 def cargar_datos(request):
     if request.method == 'POST':    
-        categoria = request.POST.get('categoria', None)          
+        categoria = request.POST.get('categoria', None)         
         producto_id = request.POST.get('producto_id', None)
+        
         if producto_id:
             try:
-                producto_nombre = Producto.objects.get(id=producto_id).nombre
+                producto = Producto.objects.get(id=producto_id)
+                producto_nombre = producto.nombre
+                categoria = request.POST.get('categoria', producto.categoria.nombre)  
             except Producto.DoesNotExist:
                 producto_nombre = None
+                categoria = None
         else:
-            producto_nombre = None
+            categoria = request.POST.get('categoria', None)
+            
+            
+            
+        # if producto_id:
+        #     try:
+        #         producto_nombre = Producto.objects.get(id=producto_id).nombre
+        #     except Producto.DoesNotExist:
+        #         producto_nombre = None
+        # else:
+        #     producto_nombre = None
+            
+            
         envios = request.POST.get('envios', None)
         fecha_inicio = request.POST.get("fecha_inicio", None)
         fecha_fin = request.POST.get("fecha_fin", None)

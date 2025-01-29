@@ -22,7 +22,8 @@
     <div class="estadisticas-datos">
 
         {% if estadisticas.producto_nombre %}
-            <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.producto_nombre }}</h3>
+            <h4 >Informe de Ventas</h4>
+            <h3 class="titulo-h3">{{estadisticas.categoria}} / {{ estadisticas.producto_nombre }}</h3>
         {% elif estadisticas.categoria %}
             <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.categoria }}</h3>
         {% else %}
@@ -70,4 +71,10 @@
 
     </div>
     {% endif %}
+{% else %}
+    <div class="estadisticas-datos">
+
+        <h3 class="titulo-h3">Busque un producto...</h3>
+
+    </div>
 {% endif %}

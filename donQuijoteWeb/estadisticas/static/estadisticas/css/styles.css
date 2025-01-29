@@ -1,6 +1,17 @@
 .estadisticas-container {
-  width: 90%;
+  width: 95%;
+  height: 95%;
   margin: 0 auto; 
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.card-filtro {
+  padding: 5px;
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* estadisticas_filtros.html */
@@ -14,7 +25,7 @@
   justify-content: space-evenly;
   min-width: 300px;
   border-right: #ccc solid 1px;
-  padding: 20px;
+  padding: 10px;
 }
 .estadisticas-fechas-container {
   flex: 1;
@@ -22,7 +33,7 @@
   flex-direction: column;
   justify-content: space-evenly;
   min-width: 300px;
-  padding: 20px;
+  padding: 10px;
 }
 .select-container {
   margin-bottom: 15px;
@@ -65,9 +76,8 @@
 
 /* estadisticas.html */
 .estadisticas-datos {
-  width: 80%;
-  margin: 15px auto; 
-  padding: 20px;
+  margin: auto 15px;
+  padding: 30px;
   border: #ccc solid 1px;
   border-top-left-radius: 15px;
   border-bottom-right-radius: 15px;
@@ -83,10 +93,10 @@
   width: 95%;
   height: 1px;
   background-color: #334e6b;
-  margin: 20px 10px;
+  margin: 10px 10px;
 }
 .est-datos {
-  padding-left: 20px;
+  padding-left: 5px;
   margin-top: 5px;
 }
 

@@ -8,11 +8,11 @@
     </ul>
 {% endif %}
 
-<form method="post" id="form-productos" action="{% url 'estadisticas:cargar_datos' %}">
+<form class="card-filtro" method="post" id="form-productos" action="{% url 'estadisticas:cargar_datos' %}">
         <div class="estadisticas-filtro-container">
             {% csrf_token %}
             <div class="estadisticas-producto-container">
-                <h3 class="titulo-h3">Buscar por Productos</h3>
+                <h3 class="titulo-h3">Productos</h3>
                 {% for categoria, productos in categorias.items %}
                     {% if categoria.estado %}
                         <div class="select-container">
@@ -25,9 +25,9 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-                <hr class="est-hr">
+                
 
-                <h3 class="titulo-h3">Buscar por Categorías</h3>
+                <h3 class="titulo-h3">Categorías</h3>
                 <div class="select-container">
                     <select id="categoria-select" class="selects" name="categoria">
                         <option disabled selected>Selecciona una categoría</option>
@@ -54,7 +54,7 @@
                     <label for="fecha_inicio">Fecha inicio / fin:</label>
                     <input type="date" name="fecha_inicio" id="fecha_inicio">
                     <input type="date" name="fecha_fin" id="fecha_fin">
-                <hr class="est-hr">
+              
 
                 <label for="dia_semana">Día de la semana:</label>
                 <select name="dia_semana" id="dia_semana-select">
@@ -67,7 +67,7 @@
                     <option value="7">Sábado</option>
                     <option value="1">Domingo</option>
                 </select>
-                <hr class="est-hr">
+                
 
                 <label for="media_semana">Semana</label>
                 <select name="media_semana" id="media_semana">
@@ -76,7 +76,7 @@
                     <option value="m_j">Martes a Jueves</option>
                     <option value="v_d">Viernes a Domingos</option>
                 </select>
-                <hr class="est-hr">
+                
 
                 <div class="form-row">
                     <div class="form-group">
