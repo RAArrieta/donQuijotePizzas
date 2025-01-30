@@ -6,14 +6,14 @@
 }
 .widget-container {
   width: 30%;
-  height: 100%;
+  height: 98%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
 .productos-datos-container {
   width: 60%;
-  height: 100%;
+  height: 98%;
   display: flex;
   flex-direction: row;
 }
@@ -48,6 +48,7 @@
 .selects {
   width: 100%; 
   padding: 10px;
+  margin-bottom: 5px;
   font-size: 16px;
   border: 1px solid #ced4da;
   border-radius: 5px;
@@ -120,7 +121,10 @@ form {
   color: #333;
   font-size: 16px;
   text-align: center;
-} 
+  outline: none; 
+  border-bottom: 1px solid transparent; 
+  transition: border-bottom 0.2s ease-in-out; 
+}
 /* Chrome, Safari, Edge, Opera */
 .widget-input::-webkit-outer-spin-button,
 .widget-input::-webkit-inner-spin-button {
@@ -141,4 +145,12 @@ form {
   color: black;
   font-size: 20px;
   font-weight: bold;
+}
+
+.card-datos {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
