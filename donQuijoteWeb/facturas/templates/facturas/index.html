@@ -38,7 +38,9 @@
                 <p class="cajas-detalle-pedido">Pedido {{key}}</p>
                 <p class="cajas-detalle-pedido" {% if value.datos.pago == "cobrar" %}style="color:red;"{% endif %}>{{ value.datos.pago|upper }}</p>
                 <p class="cajas-detalle-pedido">${{ value.datos.total }}</p>
-                <div class="cajas-detalle-pedido"><div class="no-check toggle-class">0</div></div>
+                <div class="cajas-detalle-pedido">
+                    <img class="icono-opc" id="checkToggle" src="{% static 'facturas/img/no_check.png' %}" alt="Chequear Factura">
+                </div>          
             </div>
             <div class="facturas-hr-container">
                 <hr class="facturas-hr">  
@@ -50,7 +52,9 @@
                 <p class="cajas-detalle-pedido">Pedido {{key}}</p>
                 <p class="cajas-detalle-pedido" {% if value.datos.pago == "cobrar" %}style="color:red;"{% endif %}>{{ value.datos.pago|upper }}</p>
                 <p class="cajas-detalle-pedido">${{ value.datos.total }}</p>
-                <div class="cajas-detalle-pedido"><div class="no-check toggle-class">0</div></div>                
+                <div class="cajas-detalle-pedido">
+                    <img class="icono-opc" id="checkToggle" src="{% static 'facturas/img/no_check.png' %}" alt="Chequear Factura">
+                </div>              
             </div>
             <div class="facturas-hr-container">
                 <hr class="facturas-hr">  
@@ -63,6 +67,7 @@
 {% endif %}
 
 <script src="{% static 'facturas/js/chequear_facturas.js' %}"></script>
+
 
 {% endblock main %}
 

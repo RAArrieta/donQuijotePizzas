@@ -182,7 +182,6 @@ body {
 
 /* BOTONES */
 .btn-container {
-  margin-top: 15px;
   display: flex;
   justify-content: center;
   column-gap: 20px;
@@ -253,7 +252,7 @@ body {
 .form-control {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   border: 1px solid #ced4da;
   border-radius: 5px;
   font-size: 16px;

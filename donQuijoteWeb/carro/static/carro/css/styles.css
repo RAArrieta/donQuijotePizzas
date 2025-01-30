@@ -154,3 +154,10 @@ form {
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.carro-btn-container {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+}

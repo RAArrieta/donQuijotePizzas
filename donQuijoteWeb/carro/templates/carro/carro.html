@@ -34,7 +34,7 @@
         {% include 'carro/components/select_productos.html' %}
         <div class="datos-container">
             {% include "carro/components/carro_datos.html" %}
-            <div class="btn-container">
+            <div class="carro-btn-container">
                 <a class="btn-success" href="{% url 'carro:carro' %}?cargar_pedido=true">Guardar</a>
                 <a class="btn-delete" href="{% url 'carro:limpiar' %}">Cancelar</a>
             </div>
