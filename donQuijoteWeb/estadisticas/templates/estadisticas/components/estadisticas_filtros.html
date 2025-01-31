@@ -9,89 +9,90 @@
 {% endif %}
 
 <form class="card-filtro" method="post" id="form-productos" action="{% url 'estadisticas:cargar_datos' %}">
-        <div class="estadisticas-filtro-container">
-            {% csrf_token %}
-            <div class="estadisticas-producto-container">
-                <h3 class="titulo-h3">Productos</h3>
-                {% for categoria, productos in categorias.items %}
-                    {% if categoria.estado %}
-                        <div class="select-container">
-                            <select id="producto-select-{{ categoria }}" class="selects" name="producto_id">
-                                <option disabled selected>{{ categoria }}</option>
-                                {% for producto in productos %}
-                                    <option value="{{ producto.id }}">{{ producto.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                
+    <div class="estadisticas-filtro-container">
+        {% csrf_token %}
+        <div class="estadisticas-producto-container">
+            <h3 class="titulo-h3">Productos</h3>
+            {% for categoria, productos in categorias.items %}
+                {% if categoria.estado %}
+                    <div class="select-container">
+                        <select id="producto-select-{{ categoria }}" class="selects" name="producto_id">
+                            <option disabled selected>{{ categoria }}</option>
+                            {% for producto in productos %}
+                                <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
 
-                <h3 class="titulo-h3">Categorías</h3>
-                <div class="select-container">
-                    <select id="categoria-select" class="selects" name="categoria">
-                        <option disabled selected>Selecciona una categoría</option>
-                        {% for categoria, productos in categorias.items %}
-                            {% if categoria.estado %}
-                                <option value="{{ categoria }}">{{ categoria }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <h3 class="titulo-h3">Envios</h3>
-                <div class="select-container">
-                    <select id="envios" class="selects" name="envios">
-                        <option disabled selected>Envios</option>
-                        <option>Pedido con envío</option>
-
-                    </select>
-                </div>
+            <h3 class="titulo-h3">Categorías</h3>
+            <div class="select-container">
+                <select id="categoria-select" class="selects" name="categoria">
+                    <option disabled selected>Selecciona una categoría</option>
+                    {% for categoria, productos in categorias.items %}
+                        {% if categoria.estado %}
+                            <option value="{{ categoria }}">{{ categoria }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
             </div>
 
-            <div class="estadisticas-fechas-container">
-                <h3 class="titulo-h3">Filtrar Fechas</h3>
-                    <label for="fecha_inicio">Fecha inicio / fin:</label>
-                    <input type="date" name="fecha_inicio" id="fecha_inicio">
-                    <input type="date" name="fecha_fin" id="fecha_fin">
-              
+            <h3 class="titulo-h3">Envios</h3>
+            <div class="select-container">
+                <select id="envios" class="selects" name="envios">
+                    <option disabled selected>Envios</option>
+                    <option>Pedido con envío</option>
 
-                <label for="dia_semana">Día de la semana:</label>
-                <select name="dia_semana" id="dia_semana-select">
-                    <option disabled selected>Selecciona un día</option>
-                    <option value="0">Hoy</option>
-                    <option value="3">Martes</option>
-                    <option value="4">Miércoles</option>
-                    <option value="5">Jueves</option>
-                    <option value="6">Viernes</option>
-                    <option value="7">Sábado</option>
-                    <option value="1">Domingo</option>
                 </select>
-                
-
-                <label for="media_semana">Semana</label>
-                <select name="media_semana" id="media_semana">
-                    <option disabled selected>Selecciona media</option>
-                    <option value="sem">Semana Completa</option>
-                    <option value="m_j">Martes a Jueves</option>
-                    <option value="v_d">Viernes a Domingos</option>
-                </select>
-                
-
-                <div class="form-row">
-                    <div class="form-group">
-                        {{ form.mes.label_tag }} {{ form.mes }}
-                    </div>
-                    <div class="form-group">
-                        {{ form.ano.label_tag }} {{ form.ano }}
-                    </div>
-                </div>
             </div>
-        </div>  
-
-        <div class="btn-buscar est-btn-buscar">
-            <button type="submit" class="btn-success" onclick="openModal()">Buscar</button>
         </div>
+
+        <div class="estadisticas-fechas-container">
+            <h3 class="titulo-h3">Filtrar Fechas</h3>
+                <label for="fecha_inicio">Fecha inicio / fin:</label>
+                <input type="date" name="fecha_inicio" id="fecha_inicio">
+                <input type="date" name="fecha_fin" id="fecha_fin">
+            
+
+            <label for="dia_semana">Día de la semana:</label>
+            <select name="dia_semana" id="dia_semana-select">
+                <option disabled selected>Selecciona un día</option>
+                <option value="0">Hoy</option>
+                <option value="3">Martes</option>
+                <option value="4">Miércoles</option>
+                <option value="5">Jueves</option>
+                <option value="6">Viernes</option>
+                <option value="7">Sábado</option>
+                <option value="1">Domingo</option>
+            </select>
+            
+
+            <label for="media_semana">Semana</label>
+            <select name="media_semana" id="media_semana">
+                <option disabled selected>Selecciona media</option>
+                <option value="sem">Semana Completa</option>
+                <option value="m_j">Martes a Jueves</option>
+                <option value="v_d">Viernes a Domingos</option>
+            </select>
+            
+
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.mes.label_tag }} {{ form.mes }}
+                </div>
+                <div class="form-group">
+                    {{ form.ano.label_tag }} {{ form.ano }}
+                </div>
+            </div>
+            <div class="btn-buscar est-btn-buscar">
+                <button type="submit" class="btn-success" onclick="openModal()">Buscar</button>
+            </div>
+        </div>
+    </div>  
+
+    
         
 </form>
 

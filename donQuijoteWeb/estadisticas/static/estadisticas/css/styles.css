@@ -7,15 +7,19 @@
   justify-content: space-around;
 }
 .card-filtro {
+  height: 100%;
+  width: 58%;
   padding: 5px;
   border: 1px solid #ced4da;
-  border-radius: 10px;
+
+  border-bottom-right-radius: 15px;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* estadisticas_filtros.html */
 .estadisticas-filtro-container {
+  height: 100%;
   display: flex;
 }
 .estadisticas-producto-container {
@@ -23,7 +27,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  min-width: 300px;
+
   border-right: #ccc solid 1px;
   padding: 10px;
 }
@@ -32,11 +36,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  min-width: 300px;
+
   padding: 10px;
 }
 .select-container {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .selects, input[type="date"], select {
   width: 90%;
@@ -62,9 +66,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px; 
+
 }
 .form-group {
+  width: 45%;
+  margin: 5px;
   flex: 1; 
 }
 .btn-buscar {
@@ -76,17 +82,22 @@
 
 /* estadisticas.html */
 .estadisticas-datos {
+  height: 100%;
+  width: 40%;
   margin: auto 15px;
   padding: 30px;
   border: #ccc solid 1px;
   border-top-left-radius: 15px;
-  border-bottom-right-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
 }
 .titulo-h3 {
   color: #333;
-  font-size: 25px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  /* margin-bottom: 10px; */
 }
 .est-hr {
   border: none;

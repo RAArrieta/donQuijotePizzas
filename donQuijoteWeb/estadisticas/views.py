@@ -64,6 +64,7 @@ def cargar_datos(request):
                 producto_nombre = None
                 categoria = None
         else:
+            producto_nombre = None
             categoria = request.POST.get('categoria', None)
             
             

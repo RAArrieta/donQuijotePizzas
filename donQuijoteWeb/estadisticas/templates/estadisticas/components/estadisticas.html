@@ -4,18 +4,20 @@
     <div class="estadisticas-datos">
 
         {% if estadisticas.producto_nombre %}
-            <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.producto_nombre }}</h3>
+            <h4 >Informe de Ventas</h4>
+            <h3 class="titulo-h3">{{estadisticas.categoria}} /  {{ estadisticas.producto_nombre }}</h3>
         {% elif estadisticas.categoria %}
-            <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.categoria }}</h3>
+            <h4 >Informe de Ventas</h4>
+            <h3 class="titulo-h3">{{ estadisticas.categoria }}</h3>
         {% else %}
             <h3 class="titulo-h3">Informe de Envíos</h3>
         {% endif %}
         <hr class="est-hr">
         
-        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad total:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
+        <p class="est-datos"><strong> ▪️  &nbsp; Total:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
         <hr class="est-hr">
         
-        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Día seleccionado:</strong> {{ dia_semana_nombre }}</p>
+        <p class="est-datos"><strong> ▪️  &nbsp; Día seleccionado:</strong> {{ dia_semana_nombre }}</p>
         
     </div>
     {% else %}
@@ -25,48 +27,49 @@
             <h4 >Informe de Ventas</h4>
             <h3 class="titulo-h3">{{estadisticas.categoria}} / {{ estadisticas.producto_nombre }}</h3>
         {% elif estadisticas.categoria %}
-            <h3 class="titulo-h3">Informe de Ventas - {{ estadisticas.categoria }}</h3>
+            <h4 >Informe de Ventas</h4>
+            <h3 class="titulo-h3">{{ estadisticas.categoria }}</h3>
         {% else %}
             <h3 class="titulo-h3">Informe de Envíos</h3>
         {% endif %}
         <hr class="est-hr">
         
         {% if estadisticas.media_semana  == "m_j" %}
-        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Promedio:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %} por rango</p>
+        <p class="est-datos"><strong> ▪️  &nbsp; Promedio:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %} por rango</p>
         {% else %}    
-        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Promedio diario:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}  por día</p>
+        <p class="est-datos"><strong> ▪️  &nbsp; Prom. diario:</strong> {{ estadisticas.cantidad_promedio }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}  por día</p>
         {% endif %}
-        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad minima:</strong> {{ estadisticas.cantidad_minima }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
-        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad maxima:</strong> {{ estadisticas.cantidad_maxima }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
-        <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad total:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
+        <p class="est-datos"><strong> ▪️  &nbsp; Cant. minima:</strong> {{ estadisticas.cantidad_minima }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
+        <p class="est-datos"><strong> ▪️  &nbsp; Cant. maxima:</strong> {{ estadisticas.cantidad_maxima }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
+        <p class="est-datos"><strong> ▪️  &nbsp; Total:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>
         <hr class="est-hr">
         
         {% if estadisticas.fecha_inicio %}
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Rango de días:</strong> 
+            <p class="est-datos"><strong> ▪️  &nbsp; Rango de días:</strong> 
                 Desde el {{ estadisticas.fecha_inicio|slice:"8:10" }}-{{ estadisticas.fecha_inicio|slice:"5:7" }}-{{ estadisticas.fecha_inicio|slice:"0:4" }} 
                 hasta el {{ estadisticas.fecha_fin|slice:"8:10" }}-{{ estadisticas.fecha_fin|slice:"5:7" }}-{{ estadisticas.fecha_fin|slice:"0:4" }}
             </p>
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
         {% elif dia_semana_nombre %}
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Día seleccionado:</strong> {{ dia_semana_nombre }}</p>
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Día seleccionado:</strong> {{ dia_semana_nombre }}</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
         {% elif estadisticas.media_semana == "sem" %}
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Rango de días:</strong> Semana completa</p>
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Rango de días:</strong> Semana completa</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
         {% elif estadisticas.media_semana == "m_j" %}
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Rango de días:</strong> Martes a Jueves</p>
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Rango de días:</strong> Martes a Jueves</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
         {% elif estadisticas.media_semana == "v_d" %}
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Rango de días:</strong> Viernes a Domingos</p>
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Rango de días:</strong> Viernes a Domingos</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Rangos analizados:</strong> {{ estadisticas.cantidad_dias }} rangos</p>
         {% else %}
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Rango:</strong> {{ mes_nombre }} de {{ estadisticas.ano }}</p>
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Rango:</strong> {{ mes_nombre }} de {{ estadisticas.ano }}</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Días analizados:</strong> {{ estadisticas.cantidad_dias }} días</p>
         {% endif %}
         
         {% if not estadisticas.media_semana %}
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de días con ventas:</strong> {{ estadisticas.dia_venta }} días</p>
-            <p class="est-datos"><strong> &nbsp; &nbsp;▪️  &nbsp; &nbsp; Cantidad de días sin ventas:</strong> {{ estadisticas.dia_no_venta }} días</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Días con ventas:</strong> {{ estadisticas.dia_venta }} días</p>
+            <p class="est-datos"><strong> ▪️  &nbsp; Días sin ventas:</strong> {{ estadisticas.dia_no_venta }} días</p>
         {% endif %}
 
     </div>
@@ -74,7 +77,7 @@
 {% else %}
     <div class="estadisticas-datos">
 
-        <h3 class="titulo-h3">Busque un producto...</h3>
+        <h3>Busque un producto...</h3>
 
     </div>
 {% endif %}
