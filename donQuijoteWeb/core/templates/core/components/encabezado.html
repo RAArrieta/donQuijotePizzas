@@ -73,22 +73,22 @@
             </form>
 
         {% elif titulo_texto == "Costos" %}
-            <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
+            <a class="btn-opc" href="{% url 'costos:listar_insumos' %}">Insumos</a>
 
 
         {% elif titulo_texto == "Insumos" %}
             <a class="btn-opc" href="{% url 'costos:home' %}">Costos</a>
-            <a class="btn-opc" href="{% url 'gastos:insumos_create' %}">Crear Insumo</a>
-            <a class="btn-opc" href="{% url 'gastos:listar_proveedores' %}">Proveedores</a>
+            <a class="btn-opc" href="{% url 'costos:insumos_create' %}">Crear Insumo</a>
+            <a class="btn-opc" href="{% url 'costos:listar_proveedores' %}">Proveedores</a>
 
         {% elif titulo_texto == "Crear Insumo" %}
             <a class="btn-opc" href="{% url 'costos:home' %}">Costos</a>
-            <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
+            <a class="btn-opc" href="{% url 'costos:listar_insumos' %}">Insumos</a>
   
 
         {% elif titulo_texto == "Proveedor" %}
             <a class="btn-opc" href="{% url 'costos:home' %}">Costos</a>
-            <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
+            <a class="btn-opc" href="{% url 'costos:listar_insumos' %}">Insumos</a>
               
             
         
@@ -96,8 +96,8 @@
 
         {% elif titulo_texto == "Crear Proveedor" %}
             <a class="btn-opc" href="{% url 'costos:home' %}">Costos</a>
-            <a class="btn-opc" href="{% url 'gastos:listar_insumos' %}">Insumos</a>
-            <a class="btn-opc" href="{% url 'gastos:listar_proveedores' %}">Proveedores</a>
+            <a class="btn-opc" href="{% url 'costos:listar_insumos' %}">Insumos</a>
+            <a class="btn-opc" href="{% url 'costos:listar_proveedores' %}">Proveedores</a>
 
         {% endif %}   
         </div>       

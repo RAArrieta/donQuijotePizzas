@@ -23,7 +23,7 @@ def listar_insumos(request):
         'object_list': insumos,
         'proveedores': proveedores,
     }
-    return render(request, "gastos/listar_insumos.html", context)
+    return render(request, "costos/listar_insumos.html", context)
 
 def listar_proveedores(request):
     proveedores = Proveedores.objects.all()
@@ -31,23 +31,23 @@ def listar_proveedores(request):
     context = {
         'proveedores': proveedores,
     }
-    return render(request, "gastos/listar_proveedores.html", context)
+    return render(request, "costos/listar_proveedores.html", context)
    
 
 class InsumosCreate(LoginRequiredMixin, CreateView):
     model = models.Insumos
     form_class = forms.InsumosForm
-    success_url = reverse_lazy("gastos:home")
+    success_url = reverse_lazy("costos:home")
     
 class ProveedoresCreate(LoginRequiredMixin, CreateView):
     model = models.Proveedores
     form_class = forms.ProveedoresForm
-    success_url = reverse_lazy("gastos:home")
+    success_url = reverse_lazy("costos:home")
     
 class InsumosUpdate(LoginRequiredMixin, UpdateView):
     model = models.Insumos
     form_class = forms.InsumosForm
-    success_url = reverse_lazy("gastos:home")
+    success_url = reverse_lazy("costos:home")
     
 class ProveedoresUpdate(LoginRequiredMixin, UpdateView):
     model = models.Proveedores
