@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Producto, ProductoCategoria
+from .models import Producto, ProductoCategoria, Insumos, Proveedores
 from pedido.models import FormaEntrega
 from . import forms, models
 from django.urls import reverse_lazy
@@ -55,3 +55,42 @@ def lista_wa(request):
         'object_list': productos
     }
     return render(request, 'productos/lista_wa.html', context)
+
+def listar_insumos(request):
+    insumos = Insumos.objects.select_related('proveedor').order_by('proveedor__nombre')
+    proveedores = Proveedores.objects.all()
+    
+    context = {
+        'object_list': insumos,
+        'proveedores': proveedores,
+    }
+    return render(request, "productos/listar_insumos.html", context)
+
+def listar_proveedores(request):
+    proveedores = Proveedores.objects.all()
+    
+    context = {
+        'proveedores': proveedores,
+    }
+    return render(request, "productos/listar_proveedores.html", context)
+   
+
+class InsumosCreate(LoginRequiredMixin, CreateView):
+    model = models.Insumos
+    form_class = forms.InsumosForm
+    success_url = reverse_lazy("productos:home")
+    
+class ProveedoresCreate(LoginRequiredMixin, CreateView):
+    model = models.Proveedores
+    form_class = forms.ProveedoresForm
+    success_url = reverse_lazy("productos:home")
+    
+class InsumosUpdate(LoginRequiredMixin, UpdateView):
+    model = models.Insumos
+    form_class = forms.InsumosForm
+    success_url = reverse_lazy("productos:home")
+    
+class ProveedoresUpdate(LoginRequiredMixin, UpdateView):
+    model = models.Proveedores
+    form_class = forms.ProveedoresForm
+    success_url = reverse_lazy("productos:home")

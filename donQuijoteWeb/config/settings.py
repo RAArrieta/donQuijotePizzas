@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'estadisticas',
     'gastos',
     'contable',
-    'costos',
 ]
 
 MIDDLEWARE = [

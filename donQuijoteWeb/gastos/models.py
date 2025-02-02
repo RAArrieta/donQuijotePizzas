@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
-from costos.models import Proveedores
+from productos.models import Proveedores
    
 class Gastos(models.Model):
     ESTADO_CHOICES = [

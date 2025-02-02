@@ -37,7 +37,7 @@ def home(request):
             messages.warning(request, "Aun no tiene pedidos entregados...")
             
     form = PagosForm(request.GET or None)
-    
+    print(f"ESTADO CAJA: {estado_caja}")
     if form.is_valid():
         forma_pago = form.cleaned_data.get('forma_pago')
         print(f"FORMA DE PAGO: {forma_pago}")      
