@@ -7,8 +7,7 @@ def listar_pagos(request):
     now = datetime.now()
     gastos = Gastos.objects.filter(fecha__year=now.year, fecha__month=now.month)
        
-    form = FechasPagosProvForm(request.GET or None)
-    
+    form = FechasPagosProvForm(request.GET or None)  
     if form.is_valid():
         fecha_inicio = form.cleaned_data.get('fecha_inicio')
         fecha_fin = form.cleaned_data.get('fecha_fin')
