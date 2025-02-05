@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from .models import Gastos
 from core.forms import FechasPagosProvForm
+from datetime import datetime
 
 def listar_pagos(request):
-    gastos = Gastos.objects.all()
-    
+    now = datetime.now()
+    gastos = Gastos.objects.filter(fecha__year=now.year, fecha__month=now.month)
+       
     form = FechasPagosProvForm(request.GET or None)
     
     if form.is_valid():
@@ -12,6 +14,7 @@ def listar_pagos(request):
         fecha_fin = form.cleaned_data.get('fecha_fin')
         forma_pago = form.cleaned_data.get('forma_pago')
         proveedor = form.cleaned_data.get('proveedor')
+        gastos = Gastos.objects.all()
         
         if fecha_inicio and fecha_fin:
             gastos = gastos.filter(fecha__range=[fecha_inicio, fecha_fin])

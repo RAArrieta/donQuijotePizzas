@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.shortcuts import render, redirect
 from pedido.recuperar_pedidos import recuperar_entregados
 from django.contrib import messages
@@ -86,14 +85,9 @@ def cerrar_caja(request):
             caja.estado_caja = False
             caja.save() 
             return redirect("facturas:home")  
-        elif cant_pendientes != 0:
-            messages.error(request, "Tienes pedidos pendientes, debes marcarlos como entregado o cancelarlos...")
+        else:
             return redirect("facturas:home") 
-        elif cant_cobrar != 0:
-            messages.error(request, "Tienes pedidos por cobrar...")
-            return redirect("facturas:home")
     else:
-        messages.error(request, "No hay una instancia de Caja disponible.")
         return redirect("core:home")
 
 def cargar_facturas():

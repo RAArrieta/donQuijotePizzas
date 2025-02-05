@@ -8,7 +8,6 @@ from pedido.models import FormaEntrega
 from .select_productos import select_productos
 from .carro import Carro
 from facturas.models import Caja
-from django.contrib import messages
 
 @login_required
 def carro(request):
@@ -19,7 +18,6 @@ def carro(request):
     
     for estado in estado_caja:
         if not estado:
-            messages.error(request, "Debe abrir caja para crear un pedido...")
             return redirect("pedido:listar_pendientes")
 
     if cargar_pedido and comprobacion_pedido:
@@ -30,8 +28,6 @@ def carro(request):
     
     if nro_pedido is not None: 
         pedido= "Pedido " + str(nro_pedido)
-        if request.path != reverse("pedido:modificar_pedido", args=[nro_pedido]):
-            messages.warning(request, "Debe Guardar o Cancelar la modificación...") 
     else:  
         if 'nro_pedido' in request.session:
             del request.session['nro_pedido']

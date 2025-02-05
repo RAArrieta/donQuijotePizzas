@@ -18,14 +18,6 @@
 {% endblock titulo %}
 
 {% block main %}
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
 <div class="carro-container">
     <div class="widget-container card">
         {% include "carro/components/widget.html" %}
