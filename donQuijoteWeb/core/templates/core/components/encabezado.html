@@ -59,11 +59,12 @@
             </form>
 
         {% elif titulo_texto == "Pagos" %}
+            <a class="btn-opc" href="{% url 'gastos:cargar_pagos' %}">Cargar Pagos</a>
             <form method="get" class="filtro-form">
                 {{ form.as_p }}
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
-            <a class="btn-opc" href="{% url 'gastos:cargar_pagos' %}">Cargar Pagos</a>
+            
         {% elif titulo_texto == "Carga de Pagos" %}
             <a class="btn-opc" href="{% url 'gastos:home' %}">Pagos</a>
 

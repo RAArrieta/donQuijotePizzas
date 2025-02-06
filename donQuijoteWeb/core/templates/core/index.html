@@ -15,26 +15,26 @@
 
 {% block main %}
     <section class="section-container escritorio">
-        <a class="escritorio-link" href="{% url 'pedido:listar_pendientes' %}">
-            <img class="escritorio-img" src="{% static 'core/img/pedido.webp' %}" alt="Pedidos">
-            <p class="escritorio-nom">Pedidos</p>
-        </a>
         <a class="escritorio-link" href="{% url 'facturas:home' %}">
             <img class="escritorio-img" src="{% static 'core/img/caja.webp' %}" alt="Caja">
             <p class="escritorio-nom">Caja</p>
         </a>
-        <a class="escritorio-link" href="{% url 'facturas:facturas' %}">
-            <img class="escritorio-img" src="{% static 'core/img/facturacion.webp' %}" alt="Facturación">
-            <p class="escritorio-nom">Facturación</p>
+        <a class="escritorio-link" href="{% url 'pedido:listar_pendientes' %}">
+            <img class="escritorio-img" src="{% static 'core/img/pedido.webp' %}" alt="Pedidos">
+            <p class="escritorio-nom">Pedidos</p>
+        </a>       
+        <a class="escritorio-link" href="{% url 'productos:home' %}">
+            <img class="escritorio-img" src="{% static 'core/img/producto.webp' %}" alt="Productos">
+            <p class="escritorio-nom">Productos</p>
         </a>
         <a class="escritorio-link" href="{% url 'estadisticas:home' %}">
             <img class="escritorio-img" src="{% static 'core/img/estadisticas.webp' %}" alt="Estadisticas">
             <p class="escritorio-nom">Estadisticas</p>
         </a>
-        <a class="escritorio-link" href="{% url 'productos:home' %}">
-            <img class="escritorio-img" src="{% static 'core/img/producto.webp' %}" alt="Productos">
-            <p class="escritorio-nom">Productos</p>
-        </a>
+        <a class="escritorio-link" href="{% url 'facturas:facturas' %}">
+            <img class="escritorio-img" src="{% static 'core/img/facturacion.webp' %}" alt="Facturación">
+            <p class="escritorio-nom">Facturación</p>
+        </a>        
         <a class="escritorio-link" href="{% url 'gastos:home' %}">
             <img class="escritorio-img" src="{% static 'core/img/gastos.webp' %}" alt="Gastos">
             <p class="escritorio-nom">Pagos</p>
@@ -42,7 +42,6 @@
         <a class="escritorio-link" href="{% url 'contable:home' %}">
             <img class="escritorio-img" src="{% static 'core/img/contabilidad.webp' %}" alt="Contabilidad">
             <p class="escritorio-nom">Tesoreria</p>
-        </a>
-          
+        </a>         
     </section>
 {% endblock main %}

@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.db.models import Sum, Q
+from datetime import datetime
 from .models import Gastos
 from core.forms import FechasPagosProvForm
-from datetime import datetime
+
 
 def listar_pagos(request):
     now = datetime.now()
@@ -29,14 +31,17 @@ def listar_pagos(request):
     caja_mercado = 0.0
     caja_naranja = 0.0
     
-    for gasto in gastos:
-        caja_total += gasto.monto
-        if gasto.forma_pago == "efectivo":  
-            caja_efectivo += gasto.monto
-        elif gasto.forma_pago == "mercado":
-            caja_mercado += gasto.monto
-        elif gasto.forma_pago == "naranja":
-            caja_naranja += gasto.monto
+    gastos_aggregates = gastos.aggregate(
+        total=Sum('monto'),
+        efectivo=Sum('monto', filter=Q(forma_pago="efectivo")),
+        mercado=Sum('monto', filter=Q(forma_pago="mercado")),
+        naranja=Sum('monto', filter=Q(forma_pago="naranja"))
+    )
+
+    caja_total = (gastos_aggregates['total'] or 0) 
+    caja_efectivo = (gastos_aggregates['efectivo'] or 0) 
+    caja_mercado = (gastos_aggregates['mercado'] or 0)
+    caja_naranja = (gastos_aggregates['naranja'] or 0) 
         
     context = {
         'form': form,
