@@ -45,9 +45,6 @@ class ProductoCategoriaUpdate(LoginRequiredMixin, UpdateView):
     form_class=forms.ProductoCategoriaForm
     success_url = reverse_lazy("productos:categorias")
     
-class ProductoDetail(LoginRequiredMixin, DetailView):
-    model = models.Producto
-
 @login_required
 def lista_wa(request):
     productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()

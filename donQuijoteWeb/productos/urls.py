@@ -6,7 +6,6 @@ app_name="productos"
 urlpatterns = [
     path('', views.home, name='home'),
     path("create/", views.ProductosCreate.as_view(), name="productos_create"),
-    path("detail/<int:pk>", views.ProductoDetail.as_view(), name="productos_detail"),
     path("update/<int:pk>", views.ProductoUpdate.as_view(), name="productos_update"),
 ]
 

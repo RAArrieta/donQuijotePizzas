@@ -24,8 +24,8 @@
 .productos {
     margin-top: 8px;
     display: grid;
-    grid-template-columns: 50% 25% 25%;
-    grid-template-areas: "nom prc opc";
+    grid-template-columns: 40% 20% 20% 10% 10% ;
+    grid-template-areas: "nom prc prcr opc cnf";
     align-items: center;
     padding: 10px 0;
 }
@@ -41,8 +41,19 @@
     text-align: center;
     color: #2C3E50;
 }
+.producto-precio-rec {
+    grid-area: prcr;
+    font-size: 16px;
+    text-align: center;
+    color: #2C3E50;
+}
 .producto-opc {
     grid-area: opc;
+    display: flex;
+    justify-content: space-around;
+}
+.producto-config {
+    grid-area: cnf;
     display: flex;
     justify-content: space-around;
 }

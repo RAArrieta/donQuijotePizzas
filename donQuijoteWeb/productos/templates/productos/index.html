@@ -27,13 +27,16 @@ dQ | Productos
                         {% for producto in categoria.list %}
                             <div class="productos">
                                 <p class="producto-nombre">{{ producto.nombre }}</p>
-                                <p class="producto-precio">${{ producto.precio_unit }}</p>
+                                <p class="producto-precio">PV: ${{ producto.precio_unit }}</p>
+                                <p class="producto-precio-rec">PR: $100.000</p>
                                 <div class="producto-opc">
-                                    <a href="{% url 'productos:productos_detail' producto.id %}">
-                                        <img class="icono-opc" src="{% static 'productos/img/lupa.webp' %}" alt="Detalle Producto">
-                                    </a>
                                     <a href="{% url 'productos:productos_update' producto.id %}">
                                         <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto">
+                                    </a>
+                                </div>
+                                <div class="producto-config">
+                                    <a href="{% url 'productos:productos_update' producto.id %}">
+                                        <img class="icono-opc" src="{% static 'productos/img/config.png' %}" alt="Editar Producto">
                                     </a>
                                 </div>
                             </div>     
