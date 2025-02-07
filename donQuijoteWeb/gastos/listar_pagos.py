@@ -7,24 +7,28 @@ from core.forms import FechasPagosProvForm
 
 def listar_pagos(request):
     now = datetime.now()
-    gastos = Gastos.objects.filter(fecha__year=now.year, fecha__month=now.month)
-       
+    gastos = Gastos.objects.all()
+
     form = FechasPagosProvForm(request.GET or None)  
+
     if form.is_valid():
         fecha_inicio = form.cleaned_data.get('fecha_inicio')
         fecha_fin = form.cleaned_data.get('fecha_fin')
         forma_pago = form.cleaned_data.get('forma_pago')
         proveedor = form.cleaned_data.get('proveedor')
-        gastos = Gastos.objects.all()
         
         if fecha_inicio and fecha_fin:
             gastos = gastos.filter(fecha__range=[fecha_inicio, fecha_fin])
+        else:
+            gastos = gastos.filter(fecha__year=now.year, fecha__month=now.month)
                
         if forma_pago:
             gastos = gastos.filter(forma_pago=forma_pago)
              
         if proveedor:
             gastos = gastos.filter(proveedor=proveedor)
+    else:      
+        gastos = gastos.filter(fecha__year=now.year, fecha__month=now.month)
     
     caja_total = 0.0
     caja_efectivo = 0.0
