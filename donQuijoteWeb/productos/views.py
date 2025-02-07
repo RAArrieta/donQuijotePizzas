@@ -75,19 +75,19 @@ def listar_proveedores(request):
 class InsumosCreate(LoginRequiredMixin, CreateView):
     model = models.Insumos
     form_class = forms.InsumosForm
-    success_url = reverse_lazy("productos:home")
+    success_url = reverse_lazy("productos:listar_insumos")
     
 class ProveedoresCreate(LoginRequiredMixin, CreateView):
     model = models.Proveedores
     form_class = forms.ProveedoresForm
-    success_url = reverse_lazy("productos:home")
+    success_url = reverse_lazy("productos:listar_proveedores")
     
 class InsumosUpdate(LoginRequiredMixin, UpdateView):
     model = models.Insumos
     form_class = forms.InsumosForm
-    success_url = reverse_lazy("productos:home")
+    success_url = reverse_lazy("productos:listar_insumos")
     
 class ProveedoresUpdate(LoginRequiredMixin, UpdateView):
     model = models.Proveedores
     form_class = forms.ProveedoresForm
-    success_url = reverse_lazy("productos:home")
+    success_url = reverse_lazy("productos:listar_proveedores")
