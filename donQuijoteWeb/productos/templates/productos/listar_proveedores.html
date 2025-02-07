@@ -21,7 +21,7 @@
                 <h1 class="proveedores-titulo">{{ proveedor }}</h1>
                 <div></div>
                 <div class="insumo-opc">
-                    <a href="{% url 'gastos:proveedores_update' proveedor.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Proveedor"></a>
+                    <a href="{% url 'productos:proveedores_update' proveedor.id%}"><img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Proveedor"></a>
                 </div>
             </div>
             {% empty %}

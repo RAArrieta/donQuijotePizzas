@@ -9,20 +9,40 @@
             <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
             <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
             <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>
-
         {% elif titulo_texto == "Categorias" %}        
             <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
             <a class="btn-opc" href="{% url 'productos:categorias_create' %}">Crear Categoria</a>
+            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
             <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>  
-
         {% elif titulo_texto == "Eliminar Producto" or titulo_texto == "Detalle Producto" or titulo_texto == "Modificar Producto" or titulo_texto == "Crear Producto" or titulo_texto == "Eliminar Categoria" or titulo_texto == "Modificar Categoria" or titulo_texto == "Crear Categoria" %}        
             <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
             <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
             <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>   
-
         {% elif titulo_texto == "Lista Whatsapp" %}
             <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
             <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
+        {% elif titulo_texto == "Modificar Forma de Entrega" %}
+            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
+            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>      
+        {% elif titulo_texto == "Insumos" %}
+            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:insumos_create' %}">Crear Insumo</a>
+            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a> 
+        {% elif titulo_texto == "Crear Insumo" %}
+            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
+            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a> 
+        {% elif titulo_texto == "Proveedor" %}
+            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
+            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
+            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
+            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a> 
 
         {% elif titulo_texto == "Pedidos" %}
             <a class="btn-opc" href="{% url 'carro:carro' %}">Nuevo Pedido</a>
@@ -36,11 +56,6 @@
             <a class="btn-opc" href="{% url 'pedido:listar_reservados' %}">Reservados</a>
             <a class="btn-opc" href="{% url 'pedido:home' %}">Todos</a>
 
-        {% elif titulo_texto == "Modificar Forma de Entrega" %}
-            <a class="btn-opc" href="{% url 'productos:home' %}">Productos</a>
-            <a class="btn-opc" href="{% url 'productos:categorias' %}">Categorias</a>
-            <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a>  
-
         {% elif titulo_texto == "Caja Diaria" %}
             <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>
             <a class="btn-opc" href="{% url 'facturas:cerrar_caja' %}">Cerrar Caja</a>
@@ -51,7 +66,6 @@
             </form>
             {% endif %}
             
-
         {% elif titulo_texto == "Facturación" %}
             <form method="get" class="filtro-form">
                 {{ form.as_p }}
@@ -63,8 +77,8 @@
             <form method="get" class="filtro-form">
                 {{ form.as_p }}
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
-            </form>
-            
+            </form>    
+
         {% elif titulo_texto == "Carga de Pagos" %}
             <a class="btn-opc" href="{% url 'gastos:home' %}">Pagos</a>
 
@@ -73,30 +87,6 @@
                 {{ form.as_p }}
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
-
-        {% elif titulo_texto == "Insumos" %}
-           
-            <a class="btn-opc" href="{% url 'productos:insumos_create' %}">Crear Insumo</a>
-            <a class="btn-opc" href="{% url 'productos:listar_proveedores' %}">Proveedores</a>
-
-        {% elif titulo_texto == "Crear Insumo" %}
-           
-            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
-  
-
-        {% elif titulo_texto == "Proveedor" %}
-           
-            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
-              
-            
-        
-            
-
-        {% elif titulo_texto == "Crear Proveedor" %}
-           
-            <a class="btn-opc" href="{% url 'productos:listar_insumos' %}">Insumos</a>
-            <a class="btn-opc" href="{% url 'productos:listar_proveedores' %}">Proveedores</a>
-
         {% endif %}   
         </div>       
     </div>

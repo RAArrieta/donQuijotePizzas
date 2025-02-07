@@ -29,7 +29,7 @@
                                 <p class="insumo-nombre">{{ insumo.nombre }}</p>
                                 <p class="insumo-precio">${{ insumo.precio }} x {{ insumo.unidad }}</p>
                                 <div class="insumo-opc">
-                                    <a href="{% url 'gastos:insumos_update' insumo.id %}">
+                                    <a href="{% url 'productos:insumos_update' insumo.id %}">
                                         <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Insumo">
                                     </a>
                                 </div>
