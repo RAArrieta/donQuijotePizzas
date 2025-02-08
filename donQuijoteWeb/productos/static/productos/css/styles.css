@@ -101,3 +101,59 @@
     align-items: center;
     padding: 20px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid black; padding: 8px; text-align: center; }
+th { background-color: #f2f2f2; }
+.btn { padding: 8px 12px; cursor: pointer; }
+.btn-danger { background-color: red; color: white; border: none; }
+.btn-primary { background-color: blue; color: white; border: none; }
+
+.input {
+    color: #2C3E50;
+    font-size: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -41,6 +41,26 @@ class Producto(models.Model):
     precio_unit=models.FloatField(verbose_name="P. Unitario")
     precio_media=models.FloatField(blank=True, null=True, verbose_name="P. Media")
     precio_doc=models.FloatField(blank=True, null=True, verbose_name="P. Docena")
-    
+    precio_rec = models.FloatField(default=1, verbose_name="Precio Recomendado")
+
     def __str__(self):
         return self.nombre
+
+class ProductoInsumos(models.Model):
+    ESTADO_CHOICES = [
+        ('Gr', 'Gr'),
+        ('Ltr', 'Ltr'),
+        ('Unid', 'Unid'),
+        ('Doc', 'Doc'),
+        ('Caja', 'Caja'),
+        ('Lata', 'Lata'),
+        ('Rollo', 'Rollo'),
+    ]
+
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name="Producto", related_name="insumos")
+    insumo = models.ForeignKey(Insumos, on_delete=models.CASCADE, verbose_name="Insumo")
+    cantidad = models.FloatField(default=1, verbose_name="Cantidad")
+    unidad=models.CharField(default='Gr',max_length=50, choices=ESTADO_CHOICES)
+
+    def __str__(self):
+        return f"{self.producto.nombre} - {self.insumo.nombre}: {self.cantidad} {self.unidad}"

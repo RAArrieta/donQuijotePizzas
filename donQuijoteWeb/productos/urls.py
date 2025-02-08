@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import agregar_insumos_producto
 
 app_name="productos"
 
@@ -26,6 +27,7 @@ urlpatterns += [
     path("proveedor_create/", views.ProveedoresCreate.as_view(), name="proveedor_create"),
     path("insumos_update/<int:pk>", views.InsumosUpdate.as_view(), name="insumos_update"),
     path("proveedores_update/<int:pk>", views.ProveedoresUpdate.as_view(), name="proveedores_update"),
+    path('producto/<int:producto_id>/insumos/', agregar_insumos_producto, name='agregar_insumos_producto'),
 ]
 
 

@@ -1,0 +1,107 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Agregar Insumos
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'gastos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    {% include 'core/components/encabezado.html' with titulo_texto="Agregar Insumos" %}
+{% endblock titulo %}
+
+{% block main %}
+<form method="POST">
+    {% csrf_token %}
+
+    <table id="insumosTable">
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for insumo in producto_insumos %}
+            <tr>
+                <td>
+                    <select name="insumo">
+                        {% for i in insumos %}
+                            <option value="{{ i.id }}" {% if i.id == insumo.insumo.id %}selected{% endif %}>
+                                {{ i.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input class="input" type="number" name="cantidad" step="0.01" min="0" value="{{ insumo.cantidad|floatformat:2 }}">
+                </td>
+                <td>
+                    <select name="unidad">
+                        {% for value, label in ESTADO_CHOICES %}
+                            <option value="{{ value }}" {% if value == insumo.unidad %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No hay insumos agregados aún.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary" onclick="agregarFila()">Agregar Insumo</button>
+    <button type="submit" class="btn btn-success">Guardar Insumos</button>
+</form>
+
+<script>
+    function agregarFila() {
+        let table = document.getElementById("insumosTable").getElementsByTagName('tbody')[0];
+        let newRow = table.insertRow();
+
+        let cell1 = newRow.insertCell(0);
+        let cell2 = newRow.insertCell(1);
+        let cell3 = newRow.insertCell(2);
+        let cell4 = newRow.insertCell(3);
+
+        cell1.innerHTML = `
+            <select name="insumo">
+                <option value="">Seleccione un insumo</option>
+                {% for insumo in insumos %}
+                    <option value="{{ insumo.id }}">{{ insumo.nombre }}</option>
+                {% endfor %}
+            </select>
+        `;
+
+        cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0" required>`;
+
+        cell3.innerHTML = `
+            <select name="unidad">
+                {% for value, label in ESTADO_CHOICES %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        `;
+
+        cell4.innerHTML = `<button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>`;
+    }
+
+    function eliminarFila(button) {
+        let row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+{% endblock main %}
