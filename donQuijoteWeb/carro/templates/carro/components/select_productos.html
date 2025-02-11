@@ -4,7 +4,7 @@
     <h3 class="carro-titulo">Productos</h3>
     {% csrf_token %}
     {% for categoria, productos in categorias.items %}
-        {% if categoria.estado == True %}
+        {% if categoria.estado == True and categoria.nombre != "Producción" %}
             <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtrosYEnviar(event)">
                 <option disabled selected>{{ categoria }}</option>
                 {% for producto in productos %}

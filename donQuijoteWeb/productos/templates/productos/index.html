@@ -20,7 +20,7 @@ dQ | Productos
     {% for categoria in categorias_productos %}
         {% with categoria.grouper as nombre_categoria %}
             {% for cat in categorias %}
-                {% if cat.nombre == nombre_categoria and cat.estado %} 
+                {% if cat.nombre == nombre_categoria and cat.estado and cat.nombre != "Producción" %} 
                     <div class="card">           
                         <h1 class="categoria-titulo">{{ nombre_categoria }}</h1>  
                         <hr class="categoria-hr">
@@ -63,7 +63,37 @@ dQ | Productos
                 </div>
             </div>    
         {% endfor %}
-    </div>      
+    </div>    
+    
+    {% for categoria in categorias_productos %}
+        {% with categoria.grouper as nombre_categoria %}
+            {% for cat in categorias %}
+                {% if cat.nombre == nombre_categoria and cat.estado and cat.nombre == "Producción" %} 
+                    <div class="card">           
+                        <h1 class="categoria-titulo">{{ nombre_categoria }}</h1>  
+                        <hr class="categoria-hr">
+                        {% for producto in categoria.list %}
+                            <div class="productos">
+                                <p class="producto-nombre">{{ producto.nombre }}</p>
+                                <p class="producto-precio">PV: ${{ producto.precio_unit }}</p>
+                                <p class="producto-precio-rec">PR: ${{ producto.precio_rec }}</p>
+                                <div class="producto-opc">
+                                    <a href="{% url 'productos:productos_update' producto.id %}">
+                                        <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto">
+                                    </a>
+                                </div>
+                                <div class="producto-config">
+                                    <a href="{% url 'productos:agregar_insumos_producto' producto.id %}">
+                                        <img class="icono-opc" src="{% static 'productos/img/config.png' %}" alt="Editar Producto">
+                                    </a>
+                                </div>
+                            </div>     
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+    {% endfor %}
 </section>
 {% endblock main %}
 

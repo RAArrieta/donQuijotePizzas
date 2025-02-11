@@ -7,12 +7,14 @@ from django.views.generic import (CreateView, DeleteView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
+from .precio_recomendado import precio_recomendado
 
 @login_required
 def home(request):
     productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()
     categorias = ProductoCategoria.objects.all()
     forma_entrega = FormaEntrega.objects.all()
+    precio_recomendado()
     
     context = {
         'object_list': productos,
@@ -93,22 +95,6 @@ class ProveedoresUpdate(LoginRequiredMixin, UpdateView):
     form_class = forms.ProveedoresForm
     success_url = reverse_lazy("productos:listar_proveedores")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def agregar_insumos_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     insumos = Insumos.objects.all()
@@ -119,29 +105,48 @@ def agregar_insumos_producto(request, producto_id):
         insumo_ids = request.POST.getlist('insumo')
         cantidades = request.POST.getlist('cantidad')
         unidades = request.POST.getlist('unidad')
+        eliminar_ids = request.POST.getlist('eliminar_insumo')  # Insumos a eliminar
+
+        # Eliminar insumos seleccionados
+        if eliminar_ids:
+            ProductoInsumos.objects.filter(id__in=eliminar_ids, producto=producto).delete()
+            return redirect('productos:agregar_insumos_producto')
 
         for insumo_id, cantidad, unidad in zip(insumo_ids, cantidades, unidades):
             if insumo_id and cantidad:
                 insumo = get_object_or_404(Insumos, id=insumo_id)
-                ProductoInsumos.objects.create(
+
+                producto_insumo, created = ProductoInsumos.objects.get_or_create(
                     producto=producto,
                     insumo=insumo,
-                    cantidad=float(cantidad),
-                    unidad=unidad 
+                    defaults={'cantidad': float(cantidad), 'unidad': unidad}
                 )
+                
+                if not created:
+                    producto_insumo.cantidad = float(cantidad)
+                    producto_insumo.unidad = unidad
+                    producto_insumo.save()
 
         return redirect('productos:home')  
 
+      
     for insumo in producto_insumos:
-        print(f"Insumo: {insumo.insumo.nombre}, Cantidad: {insumo.cantidad}, TIPO: {type(insumo.cantidad)}, Unidad: {insumo.unidad}")
+        insumo.cantidad = str(insumo.cantidad).replace(",", ".")
+
 
     context = {
         'producto': producto, 
         'insumos': insumos,
-        'producto_insumos': producto_insumos,  # Ahora sí pasamos los insumos existentes
+        'producto_insumos': producto_insumos,  
         "ESTADO_CHOICES": estado_choices
     }
     return render(request, 'productos/agregar_insumos.html', context)
+
+def eliminar_insumo(request, insumo_id):
+    insumo = get_object_or_404(ProductoInsumos, id=insumo_id)
+    producto_id = insumo.producto.id  # Obtener el ID del producto para redireccionar
+    insumo.delete()
+    return redirect('productos:agregar_insumos_producto', producto_id=producto_id)
 
 
 

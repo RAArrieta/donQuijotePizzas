@@ -28,6 +28,9 @@ urlpatterns += [
     path("insumos_update/<int:pk>", views.InsumosUpdate.as_view(), name="insumos_update"),
     path("proveedores_update/<int:pk>", views.ProveedoresUpdate.as_view(), name="proveedores_update"),
     path('producto/<int:producto_id>/insumos/', agregar_insumos_producto, name='agregar_insumos_producto'),
+    path('eliminar_insumo/<int:insumo_id>/', views.eliminar_insumo, name='eliminar_insumo'),
 ]
+
+
 
 

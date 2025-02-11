@@ -6,7 +6,7 @@
 {% endblock title %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'gastos/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
 {% endblock css %}
 
 {% block titulo %}
@@ -14,57 +14,66 @@
 {% endblock titulo %}
 
 {% block main %}
-<form method="POST">
-    {% csrf_token %}
+<section class="form-container">
+    <form class="card" method="POST">
+        <h2>Insumos de {{ producto }}</h2>
+        {% csrf_token %}
+        <table id="insumosTable" class="styled-table">
+            <thead>
+                <tr>
+                    <th>Insumo</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for insumo in producto_insumos %}
+                <tr>
+                    <td>
+                        <select name="insumo" class="input">
+                            {% for i in insumos %}
+                                <option value="{{ i.id }}" {% if i.id == insumo.insumo.id %}selected{% endif %}>
+                                    {{ i.nombre }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input class="input" type="number" name="cantidad" min="0" value="{{ insumo.cantidad }}">
+                    </td>
+                    <td>
+                        <select name="unidad" class="input">
+                            {% for value, label in ESTADO_CHOICES %}
+                                <option value="{{ value }}" {% if value == insumo.unidad %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <form method="POST" action="{% url 'productos:eliminar_insumo' insumo.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No hay insumos agregados aún.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <table id="insumosTable">
-        <thead>
-            <tr>
-                <th>Insumo</th>
-                <th>Cantidad</th>
-                <th>Unidad</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for insumo in producto_insumos %}
-            <tr>
-                <td>
-                    <select name="insumo">
-                        {% for i in insumos %}
-                            <option value="{{ i.id }}" {% if i.id == insumo.insumo.id %}selected{% endif %}>
-                                {{ i.nombre }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </td>
-                <td>
-                    <input class="input" type="number" name="cantidad" step="0.01" min="0" value="{{ insumo.cantidad|floatformat:2 }}">
-                </td>
-                <td>
-                    <select name="unidad">
-                        {% for value, label in ESTADO_CHOICES %}
-                            <option value="{{ value }}" {% if value == insumo.unidad %}selected{% endif %}>
-                                {{ label }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No hay insumos agregados aún.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <div class="btn-container">
+            <button type="button" class="btn-success" onclick="agregarFila()">Agregar Insumo</button>
+            <button type="submit" class="btn-success">Guardar Insumos</button>
+            <a class="btn-delete" href="{% url 'productos:home' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
 
-    <button type="button" class="btn btn-primary" onclick="agregarFila()">Agregar Insumo</button>
-    <button type="submit" class="btn btn-success">Guardar Insumos</button>
-</form>
 
 <script>
     function agregarFila() {
@@ -77,7 +86,7 @@
         let cell4 = newRow.insertCell(3);
 
         cell1.innerHTML = `
-            <select name="insumo">
+            <select name="insumo" class="input">
                 <option value="">Seleccione un insumo</option>
                 {% for insumo in insumos %}
                     <option value="{{ insumo.id }}">{{ insumo.nombre }}</option>
@@ -85,22 +94,17 @@
             </select>
         `;
 
-        cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0" required>`;
+        cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0.0" class="input" required>`;
 
         cell3.innerHTML = `
-            <select name="unidad">
+            <select name="unidad" class="input">
                 {% for value, label in ESTADO_CHOICES %}
                     <option value="{{ value }}">{{ label }}</option>
                 {% endfor %}
             </select>
         `;
 
-        cell4.innerHTML = `<button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>`;
-    }
-
-    function eliminarFila(button) {
-        let row = button.parentNode.parentNode;
-        row.parentNode.removeChild(row);
+        cell4.innerHTML = `<button type="submit" class="btn-delete" onclick="eliminarFila(this)">Eliminar</button>`;
     }
 </script>
 

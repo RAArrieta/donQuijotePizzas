@@ -10,7 +10,6 @@ class Proveedores(models.Model):
 class Insumos(models.Model):
     ESTADO_CHOICES = [
         ('Kg', 'Kg'),
-        ('Gr', 'Gr'),
         ('Ltr', 'Ltr'),
         ('Unid', 'Unid'),
         ('Doc', 'Doc'),
