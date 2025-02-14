@@ -17,6 +17,41 @@
 <section class="form-container">
     <form class="card" method="POST">
         <h2>Insumos de {{ producto }}</h2>
+
+
+
+        <select name="agregar_insumo" class="input" id="selector_principal">
+            <option value="">Seleccione...</option>
+            {% for proveedor, insumos in proveedores.items %}
+                <option value="proveedor_{{ forloop.counter }}">{{ proveedor }}</option>
+            {% endfor %}
+            <option value="produccion">Productos de Producción</option>
+        </select>
+        
+        <!-- Ocultos por defecto -->
+        <div id="selects_ocultos" style="display: none;">
+            {% for proveedor, insumos in proveedores.items %}
+                <select class="input proveedor_select" data-proveedor="proveedor_{{ forloop.counter }}" style="display: none;">
+                    <option disabled selected>{{ proveedor }}</option>
+                    {% for insumo in insumos %}
+                        <option value="{{ insumo.id }}">{{ insumo.nombre }} x {{ insumo.unidad }}</option>
+                    {% endfor %}
+                </select>          
+            {% endfor %}
+        
+            <select name="produccion" class="input" id="select_produccion" style="display: none;">
+                <option value="" selected disabled>Producción</option> 
+                {% for i in produccion %}
+                    <option value="{{ i.id }}">{{ i.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        
+
+
+
         {% csrf_token %}
         <table id="insumosTable" class="styled-table">
             <thead>
@@ -74,7 +109,32 @@
     </form>
 </section>
 
+<script>
+document.getElementById("selector_principal").addEventListener("change", function() {
+    let valorSeleccionado = this.value;
+    let selectsOcultos = document.getElementById("selects_ocultos");
+    let proveedoresSelects = document.querySelectorAll(".proveedor_select");
+    let produccionSelect = document.getElementById("select_produccion");
 
+    // Ocultar todos los selects
+    proveedoresSelects.forEach(select => select.style.display = "none");
+    produccionSelect.style.display = "none";
+
+    // Mostrar el div contenedor si se selecciona algo
+    if (valorSeleccionado) {
+        selectsOcultos.style.display = "block";
+
+        // Mostrar el select correspondiente
+        if (valorSeleccionado.startsWith("proveedor")) {
+            document.querySelector(`[data-proveedor="${valorSeleccionado}"]`).style.display = "block";
+        } else if (valorSeleccionado === "produccion") {
+            produccionSelect.style.display = "block";
+        }
+    } else {
+        selectsOcultos.style.display = "none";
+    }
+});
+</script>
 <script>
     function agregarFila() {
         let table = document.getElementById("insumosTable").getElementsByTagName('tbody')[0];
@@ -109,3 +169,34 @@
 </script>
 
 {% endblock main %}
+
+
+
+#QUIERO OCULTAR EN PANTALLA DESDE AQUI
+        {% for proveedor, insumos in proveedores.items %}
+        <select class="input" name="insumo">
+            <option disabled selected>{{ proveedor }}</option>
+            {% for insumo in insumos %}
+                <option value="{{ insumo.id }}">{{ insumo.nombre }} x {{ insumo.unidad }}</option>
+                
+            {% endfor %}
+        </select>          
+        {% endfor %}
+        <select name="produccion" class="input">
+            <option value="" selected disabled>Producción</option> 
+            {% for i in produccion %}
+                <option value="{{ i.id }}">
+                    {{ i.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+        #HASTA AQUI
+
+        #QUIERO MOSTRAR INDIVIDUALMENTE LOS SELECTS EN PANTALLA UNA VEZ QUE LOS SELECCIONE AQUI
+        <select name="agregar_insumo" class="input">
+            <option value="">Seleccione...</option>
+            {% for proveedor, insumos in proveedores.items %}
+                <option>{{ proveedor }}</option>
+            {% endfor %}
+            <option>Productos de Producción</option>
+        </select>

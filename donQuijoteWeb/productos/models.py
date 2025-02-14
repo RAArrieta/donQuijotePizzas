@@ -13,10 +13,7 @@ class Insumos(models.Model):
         ('Ltr', 'Ltr'),
         ('Unid', 'Unid'),
         ('Doc', 'Doc'),
-        ('Caja', 'Caja'),
-        ('Pack', 'Pack'),
-        ('Lata', 'Lata'),
-        ('Rollo', 'Rollo'),
+        ('Mtr', 'Mtr'),
     ]
     nombre=models.CharField(max_length=50, verbose_name="Nombre")
     proveedor=models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Proveedor")
@@ -51,9 +48,7 @@ class ProductoInsumos(models.Model):
         ('Ltr', 'Ltr'),
         ('Unid', 'Unid'),
         ('Doc', 'Doc'),
-        ('Caja', 'Caja'),
-        ('Lata', 'Lata'),
-        ('Rollo', 'Rollo'),
+        ('Mtr', 'Mtr'),
     ]
 
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, verbose_name="Producto", related_name="insumos")
