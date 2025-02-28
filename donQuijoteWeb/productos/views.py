@@ -94,148 +94,77 @@ class ProveedoresUpdate(LoginRequiredMixin, UpdateView):
     model = models.Proveedores
     form_class = forms.ProveedoresForm
     success_url = reverse_lazy("productos:listar_proveedores")
-
-# def agregar_insumos_producto(request, producto_id):
-#     producto = get_object_or_404(Producto, id=producto_id)
-#     insumos = Insumos.objects.all()
-#     estado_choices = ProductoInsumos.ESTADO_CHOICES
-#     producto_insumos = ProductoInsumos.objects.filter(producto=producto)  
     
-#     produccion = Producto.objects.filter(categoria__nombre="Producción")
+    from django.shortcuts import render, get_object_or_404, redirect
+from .models import Producto, Insumos, ProductoInsumos
 
-#     if request.method == "POST":
-#         insumo_ids = request.POST.getlist('insumo')
-#         cantidades = request.POST.getlist('cantidad')
-#         unidades = request.POST.getlist('unidad')
-#         eliminar_ids = request.POST.getlist('eliminar_insumo') 
-#         prod_produccion = int(request.POST.get('produccion', 0))  
-        
-
-#         if prod_produccion:
-#             producto_id = prod_produccion
-#             insumos_producto = ProductoInsumos.objects.filter(producto_id=producto_id)
-#             for insprod in insumos_producto:
-#                 print(f"Producto: {insprod.producto}, insumo: {insprod.insumo}, cantidad: {insprod.cantidad}, unidad: {insprod.unidad}")
-#                 #insprod ES UN PRODUCTO DE PRODUCCION DONDE TIENE RELACIONADOS X CANTIDAD DE INSUMOS CON SU CANTIDAD Y SU UNIDAD
-#                 #QUIERO QUE ME AYUDES A AGREGARLOS A LOS INSUMOS QUE SE CARGAN
-
-
-
-#         if eliminar_ids:
-#             ProductoInsumos.objects.filter(id__in=eliminar_ids, producto=producto).delete()
-#             return redirect('productos:agregar_insumos_producto')
-
-#         for insumo_id, cantidad, unidad in zip(insumo_ids, cantidades, unidades):
-#             if insumo_id and cantidad:
-#                 insumo = get_object_or_404(Insumos, id=insumo_id)
-
-#                 producto_insumo, created = ProductoInsumos.objects.get_or_create(
-#                     producto=producto,
-#                     insumo=insumo,
-#                     defaults={'cantidad': float(cantidad), 'unidad': unidad}
-#                 )
-                
-#                 if not created:
-#                     producto_insumo.cantidad = float(cantidad)
-#                     producto_insumo.unidad = unidad
-#                     producto_insumo.save()
-
-#         return redirect('productos:home')  
-
-      
-#     for insumo in producto_insumos:
-#         insumo.cantidad = str(insumo.cantidad).replace(",", ".")
-
-
-#     context = {
-#         'producto': producto, 
-#         'insumos': insumos,
-#         'producto_insumos': producto_insumos,  
-#         "ESTADO_CHOICES": estado_choices,
-#         'produccion': produccion,
-#     }
-#     return render(request, 'productos/agregar_insumos.html', context)
+   
 def agregar_insumos_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     insumos = Insumos.objects.all()
     estado_choices = ProductoInsumos.ESTADO_CHOICES
-    producto_insumos = ProductoInsumos.objects.filter(producto=producto)  
-    
-    
-    
-    insumos_prov = Insumos.objects.all() 
+    producto_insumos = ProductoInsumos.objects.filter(producto=producto)
+
+    # Obtener insumos agrupados por proveedor
     proveedores = {}
-    for insumo in insumos_prov:
-        print(insumo.proveedor)
-        if insumo.proveedor not in proveedores:
-            proveedores[insumo.proveedor] = []
-        proveedores[insumo.proveedor].append(insumo)  
+    for insumo in insumos:
+        proveedores.setdefault(insumo.proveedor, []).append(insumo)
 
-    # for prov, ins in proveedores.items():
-    #     print(f"Proveedor: {prov}, Insumo: {ins}")
-
-    
-    # Obtienes los productos de la categoría "Producción"
     produccion = Producto.objects.filter(categoria__nombre="Producción")
 
     if request.method == "POST":
         insumo_ids = request.POST.getlist('insumo')
         cantidades = request.POST.getlist('cantidad')
         unidades = request.POST.getlist('unidad')
-        eliminar_ids = request.POST.getlist('eliminar_insumo') 
-        prod_produccion = int(request.POST.get('produccion', 0))  # Asegúrate de que el valor es un entero
+        # eliminar_ids = request.POST.getlist('eliminar_insumo')
+        
+        print(f"Insumo IDs: {insumo_ids}")
+        print(f"Cantidades: {cantidades}")
+        print(f"Unidades: {unidades}")
 
-        if prod_produccion:
-            # Si el producto de producción fue seleccionado, obtenemos sus insumos
-            producto_id = prod_produccion
-            insumos_producto = ProductoInsumos.objects.filter(producto_id=producto_id)
+        # # # **Eliminar insumos seleccionados**
+        # if eliminar_ids:
+        #     ProductoInsumos.objects.filter(id__in=eliminar_ids, producto=producto).delete()
+        #     return redirect('productos:agregar_insumos_producto', producto_id=producto.id)
 
-            for insprod in insumos_producto:
-                print(f"Producto: {insprod.producto}, insumo: {insprod.insumo}, cantidad: {insprod.cantidad}, unidad: {insprod.unidad}")
-                
-                # Añadimos el insumo al producto actual si no está ya asociado
-                producto_insumo, created = ProductoInsumos.objects.get_or_create(
-                    producto=producto,
-                    insumo=insprod.insumo,
-                    defaults={'cantidad': insprod.cantidad, 'unidad': insprod.unidad}
-                )
-                
-                # Si el insumo ya existe, actualizamos la cantidad y la unidad
-                if not created:
-                    producto_insumo.cantidad += insprod.cantidad  # Sumamos la cantidad
-                    producto_insumo.unidad = insprod.unidad
-                    producto_insumo.save()
-
-        if eliminar_ids:
-            ProductoInsumos.objects.filter(id__in=eliminar_ids, producto=producto).delete()
-            return redirect('productos:agregar_insumos_producto')
-
-        # Añadir los nuevos insumos seleccionados
+        # **Agregar o actualizar insumos**
         for insumo_id, cantidad, unidad in zip(insumo_ids, cantidades, unidades):
             if insumo_id and cantidad:
-                insumo = get_object_or_404(Insumos, id=insumo_id)
+                try:
+                    cantidad = float(cantidad)  # Convertir a número
+                    insumo = get_object_or_404(Insumos, id=insumo_id)
 
-                producto_insumo, created = ProductoInsumos.objects.get_or_create(
-                    producto=producto,
-                    insumo=insumo,
-                    defaults={'cantidad': float(cantidad), 'unidad': unidad}
-                )
-                
-                if not created:
-                    producto_insumo.cantidad = float(cantidad)
-                    producto_insumo.unidad = unidad
-                    producto_insumo.save()
+                    # Buscar si ya existe la relación, pero sin usar get_or_create
+                    producto_insumo = ProductoInsumos.objects.filter(producto=producto, insumo=insumo).first()
 
-        return redirect('productos:home')  
+                    if producto_insumo:
+                        # Si ya existe, actualizamos los valores
+                        producto_insumo.cantidad = cantidad
+                        producto_insumo.unidad = unidad
+                        producto_insumo.save()
+                    else:
+                        # Si no existe, lo creamos manualmente
+                        ProductoInsumos.objects.create(
+                            producto=producto,
+                            insumo=insumo,
+                            cantidad=cantidad,
+                            unidad=unidad
+                        )
 
+                except ValueError:
+                    print(f"Error: la cantidad '{cantidad}' no es un número válido")
+
+
+        return redirect('productos:home')
+    
     for insumo in producto_insumos:
         insumo.cantidad = str(insumo.cantidad).replace(",", ".")
 
     context = {
-        'producto': producto, 
+        'producto': producto,
         'insumos': insumos,
-        'producto_insumos': producto_insumos,  
-        "ESTADO_CHOICES": estado_choices,
+        'producto_insumos': producto_insumos,
+        'ESTADO_CHOICES': estado_choices,
         'produccion': produccion,
         'proveedores': proveedores,
     }
@@ -244,15 +173,9 @@ def agregar_insumos_producto(request, producto_id):
 def eliminar_insumo(request, insumo_id):
     insumo = get_object_or_404(ProductoInsumos, id=insumo_id)
     producto_id = insumo.producto.id  
+    print(f"Intentando eliminar insumo con ID: {insumo.id}")
     insumo.delete()
     return redirect('productos:agregar_insumos_producto', producto_id=producto_id)
 
 
-
-    # print("Producción")
-    # for prod in produccion:
-    #     print(f"{prod.nombre}")
-    # print("insumos_produccion")
-    # for insprod in insumos_produccion:
-    #     print(f"Producto: {insprod.producto}, insumo: {insprod.insumo}, cantidad: {insprod.cantidad}, unidad: {insprod.unidad}")
 
