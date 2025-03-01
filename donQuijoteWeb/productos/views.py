@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
 from .models import Producto, ProductoCategoria, Insumos, Proveedores, ProductoInsumos
 from pedido.models import FormaEntrega
 from . import forms, models
@@ -98,14 +99,12 @@ class ProveedoresUpdate(LoginRequiredMixin, UpdateView):
     from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Insumos, ProductoInsumos
 
-   
 def agregar_insumos_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     insumos = Insumos.objects.all()
     estado_choices = ProductoInsumos.ESTADO_CHOICES
     producto_insumos = ProductoInsumos.objects.filter(producto=producto)
 
-    # Obtener insumos agrupados por proveedor
     proveedores = {}
     for insumo in insumos:
         proveedores.setdefault(insumo.proveedor, []).append(insumo)
@@ -113,47 +112,30 @@ def agregar_insumos_producto(request, producto_id):
     produccion = Producto.objects.filter(categoria__nombre="Producción")
 
     if request.method == "POST":
+        ProductoInsumos.objects.filter(producto=producto).delete()
+
         insumo_ids = request.POST.getlist('insumo')
         cantidades = request.POST.getlist('cantidad')
         unidades = request.POST.getlist('unidad')
-        # eliminar_ids = request.POST.getlist('eliminar_insumo')
         
-        print(f"Insumo IDs: {insumo_ids}")
-        print(f"Cantidades: {cantidades}")
-        print(f"Unidades: {unidades}")
-
-        # # # **Eliminar insumos seleccionados**
-        # if eliminar_ids:
-        #     ProductoInsumos.objects.filter(id__in=eliminar_ids, producto=producto).delete()
-        #     return redirect('productos:agregar_insumos_producto', producto_id=producto.id)
-
-        # **Agregar o actualizar insumos**
+        insumos_nuevos = []
         for insumo_id, cantidad, unidad in zip(insumo_ids, cantidades, unidades):
             if insumo_id and cantidad:
                 try:
-                    cantidad = float(cantidad)  # Convertir a número
+                    cantidad = float(cantidad)  
                     insumo = get_object_or_404(Insumos, id=insumo_id)
 
-                    # Buscar si ya existe la relación, pero sin usar get_or_create
-                    producto_insumo = ProductoInsumos.objects.filter(producto=producto, insumo=insumo).first()
-
-                    if producto_insumo:
-                        # Si ya existe, actualizamos los valores
-                        producto_insumo.cantidad = cantidad
-                        producto_insumo.unidad = unidad
-                        producto_insumo.save()
-                    else:
-                        # Si no existe, lo creamos manualmente
-                        ProductoInsumos.objects.create(
-                            producto=producto,
-                            insumo=insumo,
-                            cantidad=cantidad,
-                            unidad=unidad
-                        )
+                    insumos_nuevos.append(ProductoInsumos(
+                        producto=producto,
+                        insumo=insumo,
+                        cantidad=cantidad,
+                        unidad=unidad
+                    ))
 
                 except ValueError:
                     print(f"Error: la cantidad '{cantidad}' no es un número válido")
 
+        ProductoInsumos.objects.bulk_create(insumos_nuevos)
 
         return redirect('productos:home')
     
@@ -170,12 +152,17 @@ def agregar_insumos_producto(request, producto_id):
     }
     return render(request, 'productos/agregar_insumos.html', context)
 
-def eliminar_insumo(request, insumo_id):
-    insumo = get_object_or_404(ProductoInsumos, id=insumo_id)
-    producto_id = insumo.producto.id  
-    print(f"Intentando eliminar insumo con ID: {insumo.id}")
-    insumo.delete()
-    return redirect('productos:agregar_insumos_producto', producto_id=producto_id)
+def insumos_por_produccion(request):
+    producto_id = request.GET.get("producto_id")
+    producto = get_object_or_404(Producto, id=producto_id)
+    insumos = ProductoInsumos.objects.filter(producto=producto)
+
+    insumos_data = [
+        {"id": insumo.insumo.id, "nombre": insumo.insumo.nombre, "cantidad": insumo.cantidad, "unidad": insumo.unidad}
+        for insumo in insumos
+    ]
+
+    return JsonResponse({"insumos": insumos_data})
 
 
 

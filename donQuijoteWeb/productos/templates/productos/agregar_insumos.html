@@ -42,11 +42,9 @@
                         <input type="hidden" name="unidad" value="{{prod_insumo.unidad}}">
                     </td>
                     <td>
-                        <form method="POST" action="{% url 'productos:eliminar_insumo' prod_insumo.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-delete">Eliminar</button>
-                        </form>
+                        <button type="button" class="btn-delete" onclick="eliminarFila(this)">Eliminar</button>
                     </td>
+                    
                 </tr>
                 {% empty %}
                 <tr>
@@ -66,14 +64,27 @@
                 {% endfor %}
             </select>          
         {% endfor %}
-        <select name="produccion" class="input">
+
+
+
+
+
+    
+        <select name="produccion" class="input" onchange="agregarFilas()" data-url="{% url 'productos:insumos_por_produccion' %}">
             <option value="" selected disabled>Producción</option> 
             {% for i in produccion %}
                 <option value="{{ i.id }}">
                     {{ i.nombre }}
                 </option>
             {% endfor %}
-        </select>        
+        </select>  
+
+
+
+
+
+
+
 
         <div class="btn-container">
             <button type="submit" class="btn-success">Guardar Insumos</button>
@@ -120,6 +131,48 @@
         select.selectedIndex = 0;
     }
 
+    function agregarFilas() {
+        let select = event.target;
+        let productoId = select.value;
+        let url = select.getAttribute("data-url");
+
+        if (!productoId) return;
+
+        fetch(`${url}?producto_id=${productoId}`)
+            .then(response => response.json())
+            .then(data => {
+                let table = document.getElementById("insumosTable").getElementsByTagName('tbody')[0];
+
+                data.insumos.forEach(insumo => {
+                    let newRow = table.insertRow();
+
+                    let cell1 = newRow.insertCell(0);
+                    let cell2 = newRow.insertCell(1);
+                    let cell3 = newRow.insertCell(2);
+                    let cell4 = newRow.insertCell(3);
+
+                    cell1.innerHTML = `
+                        <h4 name="insumo">${insumo.nombre}</h4>
+                        <input type="hidden" name="insumo" value="${insumo.id}">
+                    `;
+
+                    cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0.0" class="input" value="${insumo.cantidad}" required>`;
+
+                    let unidad = insumo.unidad === "Kg" ? "Gr" : insumo.unidad;
+                    cell3.innerHTML = `
+                        <p name="unidad">${unidad}</p>
+                        <input type="hidden" name="unidad" value="${unidad}">
+                    `;
+
+                    cell4.innerHTML = `<button type="button" class="btn-delete" onclick="eliminarFila(this)">Eliminar</button>`;
+                });
+
+                select.selectedIndex = 0;
+            })
+            .catch(error => console.error('Error al cargar insumos:', error));
+    }
+
+
     function eliminarFila(btn) {
         let row = btn.parentNode.parentNode;
         row.parentNode.removeChild(row);
@@ -132,258 +185,3 @@
 
 
 
-<script>
-    function agregarFila() {
-        let table = document.getElementById("insumosTable").getElementsByTagName('tbody')[0];
-        let newRow = table.insertRow();
-
-        let cell1 = newRow.insertCell(0);
-        let cell2 = newRow.insertCell(1);
-        let cell3 = newRow.insertCell(2);
-        let cell4 = newRow.insertCell(3);
-
-        cell1.innerHTML = `
-            <h4 name="insumo" value="{{ insumo.id }}">{{ insumo.nombre }}</h4>
-        `;
-
-        cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0.0" class="input" required>`;
-
-        cell3.innerHTML = `
-            <select name="unidad" class="input">
-                {% for value, label in ESTADO_CHOICES %}
-                    <option value="{{ value }}">{{ label }}</option>
-                {% endfor %}
-            </select>
-        `;
-
-        cell4.innerHTML = `<button type="submit" class="btn-delete" onclick="eliminarFila(this)">Eliminar</button>`;
-    }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{% for proveedor, insumos in proveedores.items %}
-<select class="input" name="insumo">
-    <option disabled selected>{{ proveedor }}</option>
-    {% for insumo in insumos %}
-        <option value="{{ insumo.id }}">{{ insumo.nombre }} x {{ insumo.unidad }}</option>            
-    {% endfor %}
-</select>          
-{% endfor %}
-<select name="produccion" class="input">
-    <option value="" selected disabled>Producción</option> 
-    {% for i in produccion %}
-        <option value="{{ i.id }}">
-            {{ i.nombre }}
-        </option>
-    {% endfor %}
-</select>
-
-
-
-
-
-<select name="agregar_insumo" class="input" id="selector_principal">
-    <option value="">Seleccione...</option>
-    {% for proveedor, insumos in proveedores.items %}
-        <option value="proveedor_{{ forloop.counter }}">{{ proveedor }}</option>
-    {% endfor %}
-    <option value="produccion">Productos de Producción</option>
-</select>
-
-<!-- Ocultos por defecto -->
-<div id="selects_ocultos" style="display: none;">
-    {% for proveedor, insumos in proveedores.items %}
-        <select class="input proveedor_select" data-proveedor="proveedor_{{ forloop.counter }}" style="display: none;">
-            <option disabled selected>{{ proveedor }}</option>
-            {% for insumo in insumos %}
-                <option value="{{ insumo.id }}">{{ insumo.nombre }} x {{ insumo.unidad }}</option>
-            {% endfor %}
-        </select>          
-    {% endfor %}
-
-    <select name="produccion" class="input" id="select_produccion" style="display: none;">
-        <option value="" selected disabled>Producción</option> 
-        {% for i in produccion %}
-            <option value="{{ i.id }}">{{ i.nombre }}</option>
-        {% endfor %}
-    </select>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Obtener todos los selects de insumos
-        document.querySelectorAll("select[name='insumo']").forEach(select => {
-            select.addEventListener("change", function() {
-                let selectedOption = this.options[this.selectedIndex];
-                let insumoId = selectedOption.value;
-                let insumoNombre = selectedOption.text;
-    
-                if (!insumoId) return; // Evita agregar una fila si la opción es inválida
-                
-                let tabla = document.getElementById("insumosTable").getElementsByTagName("tbody")[0];
-    
-                // Verificar si el insumo ya está en la tabla
-                if (document.querySelector(`#insumosTable tr[data-id='${insumoId}']`)) {
-                    alert("Este insumo ya está agregado.");
-                    return;
-                }
-    
-                // Crear una nueva fila
-                let nuevaFila = document.createElement("tr");
-                nuevaFila.setAttribute("data-id", insumoId);
-                nuevaFila.innerHTML = `
-                    <td><h4>${insumoNombre}</h4></td>
-                    <td>
-                        <input class="input" type="number" name="cantidad_${insumoId}" min="0" value="0">
-                    </td>
-                    <td>
-                        <select name="unidad_${insumoId}" class="input">
-                            {% for value, label in ESTADO_CHOICES %}
-                                <option value="{{ value }}">{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td>
-                        <button type="button" class="btn-delete" onclick="eliminarFila(this)">Eliminar</button>
-                    </td>
-                `;
-    
-                // Agregar la fila a la tabla
-                tabla.appendChild(nuevaFila);
-    
-                // Reiniciar el select para que el usuario pueda seguir agregando más insumos
-                this.selectedIndex = 0;
-            });
-        });
-    });
-    
-    // Función para eliminar una fila
-    function eliminarFila(button) {
-        button.closest("tr").remove();
-    }
-    </script>
