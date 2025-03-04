@@ -128,7 +128,7 @@ def agregar_insumos_producto(request, producto_id):
                     insumos_nuevos.append(ProductoInsumos(
                         producto=producto,
                         insumo=insumo,
-                        cantidad=cantidad,
+                        cantidad=float(cantidad),
                         unidad=unidad
                     ))
 
