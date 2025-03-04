@@ -8,41 +8,6 @@ from django.db.models import Sum
 
 
 def precio_recomendado():
-    #CALCULO EL COSTO DE CADA PRODUCTO
-    insumos = Insumos.objects.all()
-    prod_insumos = ProductoInsumos.objects.all()
-
-    prod_precios_rec = {}
-
-    for prod_insumo in prod_insumos:
-        precio_recomendado = 0  
-        # print(prod_insumo.producto)
-
-        for insumo in insumos:
-            if str(insumo.nombre) == str(prod_insumo.insumo):
-                # print(f"{insumo.nombre}: {prod_insumo.cantidad} {prod_insumo.unidad} x {insumo.precio}")
-                if insumo.unidad == "Kg" and prod_insumo.unidad == "Gr":
-                    precio_recomendado += (insumo.precio / 1000) * prod_insumo.cantidad
-                else:
-                    precio_recomendado += insumo.precio * prod_insumo.cantidad
-
-        producto_nombre = str(prod_insumo.producto)
-        prod_precios_rec[producto_nombre] = prod_precios_rec.get(producto_nombre, 0) + precio_recomendado
-
-    # for clave, valor in prod_precios_rec.items():
-    #     print(f"{clave}: {valor}")
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -88,11 +53,6 @@ def precio_recomendado():
 
     print(f"Total: {gasto_total}")
 
-
-
-
-
-
     #CALCULO LA CANTIDAD DE PRODUCTOS POR MES
     fecha_inicio = now().date() - timedelta(days=30)
 
@@ -130,4 +90,59 @@ def precio_recomendado():
     )
 
     print(f"Cantidad de Minutas vendidas en los últimos 30 días: {minutas_vendidas}")
+
+    cant_prod = pizzas_vendidas + (empanadas_vendidas/12) + sandwichs_vendidos + minutas_vendidas
+
+
+
+    #CALCULO EL COSTO DE CADA PRODUCTO
+    insumos = Insumos.objects.all()
+    prod_insumos = ProductoInsumos.objects.all()
+
+    prod_precios_rec = {}
+
+    for prod_insumo in prod_insumos:
+        precio_recomendado = 0  
+        precio_recomendado_final = 0  
+        # print(prod_insumo.producto)
+
+        for insumo in insumos:
+            if str(insumo.nombre) == str(prod_insumo.insumo):
+                print(f"{insumo.nombre}: {prod_insumo.cantidad} {prod_insumo.unidad} x {insumo.precio}")
+                if insumo.unidad == "Kg" and prod_insumo.unidad == "Gr":
+                    precio_recomendado += (insumo.precio / 1000) * prod_insumo.cantidad
+                else:
+                    precio_recomendado += insumo.precio * prod_insumo.cantidad
+
+        producto_nombre = str(prod_insumo.producto)
+        prod_precios_rec[producto_nombre] = prod_precios_rec.get(producto_nombre, 0) + precio_recomendado
+
+
+
+
+
+
+
+
+
+
+    prod_actualizo = Producto.objects.all()
+
+
+    
+    for clave, valor in prod_precios_rec.items():
+        # print(type(clave))
+        # print(f"{clave}: {valor}")
+        for act in prod_actualizo:
+            # pepe= str(act)
+            # print(type(pepe))
+            # print(pepe)
+            if clave == str(act):
+                print(f"prod_precios_rec: {clave}, Producto que actualizo: {act}, Costo Producto: {valor} ")
+                print(f"Costo: {valor}, GastosT: {gasto_total}, Prod_Vendidos: {cant_prod}")
+                precio_recomendado_final = ( valor * 2 ) + ( gasto_total / cant_prod )
+                print(precio_recomendado_final)
+
+
+                Producto.objects.filter(nombre=act).update(precio_rec=precio_recomendado_final)
 

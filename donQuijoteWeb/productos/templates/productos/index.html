@@ -28,7 +28,7 @@ dQ | Productos
                             <div class="productos">
                                 <p class="producto-nombre">{{ producto.nombre }}</p>
                                 <p class="producto-precio">PV: ${{ producto.precio_unit }}</p>
-                                <p class="producto-precio-rec">PR: ${{ producto.precio_rec }}</p>
+                                <p class="producto-precio-rec">PR: ${{ producto.precio_rec|floatformat:0 }}</p>
                                 <div class="producto-opc">
                                     <a href="{% url 'productos:productos_update' producto.id %}">
                                         <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto">
@@ -76,7 +76,7 @@ dQ | Productos
                             <div class="productos">
                                 <p class="producto-nombre">{{ producto.nombre }}</p>
                                 <p class="producto-precio">PV: ${{ producto.precio_unit }}</p>
-                                <p class="producto-precio-rec">PR: ${{ producto.precio_rec }}</p>
+                                <p class="producto-precio-rec">PR: ${{ producto.precio_rec|floatformat:0 }}</p>
                                 <div class="producto-opc">
                                     <a href="{% url 'productos:productos_update' producto.id %}">
                                         <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto">
