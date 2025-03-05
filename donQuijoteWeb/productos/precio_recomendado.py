@@ -8,9 +8,6 @@ from django.db.models import Sum
 
 
 def precio_recomendado():
-
-
-
     #CALCULO LA SUMA DE LOS GASTOS
     epec = Gastos.objects.filter(proveedor__nombre="EPEC").order_by("-fecha").first()
     agua = Gastos.objects.filter(proveedor__nombre="Aguas Cordobesas").order_by("-fecha").first()
@@ -24,22 +21,23 @@ def precio_recomendado():
     municipalidad = Gastos.objects.filter(proveedor__nombre="Municipalidad").order_by("-fecha").first()
 
     rango_30_dias = timezone.now().date() - timedelta(days=30)
-    sueldos = Gastos.objects.filter(proveedor__nombre="Sueldos").order_by("-fecha").first()
+    # sueldos = Gastos.objects.filter(proveedor__nombre="Sueldos").order_by("-fecha").first()
     sueldos = Gastos.objects.filter(proveedor__nombre="Sueldos", fecha__gte=rango_30_dias).order_by("-fecha")
     
     sueldos_30d = 0
     gasto_total = 0
 
     if sueldos.exists():
+        print("SUELDOS")
         for sueldo in sueldos:
             sueldos_30d += sueldo.monto
             print(f"Fecha: {sueldo.fecha}, Monto: {sueldo.monto}")
     else:
         print("No hay registros de sueldos en los últimos 30 días.")
 
-    print(f"Monto Sueldo: {sueldos_30d}")
+    print(f"Monto Sueldo Total: {sueldos_30d}")
 
-    if epec and agua and gas and telefono and internet and servicios and inmueble and municipalidad:  
+    if epec or agua or gas or telefono or internet or servicios or inmueble or municipalidad:  
         print(f"Último gasto en EPEC: {epec.monto}")
         print(f"Último gasto en Agua: {agua.monto}")
         print(f"Último gasto en gas: {gas.monto}")
@@ -51,7 +49,7 @@ def precio_recomendado():
 
         gasto_total = epec.monto + agua.monto + gas.monto + telefono.monto + internet.monto + servicios.monto + inmueble.monto + municipalidad.monto + sueldos_30d
 
-    print(f"Total: {gasto_total}")
+    print(f"Gasto Total: {gasto_total}")
 
     #CALCULO LA CANTIDAD DE PRODUCTOS POR MES
     fecha_inicio = now().date() - timedelta(days=30)
@@ -93,7 +91,7 @@ def precio_recomendado():
 
     cant_prod = pizzas_vendidas + empanadas_vendidas + sandwichs_vendidos + minutas_vendidas
 
-
+    print(f"Cantidad de Productos Vendidos: {cant_prod}")
 
     #CALCULO EL COSTO DE CADA PRODUCTO
     insumos = Insumos.objects.all()
@@ -117,31 +115,17 @@ def precio_recomendado():
         producto_nombre = str(prod_insumo.producto)
         prod_precios_rec[producto_nombre] = prod_precios_rec.get(producto_nombre, 0) + precio_recomendado
 
-
-
-
-
-
-
-
-
-
     prod_actualizo = Producto.objects.all()
-
-
     
     for clave, valor in prod_precios_rec.items():
         # print(type(clave))
         # print(f"{clave}: {valor}")
         for act in prod_actualizo:
-            # pepe= str(act)
-            # print(type(pepe))
-            # print(pepe)
             if clave == str(act):
                 print(f"prod_precios_rec: {clave}, Producto que actualizo: {act}, Costo Producto: {valor} ")
                 print(f"Costo: {valor}, GastosT: {gasto_total}, Prod_Vendidos: {cant_prod}")
                 precio_recomendado_final = ( valor * 2.1 ) + ( gasto_total / cant_prod )
-                print(precio_recomendado_final)
+                print(f"Precio Recomendado para {act}:{precio_recomendado_final}")
 
 
                 Producto.objects.filter(nombre=act).update(precio_rec=precio_recomendado_final)

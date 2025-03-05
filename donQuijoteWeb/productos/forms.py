@@ -18,6 +18,7 @@ class InsumosForm(forms.ModelForm):
             "precio": forms.NumberInput(attrs={"class": "form-control"}),
             "unidad": forms.Select(attrs={"class": "form-control"}),  
             "proveedor": forms.Select(attrs={"class": "form-control"}), 
+            "observacion": forms.TextInput(attrs={"class": "form-control"}),
         }
 
 class ProductoCategoriaForm(forms.ModelForm):

@@ -19,6 +19,7 @@ class Insumos(models.Model):
     proveedor=models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Proveedor")
     precio=models.FloatField(verbose_name="Precio")
     unidad=models.CharField(max_length=50, choices=ESTADO_CHOICES)
+    observacion=models.CharField(max_length=100, blank=True, null=True, verbose_name="Observación")
 
     def __str__(self):
         return self.nombre
