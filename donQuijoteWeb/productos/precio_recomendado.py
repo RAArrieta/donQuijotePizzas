@@ -73,7 +73,7 @@ def precio_recomendado():
     empanadas_vendidas = next(
         (item["total_vendido"] for item in ventas_por_categoria if item["producto__categoria__nombre"] == "Empanadas"),
         0
-    )
+    )/12
 
     print(f"Cantidad de Empanadas vendidas en los últimos 30 días: {empanadas_vendidas}")
 
@@ -91,7 +91,7 @@ def precio_recomendado():
 
     print(f"Cantidad de Minutas vendidas en los últimos 30 días: {minutas_vendidas}")
 
-    cant_prod = pizzas_vendidas + (empanadas_vendidas/12) + sandwichs_vendidos + minutas_vendidas
+    cant_prod = pizzas_vendidas + empanadas_vendidas + sandwichs_vendidos + minutas_vendidas
 
 
 
@@ -140,7 +140,7 @@ def precio_recomendado():
             if clave == str(act):
                 print(f"prod_precios_rec: {clave}, Producto que actualizo: {act}, Costo Producto: {valor} ")
                 print(f"Costo: {valor}, GastosT: {gasto_total}, Prod_Vendidos: {cant_prod}")
-                precio_recomendado_final = ( valor * 2 ) + ( gasto_total / cant_prod )
+                precio_recomendado_final = ( valor * 2.1 ) + ( gasto_total / cant_prod )
                 print(precio_recomendado_final)
 
 
