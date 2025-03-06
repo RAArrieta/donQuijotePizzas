@@ -8,48 +8,39 @@ from django.db.models import Sum
 
 
 def precio_recomendado():
-    #CALCULO LA SUMA DE LOS GASTOS
-    epec = Gastos.objects.filter(proveedor__nombre="EPEC").order_by("-fecha").first()
-    agua = Gastos.objects.filter(proveedor__nombre="Aguas Cordobesas").order_by("-fecha").first()
-    gas = Gastos.objects.filter(proveedor__nombre="Gas").order_by("-fecha").first()
-    telefono = Gastos.objects.filter(proveedor__nombre="Telefonía").order_by("-fecha").first()
-    internet = Gastos.objects.filter(proveedor__nombre="Internet").order_by("-fecha").first()
-    servicios = Gastos.objects.filter(proveedor__nombre="Otros Servicios").order_by("-fecha").first()
+    def ultimo_gasto(proveedor):
+        gasto = Gastos.objects.filter(proveedor__nombre=proveedor).order_by("-fecha").first()
+        return gasto.monto if gasto else 0
 
-    inmueble = Gastos.objects.filter(proveedor__nombre="Inmueble").order_by("-fecha").first()
+    epec = ultimo_gasto("EPEC")
+    agua = ultimo_gasto("Aguas Cordobesas")
+    gas = ultimo_gasto("Gas")
+    telefono = ultimo_gasto("Telefonía")
+    internet = ultimo_gasto("Internet")
+    servicios = ultimo_gasto("Otros Servicios")
+    inmueble = ultimo_gasto("Inmueble")
+    municipalidad = ultimo_gasto("Municipalidad")
 
-    municipalidad = Gastos.objects.filter(proveedor__nombre="Municipalidad").order_by("-fecha").first()
-
+    # Filtrar los sueldos en los últimos 30 días
     rango_30_dias = timezone.now().date() - timedelta(days=30)
-    # sueldos = Gastos.objects.filter(proveedor__nombre="Sueldos").order_by("-fecha").first()
     sueldos = Gastos.objects.filter(proveedor__nombre="Sueldos", fecha__gte=rango_30_dias).order_by("-fecha")
-    
-    sueldos_30d = 0
-    gasto_total = 0
 
-    if sueldos.exists():
-        print("SUELDOS")
-        for sueldo in sueldos:
-            sueldos_30d += sueldo.monto
-            print(f"Fecha: {sueldo.fecha}, Monto: {sueldo.monto}")
-    else:
-        print("No hay registros de sueldos en los últimos 30 días.")
+    sueldos_30d = sum(sueldo.monto for sueldo in sueldos) if sueldos.exists() else 0
 
-    print(f"Monto Sueldo Total: {sueldos_30d}")
+    # Mostrar los gastos individuales
+    print(f"Último gasto en EPEC: {epec}")
+    print(f"Último gasto en Agua: {agua}")
+    print(f"Último gasto en Gas: {gas}")
+    print(f"Último gasto en Teléfono: {telefono}")
+    print(f"Último gasto en Internet: {internet}")
+    print(f"Último gasto en Servicios: {servicios}")
+    print(f"Último gasto en Alquiler: {inmueble}")
+    print(f"Último gasto en Municipalidad: {municipalidad}")
 
-    if epec or agua or gas or telefono or internet or servicios or inmueble or municipalidad:  
-        print(f"Último gasto en EPEC: {epec.monto}")
-        print(f"Último gasto en Agua: {agua.monto}")
-        print(f"Último gasto en gas: {gas.monto}")
-        print(f"Último gasto en telefono: {telefono.monto}")
-        print(f"Último gasto en internet: {internet.monto}")
-        print(f"Último gasto en servicios: {servicios.monto}")
-        print(f"Último gasto en alquiler: {inmueble.monto}")
-        print(f"Último gasto en municipalidad: {municipalidad.monto}")
+    # Calcular el gasto total
+    gasto_total = epec + agua + gas + telefono + internet + servicios + inmueble + municipalidad + sueldos_30d
 
-        gasto_total = epec.monto + agua.monto + gas.monto + telefono.monto + internet.monto + servicios.monto + inmueble.monto + municipalidad.monto + sueldos_30d
-
-    print(f"Gasto Total: {gasto_total}")
+    print(f"Gasto Total: {gasto_total}")                                
 
     #CALCULO LA CANTIDAD DE PRODUCTOS POR MES
     fecha_inicio = now().date() - timedelta(days=30)
