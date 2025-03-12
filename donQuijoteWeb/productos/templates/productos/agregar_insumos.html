@@ -10,88 +10,83 @@
 {% endblock css %}
 
 {% block titulo %}
-    {% include 'core/components/encabezado.html' with titulo_texto="Agregar Insumos" %}
+    {% include 'core/components/encabezado.html' with titulo_texto="Agregar Insumos a {{ producto }}" %}
 {% endblock titulo %}
 
 {% block main %}
 <section class="form-container">
-    <form class="card" method="POST">
-        <h2>Insumos de {{ producto }}</h2>
-        {% csrf_token %}
-        <table id="insumosTable" class="styled-table">
-            <thead>
-                <tr>
-                    <th>Insumo</th>
-                    <th>Cantidad</th>
-                    <th>Unidad</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for prod_insumo in producto_insumos %}
-                <tr>
-                    <td>
-                        <h4 name="insumo">{{ prod_insumo.insumo }}</h4>
-                        <input type="hidden" name="insumo" value="{{prod_insumo.insumo.id}}">
-                    </td>
-                    <td>
-                        <input class="input" type="number" name="cantidad" min="0" step="any" value="{{ prod_insumo.cantidad }}">
-                    </td>
-                    <td>
-                        <p name="unidad">{{ prod_insumo.unidad }}</p>
-                        <input type="hidden" name="unidad" value="{{prod_insumo.unidad}}">
-                    </td>
-                    <td>
-                        <button type="button" class="btn-delete" onclick="eliminarFila(this)">Eliminar</button>
-                    </td>
-                    
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4">No hay insumos agregados aún.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
 
-
-        {% for proveedor, insumos in proveedores.items %}
-            <select class="input" name="insumo" onchange="agregarFila()">
-
-                <option disabled selected>{{ proveedor }}</option>
-                {% for insumo in insumos %}
-                    <option value="{{ insumo.id }}" data-unidad="{{insumo.unidad}}">{{ insumo.nombre }}</option>            
-                {% endfor %}
-            </select>          
-        {% endfor %}
-
-
-
-
-
-    
-        <select name="produccion" class="input" onchange="agregarFilas()" data-url="{% url 'productos:insumos_por_produccion' %}">
-            <option value="" selected disabled>Producción</option> 
-            {% for i in produccion %}
-                <option value="{{ i.id }}">
-                    {{ i.nombre }}
-                </option>
-            {% endfor %}
-        </select>  
-
-
-
-
-
-
-
-
-        <div class="btn-container">
-            <button type="submit" class="btn-success">Guardar Insumos</button>
-            <a class="btn-delete" href="{% url 'productos:home' %}">Cancelar</a>
+    <form class="container-detail card" method="POST">
+        <div class="insumos-productos">
+            <h2>Insumos de {{ producto }}</h2>
+            {% csrf_token %}
+            <table id="insumosTable" class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Insumo</th>
+                        <th>Cantidad</th>
+                        <th>Unid</th>
+                        <th>Del</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prod_insumo in producto_insumos %}
+                    <tr>
+                        <td>
+                            <h4 name="insumo">{{ prod_insumo.insumo }}</h4>
+                            <input type="hidden" name="insumo" value="{{prod_insumo.insumo.id}}">
+                        </td>
+                        <td>
+                            <input class="input-cantidad" type="number" name="cantidad" min="0" step="any" value="{{ prod_insumo.cantidad }}">
+                        </td>
+                        <td>
+                            <p name="unidad">{{ prod_insumo.unidad }}</p>
+                            <input type="hidden" name="unidad" value="{{prod_insumo.unidad}}">
+                        </td>
+                        <td>
+                            <button type="button" class="btn-del" onclick="eliminarFila(this)">
+                                <img class="icono-opc" src="{% static 'productos/img/cerrar.webp' %}" alt="Eliminar insumo">
+                            </button>
+                        </td>
+                        
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No hay insumos agregados aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+        
+
+        <div class="selects-form">
+            {% for proveedor, insumos in proveedores.items %}
+                <select class="input" name="insumo" onchange="agregarFila()">
+                    <option disabled selected>{{ proveedor }}</option>
+                    {% for insumo in insumos %}
+                        <option value="{{ insumo.id }}" data-unidad="{{insumo.unidad}}">{{ insumo.nombre }}</option>            
+                    {% endfor %}
+                </select>          
+            {% endfor %}  
+            <select name="produccion" class="input" onchange="agregarFilas()" data-url="{% url 'productos:insumos_por_produccion' %}">
+                <option value="" selected disabled>Producción</option> 
+                {% for i in produccion %}
+                    <option value="{{ i.id }}">
+                        {{ i.nombre }}
+                    </option>
+                {% endfor %}
+            </select>  
+            <div class="btn-container">
+                <button type="submit" class="btn-success">Guardar</button>
+                <a class="btn-delete" href="{% url 'productos:home' %}">Cancelar</a>
+            </div>
+        </div>
+        
     </form>
 </section>
+
+
 <script>
     function agregarFila() {
         let select = event.target;  
@@ -118,7 +113,7 @@
             <input type="hidden" name="insumo" value="${insumoId}">
             `; 
 
-        cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0.0" class="input" required>`;
+        cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0.0" class="input-cantidad" required>`;
 
         
         cell3.innerHTML = `
@@ -126,7 +121,7 @@
             <input type="hidden" name="unidad" value="${insumoUnid}">
         `;
 
-        cell4.innerHTML = `<button type="button" class="btn-delete" onclick="eliminarFila(this)">Eliminar</button>`;
+        cell4.innerHTML = `<button type="button" class="btn-del" onclick="eliminarFila(this)"><img class="icono-opc" src="{% static 'productos/img/cerrar.webp' %}" alt="Eliminar insumo"></button>`;
         
         select.selectedIndex = 0;
     }
