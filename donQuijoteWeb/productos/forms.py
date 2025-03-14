@@ -40,4 +40,5 @@ class ProductoForm(forms.ModelForm):
             "precio_media": forms.TextInput(attrs={"class": "form-control"}),
             "precio_doc": forms.TextInput(attrs={"class": "form-control"}),
             "categoria": forms.Select(attrs={"class": "form-control"}),
+            "precio_rec": forms.TextInput(attrs={"class": "form-control"}),
         }

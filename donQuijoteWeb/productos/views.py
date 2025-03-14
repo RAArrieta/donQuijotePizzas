@@ -104,6 +104,10 @@ def agregar_insumos_producto(request, producto_id):
     insumos = Insumos.objects.all()
     estado_choices = ProductoInsumos.ESTADO_CHOICES
     producto_insumos = ProductoInsumos.objects.filter(producto=producto)
+    titulo = ""
+    
+    if producto:
+        titulo = "Agregar insumos a " + str(producto)
 
     proveedores = {}
     for insumo in insumos:
@@ -149,6 +153,7 @@ def agregar_insumos_producto(request, producto_id):
         'ESTADO_CHOICES': estado_choices,
         'produccion': produccion,
         'proveedores': proveedores,
+        'titulo': titulo,
     }
     return render(request, 'productos/agregar_insumos.html', context)
 

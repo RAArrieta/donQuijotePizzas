@@ -10,7 +10,7 @@
 {% endblock css %}
 
 {% block titulo %}
-    {% include 'core/components/encabezado.html' with titulo_texto="Agregar Insumos a {{ producto }}" %}
+    {% include 'core/components/encabezado.html' with titulo_texto=titulo %}
 {% endblock titulo %}
 
 {% block main %}
@@ -18,7 +18,6 @@
 
     <form class="container-detail card" method="POST">
         <div class="insumos-productos">
-            <h2>Insumos de {{ producto }}</h2>
             {% csrf_token %}
             <table id="insumosTable" class="styled-table">
                 <thead>
@@ -151,7 +150,7 @@
                         <input type="hidden" name="insumo" value="${insumo.id}">
                     `;
 
-                    cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0.0" class="input" value="${insumo.cantidad}" required>`;
+                    cell2.innerHTML = `<input type="number" name="cantidad" step="0.01" min="0.0"  class="input-cantidad" value="${insumo.cantidad}" required>`;
 
                     let unidad = insumo.unidad === "Kg" ? "Gr" : insumo.unidad;
                     cell3.innerHTML = `
@@ -159,7 +158,7 @@
                         <input type="hidden" name="unidad" value="${unidad}">
                     `;
 
-                    cell4.innerHTML = `<button type="button" class="btn-delete" onclick="eliminarFila(this)">Eliminar</button>`;
+                    cell4.innerHTML = `<button type="button" class="btn-del" onclick="eliminarFila(this)"><img class="icono-opc" src="{% static 'productos/img/cerrar.webp' %}" alt="Eliminar insumo"></button>`;
                 });
 
                 select.selectedIndex = 0;
