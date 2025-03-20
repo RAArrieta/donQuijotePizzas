@@ -23,8 +23,10 @@ def precio_recomendado():
 
     rango_30_dias = timezone.now().date() - timedelta(days=30)
     sueldos = Gastos.objects.filter(proveedor__nombre="Sueldos", fecha__gte=rango_30_dias).order_by("-fecha")
-
+    combustible = Gastos.objects.filter(proveedor__nombre="Combustible", fecha__gte=rango_30_dias).order_by("-fecha")
+    
     sueldos_30d = sum(sueldo.monto for sueldo in sueldos) if sueldos.exists() else 0
+    combustible_30d = sum(comb.monto for comb in combustible) if combustible.exists() else 0
 
     # Mostrar los gastos individuales
     # print(f"Último gasto en EPEC: {epec}")
@@ -35,9 +37,10 @@ def precio_recomendado():
     # print(f"Último gasto en Servicios: {servicios}")
     # print(f"Último gasto en Alquiler: {inmueble}")
     # print(f"Último gasto en Municipalidad: {municipalidad}")
+    # print(f"Último gasto en Combustible: {combustible_30d}")
 
     # Calcular el gasto total
-    gasto_total = epec + agua + gas + telefono + internet + servicios + inmueble + municipalidad + sueldos_30d
+    gasto_total = epec + agua + gas + telefono + internet + servicios + inmueble + municipalidad + sueldos_30d + combustible_30d
 
     # print(f"Gasto Total: {gasto_total}")                                
 
