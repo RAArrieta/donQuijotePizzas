@@ -115,9 +115,10 @@ def precio_recomendado():
         # print(f"{clave}: {valor}")
         for act in prod_actualizo:
             if clave == str(act):
-                # print(f"prod_precios_rec: {clave}, Producto que actualizo: {act}, Costo Producto: {valor} ")
-                # print(f"Costo: {valor}, GastosT: {gasto_total}, Prod_Vendidos: {cant_prod}")
+                print(f"prod_precios_rec: {clave}, Producto que actualizo: {act}, Costo Producto: {valor} ")
+                print(f"Costo: {valor}, GastosT: {gasto_total}, Prod_Vendidos: {cant_prod}")
                 precio_recomendado_final = ( valor * 2.1 ) + ( gasto_total / cant_prod )
+
                 # print(f"Precio Recomendado para {act}:{precio_recomendado_final}")
 
 

@@ -57,6 +57,7 @@ def lista_wa(request):
     }
     return render(request, 'productos/lista_wa.html', context)
 
+@login_required
 def listar_insumos(request):
     insumos = Insumos.objects.select_related('proveedor').order_by('proveedor__nombre')
     proveedores = Proveedores.objects.all()
@@ -67,6 +68,7 @@ def listar_insumos(request):
     }
     return render(request, "productos/listar_insumos.html", context)
 
+@login_required
 def listar_proveedores(request):
     proveedores = Proveedores.objects.all()
     
@@ -99,6 +101,7 @@ class ProveedoresUpdate(LoginRequiredMixin, UpdateView):
     from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Insumos, ProductoInsumos
 
+@login_required
 def agregar_insumos_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     insumos = Insumos.objects.all()
@@ -157,6 +160,7 @@ def agregar_insumos_producto(request, producto_id):
     }
     return render(request, 'productos/agregar_insumos.html', context)
 
+@login_required
 def insumos_por_produccion(request):
     producto_id = request.GET.get("producto_id")
     producto = get_object_or_404(Producto, id=producto_id)
