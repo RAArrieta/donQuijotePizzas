@@ -1,7 +1,5 @@
-from django.shortcuts import render
-
 from .caja import listar_caja, abrirCaja, cerrarCaja
-from .facturas import cargar_fact, listar_facturas
+from .facturas import listar_facturas
 
 def home(request):
     return listar_caja(request)
