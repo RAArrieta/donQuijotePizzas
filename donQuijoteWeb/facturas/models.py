@@ -6,7 +6,7 @@ class Facturas(models.Model):
     forma_pago = models.CharField(max_length=50)
     pago = models.FloatField()
     fecha = models.DateField(default=now)
-    envio = models.FloatField(null=True, blank=True)
+    envio = models.BooleanField(default=True) 
         
     class Meta:
         db_table = "facturas"

@@ -21,8 +21,10 @@ def cargar_fact(request):
         lista_productos = list()  
         
         for k, v in value['datos'].items():
-            if k == "precio_entrega":
-                envio = v
+            if k == "forma_entrega" and v == "Retira":
+                envio = False
+            elif k == "forma_entrega" and v != "Retira":
+                envio = True
             elif k == "pago":
                 forma_pago = v
             elif k == "total":

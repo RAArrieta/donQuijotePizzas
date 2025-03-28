@@ -156,8 +156,13 @@ class Estadisticas:
             productos_vendidos = FacturaProducto.objects.filter(producto__in=productos_categoria)           
         else:
             self.env = True
-            facturas_con_envio = Facturas.objects.filter(envio__gt=0)  
+            facturas_con_envio = Facturas.objects.filter(envio=True)  
+            # facturas_con_envio = Facturas.objects.filter(envios__=True)  
             productos_vendidos = FacturaProducto.objects.filter(factura__in=facturas_con_envio)
+            for factura in facturas_con_envio:
+                print(factura.id, factura.envio)
+                
+            print(Facturas.objects.values_list("envio", flat=True).distinct())
 
         if productos_vendidos.exists():
             if self.fecha_inicio and self.fecha_fin:                
