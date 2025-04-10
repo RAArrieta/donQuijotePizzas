@@ -10,6 +10,7 @@ class Carro:
         if not carro:
             carro = self.session["carro"] = {
                 "datos":{
+                    "tipo": 0,
                     "estado": "pendiente",
                     "hora": "",
                     "pago": "cobrar",

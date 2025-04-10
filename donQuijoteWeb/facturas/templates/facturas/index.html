@@ -31,7 +31,7 @@
         <p>|</p>
         <h3>Total: $ {{caja_total}}</h3>
     </div>
-    {% if pedidos %}
+    {% if pedidos or pedidos_reservados %}
         {% for key, value in pedidos.items %}
             <div class="cajas-detalle">
                 <p class="cajas-detalle-pedido">Pedido {{key}}</p>
@@ -45,8 +45,36 @@
                 <hr class="facturas-hr">  
             </div>
         {% endfor %} 
-    {% elif pedidos_pago %}
+
+        {% for key, value in pedidos_reservados.items %}
+            <div class="cajas-detalle">
+                <p class="cajas-detalle-pedido">Pedido {{key}}</p>
+                <p class="cajas-detalle-pedido" {% if value.datos.pago == "cobrar" %}style="color:red;"{% endif %}>{{ value.datos.pago|upper }}</p>
+                <p class="cajas-detalle-pedido">${{ value.datos.total }}</p>
+                <div class="cajas-detalle-pedido">
+                    <img class="icono-opc" id="checkToggle" src="{% static 'facturas/img/no_check.png' %}" alt="Chequear Factura">
+                </div>          
+            </div>
+            <div class="facturas-hr-container">
+                <hr class="facturas-hr">  
+            </div>
+        {% endfor %} 
+    
+    {% elif pedidos_pago or pedidos_pago_reserv %}
         {% for key, value in pedidos_pago.items %}
+            <div class="cajas-detalle">
+                <p class="cajas-detalle-pedido">Pedido {{key}}</p>
+                <p class="cajas-detalle-pedido" {% if value.datos.pago == "cobrar" %}style="color:red;"{% endif %}>{{ value.datos.pago|upper }}</p>
+                <p class="cajas-detalle-pedido">${{ value.datos.total }}</p>
+                <div class="cajas-detalle-pedido">
+                    <img class="icono-opc" id="checkToggle" src="{% static 'facturas/img/no_check.png' %}" alt="Chequear Factura">
+                </div>              
+            </div>
+            <div class="facturas-hr-container">
+                <hr class="facturas-hr">  
+            </div>
+        {% endfor %}
+        {% for key, value in pedidos_pago_reserv.items %}
             <div class="cajas-detalle">
                 <p class="cajas-detalle-pedido">Pedido {{key}}</p>
                 <p class="cajas-detalle-pedido" {% if value.datos.pago == "cobrar" %}style="color:red;"{% endif %}>{{ value.datos.pago|upper }}</p>

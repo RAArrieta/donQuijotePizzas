@@ -3,13 +3,20 @@
 <form class="select-datos-container" method="post" id="form-datos" class="carro-datos" action="{% url 'carro:cargar_datos' %}">
         <h3 class="carro-titulo">Datos</h3>
         {% csrf_token %}
-        {% for key, value in request.session.carro.items %}
+        {% for key, value in request.session.carro.items %}   
             {% if key == "datos" %}       
                 <select class="selects" name="estado" onchange="this.form.submit()">
                     <option value="pendiente" {% if value.estado == "pendiente" %}selected{% endif %}>PENDIENTE</option>
                     <option value="entregado" {% if value.estado == "entregado" %}selected{% endif %}>ENTREGADO</option>
-                    <option value="cancelado" {% if value.estado == "cancelado" %}selected{% endif %}>CANCELADO</option>
-                    <option value="reservado" {% if value.estado == "reservado" %}selected{% endif %}>RESERVAR</option>
+                    {% if request.session.carro.datos.tipo != 1 %}
+                        {% if request.session.carro.datos.tipo == 2 %}
+                        <option value="reservado" {% if value.estado == "reservado" %}selected{% endif %}>RESERVADO</option>
+                        {% else %}
+                        <option value="reservado" {% if value.estado == "reservado" %}selected{% endif %}>RESERVAR</option>
+                        {% endif %}
+                        
+                    {% endif %}
+                    <option value="cancelado" {% if value.estado == "cancelado" %}selected{% endif %}>CANCELAR</option>
                 </select>
                 <select class="selects" name="pago" onchange="this.form.submit()">
                     <option value="cobrar" {% if value.pago == "cobrar" %}selected{% endif %}>COBRAR</option>
