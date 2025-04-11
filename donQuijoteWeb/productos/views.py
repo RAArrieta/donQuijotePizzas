@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from .models import Producto, ProductoCategoria, Insumos, Proveedores, ProductoInsumos
-from pedido.models import FormaEntrega
-from . import forms, models
 from django.urls import reverse_lazy
-from django.views.generic import (CreateView, DeleteView, DetailView, UpdateView,)
+from django.views.generic import (CreateView, UpdateView,)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
+
+from . import forms, models
+from .models import Producto, ProductoCategoria, Insumos, Proveedores, ProductoInsumos
+from pedido.models import FormaEntrega
 from .precio_recomendado import precio_recomendado
 
 @login_required
