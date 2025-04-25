@@ -393,6 +393,26 @@ body {
 }
 
 /* ALERT */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.message-container {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  z-index: 9999;
+}
+
 .messages {
   list-style-type: none;
   padding: 0;
@@ -400,32 +420,35 @@ body {
 }
 
 .messages li {
-  background-color: #f8d7da; /* color de fondo similar a SweetAlert para mensajes de error */
-  color: #721c24; /* color de texto */
+  background-color: #f8d7da;
+  color: #721c24;
   padding: 15px 20px;
-  margin-top: 10px;
   margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   font-family: 'Arial', sans-serif;
   font-size: 16px;
   text-align: center;
+
+  /* ✨ Animación de entrada */
+  animation: slide-up 0.5s ease-out;
 }
 
 .messages li.success {
-  background-color: #d4edda; /* color de fondo para mensajes de éxito */
+  background-color: #d4edda;
   color: #155724;
 }
 
 .messages li.warning {
-  background-color: #fff3cd; /* color de fondo para mensajes de advertencia */
+  background-color: #fff3cd;
   color: #856404;
 }
 
 .messages li.info {
-  background-color: #cce5ff; /* color de fondo para mensajes de información */
+  background-color: #cce5ff;
   color: #004085;
 }
+
 
 
 

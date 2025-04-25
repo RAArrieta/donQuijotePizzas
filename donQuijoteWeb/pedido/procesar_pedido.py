@@ -7,14 +7,19 @@ from carro.carro import Carro
 from pedido.recuperar_pedidos import recuperar_pedidos
 
 from productos.models import Producto
-
+from carro.chequear_cantidad import recheq_stock_pedido
 
 def procesar_pedido(request):
     nro_pedido = request.session.pop('nro_pedido', None)
     carro = Carro(request)
     lista_productos = []
     pedido = None
-    es_reservado = False  
+    es_reservado = False 
+    
+    # print(carro.carro)
+    # print(carro.carro["datos"]["tipo"]) 
+    
+
 
     if nro_pedido:
         pedido = Pedido.objects.filter(id=nro_pedido).first()
@@ -78,17 +83,60 @@ def procesar_pedido(request):
                 pedido.cantidad_emp = cantidad_emp
                 pedido.subtotal_emp = subtotal_emp
                 pedido.save()
-
+                
+    # if not recheq_stock_pedido(request):
+    
+    #     print("Redirecciono por falta de stock")
+    #     return redirect("carro:carro")            
+    
     if pedido:
-        # Limpiamos productos previos según el tipo de pedido
-        if es_reservado:
-            PedidosProductosReservados.objects.filter(pedido=pedido).delete()
-            PedidosProductosReservados.objects.bulk_create(lista_productos)
-        else:
-            PedidoProductos.objects.filter(pedido=pedido).delete()
-            PedidoProductos.objects.bulk_create(lista_productos)
+        # Elegimos el modelo correspondiente
+        modelo_producto = PedidosProductosReservados if es_reservado else PedidoProductos
 
-    carro.limpiar_carro()  
+        # 👉 1. Devolver stock de productos anteriores
+        productos_previos = modelo_producto.objects.filter(pedido=pedido)
+        for item in productos_previos:
+            producto = item.producto
+            categoria = producto.categoria
+            producto.cantidad += item.cantidad
+            categoria.cantidad += item.cantidad
+            producto.save()
+            categoria.save()
+
+        # 👉 2. Borrar productos anteriores del pedido
+        productos_previos.delete()
+
+        # 👉 3. Crear productos nuevos
+        modelo_producto.objects.bulk_create(lista_productos)
+
+        # 👉 4. Descontar stock por los nuevos productos
+        productos_actualizados = {}
+        categorias_actualizadas = {}
+
+        for item in lista_productos:
+            producto = item.producto
+            categoria = producto.categoria
+
+            # Acumular cantidad a descontar por producto
+            if producto.id not in productos_actualizados:
+                productos_actualizados[producto.id] = producto
+            productos_actualizados[producto.id].cantidad -= item.cantidad
+
+            # Acumular cantidad a descontar por categoría
+            if categoria.id not in categorias_actualizadas:
+                categorias_actualizadas[categoria.id] = categoria
+            categorias_actualizadas[categoria.id].cantidad -= item.cantidad
+
+        # 👉 5. Guardar cambios en productos y categorías
+        for producto in productos_actualizados.values():
+            producto.save()
+
+        for categoria in categorias_actualizadas.values():
+            categoria.save()
+
+    carro.limpiar_carro()
+    return redirect("pedido:listar_pendientes")
+
     
 def mod_pedido(request, tipo, pedido):
     nro_pedido_actual = request.session.get('nro_pedido')  

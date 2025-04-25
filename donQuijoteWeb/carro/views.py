@@ -1,14 +1,13 @@
-from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 from productos.models import Producto
-from pedido.models import FormaEntrega
 
-from .select_productos import select_productos
 from .carro import Carro
-from facturas.models import Caja
 from .control_carro import control_carro, cargar_dat
+from .chequear_cantidad import chequear_stock, chequear_cantidad, chequear_actualizacion
 
 @login_required
 def carro(request):
@@ -29,8 +28,21 @@ def nuevo_producto(request, producto_id):
 @login_required
 def agregar_producto(request, producto_id):
     carro=Carro(request)
-    producto=Producto.objects.get(id=producto_id)
-    carro.agregar(producto=producto)
+    producto=Producto.objects.get(id=producto_id) 
+    cantidad_carro = carro.obtener_cantidad_producto(producto)
+    agregado = False
+
+    if chequear_stock(request, producto) and cantidad_carro == 0.0:
+        carro.agregar(producto=producto)
+        agregado = True
+    elif chequear_cantidad(request, producto, cantidad_carro):
+        carro.agregar(producto=producto)
+        agregado = True
+
+    if not agregado:
+        messages.error(request, mark_safe(f"<strong>STOCK:</strong><br>{producto.categoria}: {producto.categoria.cantidad} unidades.<br>{producto}: {producto.cantidad} unidades."))
+
+           
     return redirect("carro:carro")
 
 @login_required
@@ -43,10 +55,15 @@ def restar_producto(request, producto_id):
 @login_required
 def actualizar_cantidad(request, producto_id):
     carro = Carro(request)
-    nueva_cantidad = request.POST.get('cantidad')
+    nueva_cantidad = float(request.POST.get('cantidad'))
     producto_id = producto_id 
     producto = Producto.objects.get(id=producto_id)
-    carro.actualizar_cant(producto=producto, nueva_cantidad=nueva_cantidad)   
+    
+    if chequear_actualizacion(request, producto, nueva_cantidad) and nueva_cantidad > 0.0:
+        carro.actualizar_cant(producto=producto, nueva_cantidad=nueva_cantidad)
+    else:
+        messages.error(request, mark_safe(f"<strong>STOCK:</strong><br>{producto.categoria}: {producto.categoria.cantidad} unidades.<br>{producto}: {producto.cantidad} unidades."))
+       
     return redirect("carro:carro")
 
 @login_required

@@ -33,4 +33,19 @@
         </div>
     </div>
 </div>
+
+{% if messages %}
+  <div class="message-container">
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+
+
+
+
 {% endblock main %}

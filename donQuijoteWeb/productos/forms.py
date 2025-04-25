@@ -42,3 +42,21 @@ class ProductoForm(forms.ModelForm):
             "categoria": forms.Select(attrs={"class": "form-control"}),
             "precio_rec": forms.TextInput(attrs={"class": "form-control"}),
         }
+        
+class CantProductoForm(forms.ModelForm):
+    class Meta:
+        model = models.Producto
+        fields = ['cantidad', 'stock']
+        widgets = {
+            'cantidad': forms.NumberInput(attrs={'class': 'producto-cant', 'min': 0}),
+            'stock': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+        
+class CantCategoriaForm(forms.ModelForm):
+    class Meta:
+        model = models.ProductoCategoria
+        fields = ['cantidad', 'stock']
+        widgets = {
+            'cantidad': forms.NumberInput(attrs={'class': 'cat-cant', 'min': 0}),
+            'stock': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }

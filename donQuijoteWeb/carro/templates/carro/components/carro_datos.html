@@ -4,26 +4,32 @@
         <h3 class="carro-titulo">Datos</h3>
         {% csrf_token %}
         {% for key, value in request.session.carro.items %}   
-            {% if key == "datos" %}       
+            {% if key == "datos" %}  
+
                 <select class="selects" name="estado" onchange="this.form.submit()">
-                    <option value="pendiente" {% if value.estado == "pendiente" %}selected{% endif %}>PENDIENTE</option>
-                    <option value="entregado" {% if value.estado == "entregado" %}selected{% endif %}>ENTREGADO</option>
-                    {% if request.session.carro.datos.tipo != 1 %}
-                        {% if request.session.carro.datos.tipo == 2 %}
-                        <option value="reservado" {% if value.estado == "reservado" %}selected{% endif %}>RESERVADO</option>
-                        {% else %}
+                    {% if request.session.carro.datos.tipo == 0 %}
+                        <option value="pendiente" {% if value.estado == "pendiente" %}selected{% endif %}>PENDIENTE</option>
+                        <option value="entregado" {% if value.estado == "entregado" %}selected{% endif %}>ENTREGADO</option>
                         <option value="reservado" {% if value.estado == "reservado" %}selected{% endif %}>RESERVAR</option>
-                        {% endif %}
-                        
-                    {% endif %}
-                    <option value="cancelado" {% if value.estado == "cancelado" %}selected{% endif %}>CANCELAR</option>
+                    {% elif request.session.carro.datos.tipo == 2 %}
+                        <option value="pendiente" {% if value.estado == "pendiente" %}selected{% endif %}>PENDIENTE</option>
+                        <option value="entregado" {% if value.estado == "entregado" %}selected{% endif %}>ENTREGADO</option>
+                        <option value="reservado" {% if value.estado == "reservado" %}selected{% endif %}>RESERVADO</option>
+                        <option value="cancelado" {% if value.estado == "cancelado" %}selected{% endif %}>CANCELAR</option>
+                    {% else %}
+                        <option value="pendiente" {% if value.estado == "pendiente" %}selected{% endif %}>PENDIENTE</option>
+                        <option value="entregado" {% if value.estado == "entregado" %}selected{% endif %}>ENTREGADO</option>
+                        <option value="cancelado" {% if value.estado == "cancelado" %}selected{% endif %}>CANCELAR</option>
+                    {% endif %}               
                 </select>
+
                 <select class="selects" name="pago" onchange="this.form.submit()">
                     <option value="cobrar" {% if value.pago == "cobrar" %}selected{% endif %}>COBRAR</option>
                     <option value="efectivo" {% if value.pago == "efectivo" %}selected{% endif %}>EFECTIVO</option>
                     <option value="mercado" {% if value.pago == "mercado" %}selected{% endif %}>MERCADO PAGO</option>
                     <option value="naranja" {% if value.pago == "naranja" %}selected{% endif %}>NARANJA</option>
                 </select> 
+                
                 <select class="selects" name="forma_entrega" onchange="this.form.submit()">
                     {% for entrega in forma_entrega %}
                         <option value="{{entrega.id}}" {% if value.forma_entrega == entrega.forma_entrega %}selected{% endif %}>{{entrega.forma_entrega|upper}}</option>

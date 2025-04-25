@@ -10,21 +10,37 @@ from . import forms, models
 from .models import Producto, ProductoCategoria, Insumos, Proveedores, ProductoInsumos
 from pedido.models import FormaEntrega
 from .precio_recomendado import precio_recomendado
+from .forms import CantProductoForm
 
 @login_required
 def home(request):
     productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()
     categorias = ProductoCategoria.objects.all()
     forma_entrega = FormaEntrega.objects.all()
-    precio_recomendado()
-    
+    precio_recomendado()      
+
+    forms_por_producto = {producto.id: CantProductoForm(instance=producto) for producto in productos}
+    forms_por_categoria = {categoria.id: CantProductoForm(instance=categoria) for categoria in categorias}
+
     context = {
         'object_list': productos,
         'categorias': categorias,
-        'forma_entrega': forma_entrega
+        'forma_entrega': forma_entrega,
+        'forms_por_producto': forms_por_producto,
+        'forms_por_categoria':forms_por_categoria,
     }
     return render(request, 'productos/index.html', context)
 
+class ActualizarCantidadProd(LoginRequiredMixin, UpdateView):
+    model = models.Producto
+    form_class = forms.CantProductoForm
+    success_url = reverse_lazy("productos:home")
+    
+class ActualizarCantidadCat(LoginRequiredMixin, UpdateView):
+    model = models.ProductoCategoria
+    form_class = forms.CantCategoriaForm
+    success_url = reverse_lazy("productos:home")
+    
 @login_required
 def categorias(request):
     categorias = ProductoCategoria.objects.all()

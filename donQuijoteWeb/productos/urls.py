@@ -8,6 +8,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path("create/", views.ProductosCreate.as_view(), name="productos_create"),
     path("update/<int:pk>", views.ProductoUpdate.as_view(), name="productos_update"),
+    path('actualizar-cantidad-prod/<int:pk>', views.ActualizarCantidadProd.as_view(), name='actualizar_cantidad_prod'),
+    path('actualizar-cantidad-cat/<int:pk>', views.ActualizarCantidadCat.as_view(), name='actualizar_cantidad_cat'),
 ]
 
 urlpatterns += [

@@ -15,11 +15,13 @@
 
 {% block main %}
 {% if messages %}
+  <div class="message-container">
     <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
     </ul>
+  </div>
 {% endif %}
 <section class="section-pedido-container">
     {% for pedido, pedido_data in pedidos.items %}

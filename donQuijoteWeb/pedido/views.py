@@ -13,8 +13,8 @@ from pedido.recuperar_pedidos import recuperar_pedidos, recuperar_pendientes, re
 
 @login_required
 def procesar_ped(request):   
-    procesar_pedido(request)
-    return redirect("pedido:listar_pendientes")
+    return procesar_pedido(request)
+    
 
 class FormaEntregaUpdate(LoginRequiredMixin, UpdateView):
     model = FormaEntrega

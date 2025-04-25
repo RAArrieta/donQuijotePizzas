@@ -213,3 +213,9 @@ class Carro:
 
         self.guardar_carro()
         
+    def obtener_cantidad_producto(self, producto):
+        producto_id_str = str(producto.id)
+        if producto_id_str in self.carro:
+            return float(self.carro[producto_id_str].get("cantidad", 0.0))
+        return 0.0
+        

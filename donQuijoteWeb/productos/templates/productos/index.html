@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block title %}
 dQ | Productos
@@ -21,9 +22,29 @@ dQ | Productos
         {% with categoria.grouper as nombre_categoria %}
             {% for cat in categorias %}
                 {% if cat.nombre == nombre_categoria and cat.estado and cat.nombre != "Producción" %} 
-                    <div class="card">           
-                        <h1 class="categoria-titulo">{{ nombre_categoria }}</h1>  
-                        <hr class="categoria-hr">
+                    <div class="card">     
+                        <div class="titulo-producto">
+                            <div class="cont-titulo">
+                                <h1 class="categoria-titulo">{{ nombre_categoria }} </h1> 
+                            </div>
+
+                            <form class="cat-cant-stk" method="post" action="{% url 'productos:actualizar_cantidad_cat' cat.id %}">
+                                {% csrf_token %}
+                                
+                                {% with form=forms_por_categoria|get_item:cat.id %}
+                                <div class="cat-cant-opc">
+                                    {{ form.cantidad }}
+                                </div>
+                                <div class="cat-stock">
+                                    {{ form.stock }}
+                                </div>
+                                {% endwith %}
+
+                                <button class="btn-act" type="submit">Stock</button>
+                            </form> 
+                        </div>    
+                        <hr class="categoria-hr">  
+                        
                         {% for producto in categoria.list %}
                             <div class="productos">
                                 <p class="producto-nombre">{{ producto.nombre }}</p>
@@ -39,6 +60,22 @@ dQ | Productos
                                         <img class="icono-opc" src="{% static 'productos/img/config.png' %}" alt="Editar Producto">
                                     </a>
                                 </div>
+
+
+                                <form class="form-cantidad" method="post" action="{% url 'productos:actualizar_cantidad_prod' producto.id %}">
+                                    {% csrf_token %}
+                                    
+                                    {% with form=forms_por_producto|get_item:producto.id %}
+                                    <div class="producto-cant-opc">
+                                        {{ form.cantidad }}
+                                    </div>
+                                    <div class="producto-stock">
+                                        {{ form.stock }}
+                                    </div>
+                                    {% endwith %}
+
+                                    <button class="btn-act" type="submit">Stock</button>
+                                </form>
                             </div>     
                         {% endfor %}
                     </div>
