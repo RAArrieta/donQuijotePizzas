@@ -1,4 +1,7 @@
-from pyexpat.errors import messages
+
+from django.contrib import messages
+
+# from django.utils.safestring import mark_safe
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -7,20 +10,22 @@ from carro.carro import Carro
 from pedido.recuperar_pedidos import recuperar_pedidos
 
 from productos.models import Producto
-from carro.chequear_cantidad import recheq_stock_pedido
+from django.db import transaction
 
+@transaction.atomic
 def procesar_pedido(request):
-    nro_pedido = request.session.pop('nro_pedido', None)
+    nro_pedido = request.session.pop("nro_pedido", None)
     carro = Carro(request)
-    lista_productos = []
+
     pedido = None
-    es_reservado = False 
-    
-    # print(carro.carro)
-    # print(carro.carro["datos"]["tipo"]) 
-    
+    es_reservado = False
+    datos_pedido = None
+    datos_empanadas = None
+    lista_productos = []
 
-
+    # ==============================
+    # 1️⃣ BUSCAR PEDIDO EXISTENTE
+    # ==============================
     if nro_pedido:
         pedido = Pedido.objects.filter(id=nro_pedido).first()
         if not pedido:
@@ -28,73 +33,100 @@ def procesar_pedido(request):
             if pedido:
                 es_reservado = True
 
+    # ==============================
+    # 2️⃣ DECIDIR SI CHEQUEAR STOCK
+    # ==============================
+    chequear_stock = productos_modificados(pedido, carro, es_reservado)
+
+    if chequear_stock:
+        ok, faltantes = recheq_stock_pedido(request, pedido)
+        if not ok:
+            for prod, stock in faltantes.items():
+                messages.error(
+                    request,
+                    f"{prod}: stock disponible {stock}"
+                )
+            return redirect("carro:carro")
+
+    # ==============================
+    # 3️⃣ LEER CARRITO (SIN DB)
+    # ==============================
     for key, value in carro.carro.items():
-        if key != "datos" and key != "empanadas":
-            if es_reservado:
-                lista_productos.append(PedidosProductosReservados(
+
+        # -------- productos --------
+        if key not in ["datos", "empanadas"]:
+            modelo_producto = (
+                PedidosProductosReservados if es_reservado else PedidoProductos
+            )
+            lista_productos.append(
+                modelo_producto(
                     producto_id=key,
                     cantidad=value["cantidad"],
                     subtotal=value["subtotal"],
-                    pedido=pedido
-                ))
-            else:
-                lista_productos.append(PedidoProductos(
-                    producto_id=key,
-                    cantidad=value["cantidad"],
-                    subtotal=value["subtotal"],
-                    pedido=pedido
-                ))
+                )
+            )
+
+        # -------- datos del pedido --------
         elif key == "datos":
-            forma_entrega_nombre = value["forma_entrega"]
-            forma_entrega_obj = get_object_or_404(FormaEntrega, forma_entrega=forma_entrega_nombre)
-            estado_pedido = value["estado"]
-            
-            
-            
-            if estado_pedido.lower() == "reservado":
+            forma_entrega_obj = get_object_or_404(
+                FormaEntrega,
+                forma_entrega=value["forma_entrega"]
+            )
+
+            datos_pedido = {
+                "estado": value["estado"],
+                "pago": value["pago"],
+                "forma_entrega": forma_entrega_obj,
+                "precio_entrega": value["precio_entrega"],
+                "nombre": value["nombre"],
+                "direccion": value["direccion"],
+                "observacion": value["observacion"],
+                "total": value["total"],
+            }
+
+            if value["estado"].lower() == "reservado":
                 es_reservado = True
 
-            if pedido:
-                pedido.estado = estado_pedido
-                pedido.pago = value["pago"]
-                pedido.forma_entrega = forma_entrega_obj
-                pedido.precio_entrega = value["precio_entrega"]
-                pedido.nombre = value["nombre"]
-                pedido.direccion = value["direccion"]
-                pedido.observacion = value["observacion"]
-                pedido.total = value["total"]
-            else:
-                modelo_pedido = PedidosReservado if es_reservado else Pedido
-                pedido = modelo_pedido.objects.create(
-                    estado=estado_pedido,
-                    pago=value["pago"],
-                    forma_entrega=forma_entrega_obj,
-                    precio_entrega=value["precio_entrega"],
-                    nombre=value["nombre"],
-                    direccion=value["direccion"],
-                    observacion=value["observacion"],
-                    total=value["total"],
-                )
-            pedido.save()
+        # -------- empanadas --------
         elif key == "empanadas":
-            cantidad_emp = value["cantidad"]
-            subtotal_emp = value["subtotal_emp"]
-            if pedido:
-                pedido.cantidad_emp = cantidad_emp
-                pedido.subtotal_emp = subtotal_emp
-                pedido.save()
-                
-    # if not recheq_stock_pedido(request):
-    
-    #     print("Redirecciono por falta de stock")
-    #     return redirect("carro:carro")            
-    
-    if pedido:
-        # Elegimos el modelo correspondiente
-        modelo_producto = PedidosProductosReservados if es_reservado else PedidoProductos
+            datos_empanadas = {
+                "cantidad": value["cantidad"],
+                "subtotal": value["subtotal_emp"],
+            }
 
-        # 👉 1. Devolver stock de productos anteriores
-        productos_previos = modelo_producto.objects.filter(pedido=pedido)
+    # ==============================
+    # 4️⃣ CREAR O ACTUALIZAR PEDIDO
+    # ==============================
+    modelo_pedido = PedidosReservado if es_reservado else Pedido
+
+    if pedido:
+        # editar pedido existente
+        for campo, valor in datos_pedido.items():
+            setattr(pedido, campo, valor)
+        pedido.save()
+    else:
+        # pedido nuevo → acá nace el nro de pedido
+        pedido = modelo_pedido.objects.create(**datos_pedido)
+
+    # ==============================
+    # 5️⃣ EMPANADAS
+    # ==============================
+    if datos_empanadas:
+        pedido.cantidad_emp = datos_empanadas["cantidad"]
+        pedido.subtotal_emp = datos_empanadas["subtotal"]
+        pedido.save()
+
+    # ==============================
+    # 6️⃣ PRODUCTOS Y STOCK
+    # ==============================
+    modelo_producto = (
+        PedidosProductosReservados if es_reservado else PedidoProductos
+    )
+
+    productos_previos = modelo_producto.objects.filter(pedido=pedido)
+
+    if chequear_stock:
+        # devolver stock previo
         for item in productos_previos:
             producto = item.producto
             categoria = producto.categoria
@@ -103,41 +135,50 @@ def procesar_pedido(request):
             producto.save()
             categoria.save()
 
-        # 👉 2. Borrar productos anteriores del pedido
         productos_previos.delete()
 
-        # 👉 3. Crear productos nuevos
-        modelo_producto.objects.bulk_create(lista_productos)
+    # asignar pedido a productos nuevos
+    for item in lista_productos:
+        item.pedido = pedido
 
-        # 👉 4. Descontar stock por los nuevos productos
-        productos_actualizados = {}
-        categorias_actualizadas = {}
+    modelo_producto.objects.bulk_create(lista_productos)
 
+    # descontar stock nuevo
+    if chequear_stock:
         for item in lista_productos:
             producto = item.producto
             categoria = producto.categoria
-
-            # Acumular cantidad a descontar por producto
-            if producto.id not in productos_actualizados:
-                productos_actualizados[producto.id] = producto
-            productos_actualizados[producto.id].cantidad -= item.cantidad
-
-            # Acumular cantidad a descontar por categoría
-            if categoria.id not in categorias_actualizadas:
-                categorias_actualizadas[categoria.id] = categoria
-            categorias_actualizadas[categoria.id].cantidad -= item.cantidad
-
-        # 👉 5. Guardar cambios en productos y categorías
-        for producto in productos_actualizados.values():
+            producto.cantidad -= item.cantidad
+            categoria.cantidad -= item.cantidad
             producto.save()
-
-        for categoria in categorias_actualizadas.values():
             categoria.save()
 
+    # ==============================
+    # 7️⃣ LIMPIAR Y REDIRIGIR
+    # ==============================
     carro.limpiar_carro()
     return redirect("pedido:listar_pendientes")
 
-    
+def productos_modificados(pedido, carro, es_reservado):
+    # Pedido nuevo → siempre chequear
+    if not pedido:
+        return True
+
+    modelo = PedidosProductosReservados if es_reservado else PedidoProductos
+
+    productos_db = {
+        (p.producto_id, float(p.cantidad))
+        for p in modelo.objects.filter(pedido=pedido)
+    }
+
+    productos_carro = {
+        (int(k), float(v["cantidad"]))
+        for k, v in carro.carro.items()
+        if k not in ["datos", "empanadas"]
+    }
+
+    return productos_db != productos_carro
+   
 def mod_pedido(request, tipo, pedido):
     nro_pedido_actual = request.session.get('nro_pedido')  
     nro_pedido_nuevo = pedido 
@@ -162,3 +203,35 @@ def mod_pedido(request, tipo, pedido):
 
     request.session['nro_pedido'] = nro_pedido_nuevo
     request.session['tipo_pedido'] = tipo
+    
+    
+def recheq_stock_pedido(request, pedido=None):
+    carro = Carro(request)
+    faltantes = {}
+
+    for key, value in carro.carro.items():
+        if key in ["datos", "empanadas"]:
+            continue
+
+        producto = Producto.objects.get(id=key)
+        cantidad_nueva = float(value.get("cantidad", 0))
+
+        cantidad_anterior = 0
+        if pedido:
+            item = PedidoProductos.objects.filter(
+                pedido=pedido,
+                producto_id=key
+            ).first()
+            if item:
+                cantidad_anterior = float(item.cantidad)
+
+        diferencia = cantidad_nueva - cantidad_anterior
+
+        # 🔥 SOLO si aumenta la cantidad
+        if diferencia > 0 and diferencia > producto.cantidad:
+            faltantes[producto.nombre] = producto.cantidad
+
+    if faltantes:
+        return False, faltantes
+
+    return True, {}

@@ -8,6 +8,7 @@ class Carro:
         carro = self.session.get("carro")
         forma_entrega = FormaEntrega.objects.get(id=2)
         if not carro:
+            print("if not carro (creo)")
             carro = self.session["carro"] = {
                 "datos":{
                     "tipo": 0,
@@ -30,6 +31,7 @@ class Carro:
         self.carro = carro
         
     def agregar(self, producto):
+        print("def agregar(self, producto)")
         producto_id_str = str(producto.id)
         if producto_id_str not in self.carro.keys():
             self.carro[producto_id_str] = {
@@ -56,6 +58,7 @@ class Carro:
         self.guardar_carro()
 
     def restar_producto(self, producto):
+        print("def restar_producto(self, producto)")
         producto_id_str = str(producto.id)
         for key, value in self.carro.items():
             if key == producto_id_str:
@@ -77,12 +80,14 @@ class Carro:
         self.guardar_carro()
         
     def actualizar_cant(self, producto, nueva_cantidad):
+        print("def actualizar_cant(self, producto, nueva_cantidad)")
         producto_id = str(producto.id)
         self.carro[producto_id]['cantidad'] = float(nueva_cantidad)
         self.calcular_precio()
         self.guardar_carro()
               
     def eliminar(self, producto):
+        print("def eliminar(self, producto)")
         producto_id_str = str(producto.id)
         if producto_id_str in self.carro:
             del self.carro[producto_id_str]
@@ -90,14 +95,17 @@ class Carro:
             self.calcular_precio() 
     
     def limpiar_carro(self):
+        print("def limpiar_carro(self)")
         self.session["carro"] = {}
         self.session.modified = True
         
     def guardar_carro(self):
+        print("def guardar_carro(self)")
         self.session["carro"] = self.carro
         self.session.modified = True
 
     def agregar_datos(self, datos):
+        print("def agregar_datos(self, datos)")
         if "nombre" in datos:
             self.carro["datos"]["nombre"]=datos["nombre"]
         if "direccion" in datos:
@@ -116,6 +124,7 @@ class Carro:
         
         
     def comprobacion_pedido(self):
+        print("def comprobacion_pedido(self)")
         comprobacion_pedido=False
         if self.carro["datos"]["direccion"] != "" and self.carro["datos"]["envio"] == True and len(self.carro.keys()) > 2: 
             comprobacion_pedido=True
@@ -124,6 +133,7 @@ class Carro:
         return comprobacion_pedido
     
     def cantidad_empanadas(self):
+        print("def cantidad_empanadas(self)")
         cantidad_empanadas=0
         for key, value in self.carro.items():
             if key != "datos" and key != "empanadas" and value["precio_doc"] != "None":
@@ -132,6 +142,7 @@ class Carro:
         return cantidad_empanadas
        
     def calcular_precio(self):
+        print("def calcular_precio(self)")
         cantidad_empanadas = float(self.cantidad_empanadas())
         subtotal_emp = 0.0
         
@@ -189,6 +200,7 @@ class Carro:
         self.guardar_carro()
         
     def importe_total_carro(self):
+        print("def importe_total_carro(self)")
         total = 0.0
         for key, value in self.carro.items():
             if key != "datos" and key != "empanadas" and value["precio_doc"] == "None":
@@ -202,6 +214,7 @@ class Carro:
         return total
     
     def cargar_pedido(self, pedido):
+        print("def cargar_pedido(self, pedido)")
         self.carro["datos"] = pedido["datos"]
         
         if "empanadas" in pedido:
@@ -214,6 +227,7 @@ class Carro:
         self.guardar_carro()
         
     def obtener_cantidad_producto(self, producto):
+        print("def obtener_cantidad_producto(self, producto)")
         producto_id_str = str(producto.id)
         if producto_id_str in self.carro:
             return float(self.carro[producto_id_str].get("cantidad", 0.0))

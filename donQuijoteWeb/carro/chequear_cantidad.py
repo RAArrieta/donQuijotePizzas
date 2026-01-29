@@ -1,109 +1,208 @@
+from pedido.models import PedidoProductos, PedidosProductosReservados
 from productos.models import Producto
 from .carro import Carro
 
-def chequear_stock(request, producto):
-    productos_stock = Producto.objects.all()
-    valor = True
-    cant_total = total_prod_pedido(request, producto, valor)
+def chequear_stock(request, producto, cantidad_producto_carro):
+    print("def chequear_stock(request, producto)")
+    """
+    Se usa cuando el producto NO está en el carrito
+    """
+    carro = Carro(request)
+    categoria = producto.categoria
+    
+    cantidad_producto_carro = 1.0
+    
+    total_categoria = float(cantidad_categoria_en_carro(request, categoria, carro))
+    
+    stock_producto_disponible = producto.cantidad
+    stock_categoria_disponible = producto.categoria.cantidad
+    
+    # print(f"Total categoria: {total_categoria}")
+    # print(f"stock_producto_disponible: {stock_producto_disponible}")
+    # print(f"stock_categoria_disponible: {stock_categoria_disponible}")   
+    # print(f"cantidad_producto_carro: {cantidad_producto_carro}")  
 
-    for p_s in productos_stock:
-        # print(p_s)
-        # print(f"Stock Prod: {p_s.stock}, Stock Cat: {p_s.categoria.stock}")
-        # print(f"Cantid Prod: {p_s.cantidad} > 0")
-        # print(f"Cantid Cat: {p_s.categoria.cantidad} > 0")
-        # print(f"Cantid Cat: {p_s.categoria.cantidad} + cant_total {cant_total} : {p_s.categoria.cantidad - cant_total} > 1.0")
-        if p_s.id == producto.id:
-            if p_s.stock and p_s.categoria.stock and p_s.cantidad > 0 and p_s.categoria.cantidad > 0 and (p_s.categoria.cantidad - cant_total) > 1.0 :
-                return True 
-            else:
-                return False
-            
-def chequear_cantidad(request, producto, cantidad_carro):
-    productos_stock = Producto.objects.all()   
-    valor = True
-    cant_total = total_prod_pedido(request, producto, valor)  
-    print(producto)
-    print(producto.categoria)
-    carro=Carro(request)
-    print(carro.carro["datos"]["tipo"])
-    print(type(carro.carro["datos"]["tipo"]))
+        
+    return (
+        producto.stock 
+        and producto.categoria.stock 
+        
+        and stock_categoria_disponible >= total_categoria
+        and stock_categoria_disponible >= cantidad_producto_carro
+        and stock_producto_disponible >= cantidad_producto_carro
+    )
+  
+    
+def chequear_cantidad(request, producto, cantidad_producto_carro):
+    print("def chequear_cantidad(request, producto, cantidad_producto_carro)")
+    """
+    Se usa cuando el producto ya está en el carrito y se presiona +
+    """
+    carro = Carro(request)
+    categoria = producto.categoria
+    
+    total_categoria = float(cantidad_categoria_en_carro2(request, categoria, carro))
+    
+    stock_producto_disponible = producto.cantidad
+    
+    stock_categoria_disponible = producto.categoria.cantidad
+    
+    # print(f"Total categoria: {total_categoria}")
+    # print(f"stock_producto_disponible: {stock_producto_disponible}")
+    # print(f"stock_categoria_disponible: {stock_categoria_disponible}")   
+    # print(f"cantidad_producto_carro: {cantidad_producto_carro}")
 
-    for p_s in productos_stock:
-        # print(p_s)
-        # print(f"Stock Prod: {p_s.stock}, Stock Cat: {p_s.categoria.stock}")
-        # print(f"Cantid Prod: {p_s.cantidad} > Cantid Carro {cantidad_carro}")
-        # print(f"Cantid Cat: {p_s.categoria.cantidad} > Cantid Carro {cantidad_carro}")
-        # print(f"Cantid Cat: {p_s.categoria.cantidad} - cant_total {cant_total} = {p_s.categoria.cantidad - cant_total}")
-        if p_s.id == producto.id:            
+    # print(f"stock_categoria_disponible - cantidad_producto_carro >= 0.5: {stock_categoria_disponible - cantidad_producto_carro >= 0.5}")
+    # print(f"stock_producto_disponible - cantidad_producto_carro >= 0.5: {stock_producto_disponible - cantidad_producto_carro >= 0.5}")
+    
+    # print(f"stock_categoria_disponible - cantidad_producto_carro >= 1: {stock_categoria_disponible - cantidad_producto_carro >= 1}")
+    # print(f"stock_producto_disponible - cantidad_producto_carro >= 1: {stock_producto_disponible - cantidad_producto_carro >= 1}")
+
+    if str(producto.categoria) == "Pizzas":
+        
+        return (
+            producto.stock
+            and producto.categoria.stock
             
-            if producto.categoria == "Pizzas" and (p_s.categoria.cantidad - cant_total) >= 0.5:
-                valor2= True
-            elif producto.categoria != "Pizzas" and (p_s.categoria.cantidad - cant_total) >= 1:
-                valor2= True
-            else:
-                valor2= False            
-            print(f"Valor2: {valor2}")
-            if carro.carro["datos"]["tipo"] == 0:
-                if p_s.stock and p_s.categoria.stock and p_s.cantidad > cantidad_carro and p_s.categoria.cantidad > cantidad_carro and valor2:
-                    return True 
-                else:
-                    return False        
-            else:
-                if p_s.stock and p_s.categoria.stock and p_s.cantidad > cantidad_carro and p_s.categoria.cantidad > cantidad_carro and valor2:
-                    return True 
-                else:
-                    return False        
+            and stock_categoria_disponible - cantidad_producto_carro >= 0.5 
+            and stock_producto_disponible - cantidad_producto_carro >= 0.5  
+            
+            and stock_categoria_disponible >= total_categoria 
+            and stock_categoria_disponible >= cantidad_producto_carro 
+        )
+    else:
+        return (
+            producto.stock 
+            and producto.categoria.stock
+            
+            and stock_categoria_disponible - cantidad_producto_carro >= 1
+            and stock_producto_disponible - cantidad_producto_carro >= 1  
+            
+            and stock_categoria_disponible >= total_categoria 
+            and stock_categoria_disponible >= cantidad_producto_carro
+
+        )
+                
+def cantidad_categoria_en_carro(request, categoria, carro):
+    """
+    Devuelve la cantidad TOTAL de una categoría
+    sumando TODOS los productos del carrito
+    """
+    total_categoria = 1.0
+    
+    for key, item in carro.carro.items():
+        if key in ["datos", "empanadas"]:
+            continue
+
+        producto_carro = Producto.objects.get(id=int(key))
+
+        if producto_carro.categoria == categoria:
+            total_categoria += float(str(item["cantidad"]))
+    
+    return total_categoria
+
+
+def cantidad_categoria_en_carro2(request, categoria, carro):
+    """
+    Devuelve la cantidad TOTAL de una categoría
+    sumando TODOS los productos del carrito
+    """
+    if str(categoria) == "Pizzas":
+        total_categoria = 0.5
+    else:
+        total_categoria = 1.0
+    
+    for key, item in carro.carro.items():
+        if key in ["datos", "empanadas"]:
+            continue
+
+        producto_carro = Producto.objects.get(id=int(key))
+
+        if producto_carro.categoria == categoria:
+            total_categoria += float(str(item["cantidad"]))
+    
+    return total_categoria
+
+
+
 
 def chequear_actualizacion(request, producto, nueva_cantidad):
-    productos_stock = Producto.objects.all()  
-    valor = False         
-    cant_total = total_prod_pedido(request, producto, valor)
-    
-    for p_s in productos_stock:
-        # print(p_s)
-        # print(f"Stock Prod: {p_s.stock}, Stock Cat: {p_s.categoria.stock}")
-        # print(f"Cantid Prod: {p_s.cantidad} >= Nueva cantidad: {nueva_cantidad}")
-        # print(f"Cantid Cat: {p_s.categoria.cantidad} >= Nueva cantidad: {nueva_cantidad}")
-        # print(f"Cantid Cat: {p_s.categoria.cantidad} >= cant_total {cant_total} + nueva_cantidad {nueva_cantidad}: {cant_total + nueva_cantidad}")
-        if p_s.id == producto.id:
-            if p_s.stock and p_s.categoria.stock and p_s.cantidad >= nueva_cantidad and p_s.categoria.cantidad >= nueva_cantidad and p_s.categoria.cantidad >= cant_total + nueva_cantidad:
-                return True 
-            else:
-                return False               
-   
-    
-def total_prod_pedido(request, producto, valor):
+    print("def chequear_actualizacion(request, producto, nueva_cantidad)")
+    """
+    Se usa SOLO cuando se edita un producto existente
+    """
     carro = Carro(request)
-    cat = str(producto.categoria)
-    cant_total = 0
+    categoria = producto.categoria
+    
+    #CANTIDAD DEL PRODUCTO EXISTENTE EN CARRO  
+    vieja_cantidad = prueba_buscar_cantidad(request, carro, producto)   
+    
+    #CANTIDAD DE CATEGORIA (SUMA DE PROD EN CAT) EXISTENTE EN CARRO
+    total_categoria = float(cantidad_categoria_en_carro3(request, categoria, carro)) - vieja_cantidad
         
-    if valor:
-        for key, value in carro.carro.items():
-            if key not in ["datos", "empanadas"]:
-                if value.get("categoria") == cat:
-                    cant_total += float(value.get("cantidad", 0))
-        return cant_total  
-    else:           
-        for key, value in carro.carro.items():
-            if key not in ["datos", "empanadas"]:
-                if value.get("categoria") == cat  and value.get("nombre") != producto.nombre:
-                    cant_total += float(value.get("cantidad", 0))
-        return cant_total
-      
-def recheq_stock_pedido(request):
-    carro = Carro(request)
-    productos_stock = Producto.objects.all()  
-    print("ENTRO A LA FUNCION")
-    for key, value in carro.carro.items():
-        if key not in ["datos", "empanadas"]:
-            for producto in productos_stock:
-                if value.get("cantidad") > producto.cantidad:
-                    #AQUI QUIERO VOLVER AL CARRO PARA CORREGIR LA CANTIDAD
-                    print("EL STOCK NOOOO ES SUFICIENTE")
-                    return False
-                else:
-                    print("EL STOCK ES SUFICIENTE")
-                    return True
+    #STOCK DISPONIBLE 
+    stock_producto_disponible = producto.cantidad
+    stock_categoria_disponible = producto.categoria.cantidad
+    
+    # print("*************************************************************")
+    # print("*************************************************************")
+    # print(f"Nueva cantidad: {nueva_cantidad}")
+    # print(f"vieja_cantidad: {vieja_cantidad}")
+    # print(f"Total categoria: {total_categoria}")
+    # print(f"Producto cantidad: {stock_producto_disponible}") 
+    # print(f"Categoria cantidad: {stock_categoria_disponible}")   
+    # print("*************************************************************")
+    # print("*************************************************************")   
+
+    return (
+        producto.stock
+        and producto.categoria.stock
+        
+        and stock_producto_disponible >= nueva_cantidad - vieja_cantidad
+        and stock_categoria_disponible >= nueva_cantidad - vieja_cantidad
+        and stock_categoria_disponible >= total_categoria + nueva_cantidad
+    )
+    
 
 
-    return True
+
+def prueba_buscar_cantidad(request, carro, producto):
+    cant_vieja = 0.0
+    
+    for key, item in carro.carro.items():
+        if key in ["datos", "empanadas"]:
+            continue
+        
+        producto_carro = Producto.objects.get(id=int(key))
+        print(producto_carro)
+        
+        # comparar PRODUCTO con PRODUCTO
+        if producto_carro == producto:
+            cant_vieja = float(item["cantidad"])
+            break  # ya lo encontramos, no seguimos
+    
+   
+    return cant_vieja
+
+
+
+def cantidad_categoria_en_carro3(request, categoria, carro):
+    """
+    Devuelve la cantidad TOTAL de una categoría
+    sumando TODOS los productos del carrito
+    """
+    total_categoria = 0.0
+    
+    for key, item in carro.carro.items():
+        if key in ["datos", "empanadas"]:
+            continue
+
+        producto_carro = Producto.objects.get(id=int(key))
+
+        if producto_carro.categoria == categoria:
+            total_categoria += float(str(item["cantidad"]))
+    
+    return total_categoria
+
+
+

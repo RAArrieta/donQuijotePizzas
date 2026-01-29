@@ -1,6 +1,7 @@
 from productos.models import Producto
 
 def select_productos():
+    print("def select_productos()")
     productos = Producto.objects.all()
     categorias = {}
     for producto in productos:

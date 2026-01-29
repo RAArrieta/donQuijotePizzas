@@ -10,6 +10,8 @@ from .carro import Carro
 from facturas.models import Caja
 
 def control_carro(request):
+    print("def control_carro(request)")
+
     estado_caja = Caja.objects.all().values_list('estado_caja', flat=True)
     carro = Carro(request)
     comprobacion_pedido = carro.comprobacion_pedido()
@@ -44,6 +46,7 @@ def control_carro(request):
     return render(request, "carro/carro.html", context)
 
 def cargar_dat(request):
+    print("def cargar_dat(request)")
     carro=Carro(request)
     datos = {
             "estado": "",

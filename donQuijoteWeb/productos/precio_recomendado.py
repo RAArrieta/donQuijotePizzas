@@ -72,7 +72,11 @@ def precio_recomendado():
     
     for clave, valor in prod_precios_rec.items():
         for act in prod_actualizo:
-            if clave == str(act):
-                precio_recomendado_final = ( valor * 2.1 ) + ( gasto_total / cant_prod )
+            if clave == str(act):              
+                if cant_prod == 0:
+                    precio_recomendado_final = 1
+                else:
+                    precio_recomendado_final = ( valor * 2.1 ) + ( gasto_total / cant_prod )
+                    
                 Producto.objects.filter(nombre=act).update(precio_rec=precio_recomendado_final)
 
