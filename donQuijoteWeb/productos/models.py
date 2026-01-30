@@ -27,7 +27,7 @@ class Insumos(models.Model):
 class ProductoCategoria(models.Model):
     nombre=models.CharField(max_length=50)
     estado=models.BooleanField(default=True)
-    cantidad=models.IntegerField(default=99, verbose_name="Cantidad")
+    cantidad=models.FloatField(default=99, verbose_name="Cantidad")
     stock=models.BooleanField(default=True, verbose_name="Stock")
     
     def __str__(self):
@@ -41,7 +41,7 @@ class Producto(models.Model):
     precio_media=models.FloatField(blank=True, null=True, verbose_name="P. Media")
     precio_doc=models.FloatField(blank=True, null=True, verbose_name="P. Docena")
     precio_rec = models.FloatField(default=1, verbose_name="Precio Recomendado")
-    cantidad= models.IntegerField(default=99, verbose_name="Cantidad")
+    cantidad= models.FloatField(default=99, verbose_name="Cantidad")
     stock=models.BooleanField(default=True, verbose_name="Stock")
 
     def __str__(self):

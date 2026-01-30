@@ -8,11 +8,11 @@
             <select class="selects" name="producto" id="producto_{{ forloop.counter }}" onchange="deseleccionarOtrosYEnviar(event)">
                 <option disabled selected>{{ categoria }}</option>
                 {% for producto in productos %}
-                    {% if producto.precio_doc %}
+                    {% if producto.precio_doc and producto.stock == True %}
                         <option value="{{ producto.id }}">{{ producto.nombre }} c/u: ${{ producto.precio_unit }} | 1/2: ${{ producto.precio_media }} | Doc: ${{ producto.precio_doc }} </option>
-                    {% elif producto.precio_media and not producto.precio_doc%}
+                    {% elif producto.precio_media and not producto.precio_doc and producto.stock == True%}
                         <option value="{{ producto.id }}">{{ producto.nombre }} 1/2: ${{ producto.precio_media }} | c/u: ${{ producto.precio_unit }}</option>
-                    {% else %}
+                    {% elif producto.stock == True %}
                         <option value="{{ producto.id }}">{{ producto.nombre }} c/u: ${{ producto.precio_unit }}</option>
                     {% endif %}
                 {% endfor %}

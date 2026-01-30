@@ -5,7 +5,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (UpdateView)
 from django.contrib import messages
 
-from pedido.models import FormaEntrega, PedidoProductos, Pedido, PedidosReservado, PedidosProductosReservados
+
+from django.http import JsonResponse
+
+
+from pedido.models import FormaEntrega, Pedido
 from pedido.forms import FormaEntregaForm
  
 from pedido.procesar_pedido import procesar_pedido, mod_pedido
@@ -64,4 +68,38 @@ def listar_reservados(request):
 
 
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+def hay_pedido_nuevo(request):
+    ultimo_id = int(request.GET.get("ultimo_id", 0))
+
+    ultimo_pedido = (
+        Pedido.objects
+        .filter(id__gt=ultimo_id)
+        .order_by("-id")
+        .first()
+    )
+
+    if ultimo_pedido:
+        return JsonResponse({
+            "nuevo": True,
+            "ultimo_id": ultimo_pedido.id
+        })
+
+    return JsonResponse({
+        "nuevo": False,
+        "ultimo_id": ultimo_id
+    })
     

@@ -69,15 +69,31 @@ def agregar_producto(request, producto_id):
         #         agregado = True
 
 
+    # if not agregado:
+    #     messages.error(
+    #         request,
+    #         mark_safe(
+    #             f"<strong>STOCK:</strong><br>"
+    #             f"{producto.categoria}: {producto.categoria.cantidad} unidades.<br>"
+    #             f"{producto}: {producto.cantidad} unidades."
+    #         )
+    #     )
     if not agregado:
-        messages.error(
-            request,
-            mark_safe(
-                f"<strong>STOCK:</strong><br>"
-                f"{producto.categoria}: {producto.categoria.cantidad} unidades.<br>"
-                f"{producto}: {producto.cantidad} unidades."
-            )
-        )
+        mensaje = "<strong>STOCK:</strong><br>"
+
+        # Stock de la categoría
+        if not producto.categoria.stock or float(producto.categoria.cantidad) == 0.0:
+            mensaje += f"{producto.categoria}: SIN STOCK.<br>"
+        else:
+            mensaje += f"{producto.categoria}: {producto.categoria.cantidad} unidades.<br>"
+
+        # Stock del producto
+        if not producto.stock or float(producto.cantidad) == 0.0:
+            mensaje += f"{producto}: SIN STOCK."
+        else:
+            mensaje += f"{producto}: {producto.cantidad} unidades."
+
+        messages.error(request, mark_safe(mensaje))
 
     return redirect("carro:carro")
 
@@ -112,15 +128,39 @@ def actualizar_cantidad(request, producto_id):
         carro.actualizar_cant(producto=producto, nueva_cantidad=nueva_cantidad)
         agregado = True   
 
+    # if not agregado:
+    #     messages.error(
+    #         request,
+    #         mark_safe(
+    #             f"<strong>STOCK:</strong><br>"
+                
+    #             if producto.categoria.stock == False:
+    #                 f"{producto.categoria}: SIN STOCK.<br>"
+    #             else
+    #                 f"{producto.categoria}: {producto.categoria.cantidad} unidades.<br>"
+    #             if producto.stock == False:
+    #                 f"{producto}: SIN STOCK.<br>"
+    #             else
+    #                 f"{producto}: {producto.cantidad} unidades."
+                
+    #         )
+    #     )
     if not agregado:
-        messages.error(
-            request,
-            mark_safe(
-                f"<strong>STOCK:</strong><br>"
-                f"{producto.categoria}: {producto.categoria.cantidad} unidades.<br>"
-                f"{producto}: {producto.cantidad} unidades."
-            )
-        )
+        mensaje = "<strong>STOCK:</strong><br>"
+
+        # Stock de la categoría
+        if not producto.categoria.stock or float(producto.categoria.cantidad) == 0.0:
+            mensaje += f"{producto.categoria}: SIN STOCK.<br>"
+        else:
+            mensaje += f"{producto.categoria}: {producto.categoria.cantidad} unidades.<br>"
+
+        # Stock del producto
+        if not producto.stock or float(producto.cantidad) == 0.0:
+            mensaje += f"{producto}: SIN STOCK."
+        else:
+            mensaje += f"{producto}: {producto.cantidad} unidades."
+
+        messages.error(request, mark_safe(mensaje))
 
     return redirect("carro:carro")
 
