@@ -4,7 +4,7 @@ from productos.models import Producto
 def recuperar_pedidos():
     pedidos_datos = Pedido.objects.all()
     productos_pedidos = PedidoProductos.objects.all()
-    pedidos_reserv_datos = PedidosReservado.objects.filter(estado='reservado')
+    pedidos_reserv_datos = PedidosReservado.objects.filter()
     productos_reserv_pedidos = PedidosProductosReservados.objects.all()
     
     pedidos = cargar_recuperos(pedidos_datos, productos_pedidos)
@@ -15,18 +15,24 @@ def recuperar_pedidos():
 def recuperar_pendientes():
     pedidos_datos = Pedido.objects.filter(estado='pendiente')
     productos_pedidos = PedidoProductos.objects.all()
+    pedidos_reserv_datos = PedidosReservado.objects.filter(estado='pendiente')
+    productos_reserv_pedidos = PedidosProductosReservados.objects.all()
     
     pedidos = cargar_recuperos(pedidos_datos, productos_pedidos)
- 
-    return {"pedidos": pedidos}
+    pedidos_reserv = cargar_recuperos(pedidos_reserv_datos, productos_reserv_pedidos)
+                  
+    return {"pedidos": pedidos, "pedidos_reservados": pedidos_reserv}
 
 def recuperar_entregados():
     pedidos_datos = Pedido.objects.filter(estado='entregado')
     productos_pedidos = PedidoProductos.objects.all()
+    pedidos_reserv_datos = PedidosReservado.objects.filter(estado='entregado')
+    productos_reserv_pedidos = PedidosProductosReservados.objects.all()
     
     pedidos = cargar_recuperos(pedidos_datos, productos_pedidos)
-                
-    return {"pedidos": pedidos}
+    pedidos_reserv = cargar_recuperos(pedidos_reserv_datos, productos_reserv_pedidos)
+                  
+    return {"pedidos": pedidos, "pedidos_reservados": pedidos_reserv}
 
 def recuperar_reservados():
     pedidos_reserv_datos = PedidosReservado.objects.filter(estado='reservado')
@@ -37,12 +43,22 @@ def recuperar_reservados():
     return {"pedidos_reservados": pedidos_reserv}
 
 def recuperar_sin_reservados():
-    pedidos_datos = Pedido.objects.exclude(estado='reservado')
+    pedidos_datos = Pedido.objects.exclude(estado__in=['reservado', 'cancelado'])
+    
     productos_pedidos = PedidoProductos.objects.all()
     
     pedidos = cargar_recuperos(pedidos_datos, productos_pedidos)                
                 
     return {"pedidos": pedidos}
+
+def recuperar_sin_reservados2():
+    pedidos_datos = PedidosReservado.objects.exclude(estado__in=['reservado', 'cancelado'])
+    
+    productos_pedidos = PedidosProductosReservados.objects.all()
+    
+    pedidos_reservados = cargar_recuperos(pedidos_datos, productos_pedidos)                
+                
+    return {"pedidos_reservados": pedidos_reservados}
 
 def cargar_recuperos(pedidos_datos, productos_pedidos):
     pedidos = {pedido.id: 

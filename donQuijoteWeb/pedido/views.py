@@ -36,34 +36,23 @@ def listar_pedidos(request):
     datos_pedidos = recuperar_pedidos()  
     pedidos = datos_pedidos.get("pedidos", {})  
     pedidos_reservados = datos_pedidos.get("pedidos_reservados", {})   
+    
     caja = Caja.objects.first()
-
     if caja:
         estado_caja = caja.estado_caja
     else:
         estado_caja = False
         
-    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'pedidos_reservados': pedidos_reservados, 'estado_caja': estado_caja, })
+    sin_pedidos = "Aun no ha cargado ningún pedido..."
+        
+    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'pedidos_reservados': pedidos_reservados, 'estado_caja': estado_caja, 'sin_pedidos': sin_pedidos })
 
 @login_required
 def listar_pendientes(request):   
     datos_pedidos = recuperar_pendientes()  
     pedidos = datos_pedidos.get("pedidos", {})  
-
-    caja = Caja.objects.first()
-
-    if caja:
-        estado_caja = caja.estado_caja
-    else:
-        estado_caja = False
-
-    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'estado_caja': estado_caja, })
-
-@login_required
-def listar_entregados(request):
-    datos_pedidos = recuperar_entregados()  
-    pedidos = datos_pedidos.get("pedidos", {})  
-
+    pedidos_reservados = datos_pedidos.get("pedidos_reservados", {}) 
+     
     caja = Caja.objects.first()
 
     if caja:
@@ -71,7 +60,25 @@ def listar_entregados(request):
     else:
         estado_caja = False
         
-    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'estado_caja': estado_caja, })
+    sin_pedidos = "No tiene pedidos pendientes..."
+
+    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'pedidos_reservados': pedidos_reservados, 'estado_caja': estado_caja, 'sin_pedidos': sin_pedidos })
+
+@login_required
+def listar_entregados(request):
+    datos_pedidos = recuperar_entregados()  
+    pedidos = datos_pedidos.get("pedidos", {})  
+    pedidos_reservados = datos_pedidos.get("pedidos_reservados", {})  
+    caja = Caja.objects.first()
+
+    if caja:
+        estado_caja = caja.estado_caja
+    else:
+        estado_caja = False
+        
+    sin_pedidos = "No tiene pedidos entregados..."
+        
+    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'pedidos_reservados': pedidos_reservados, 'estado_caja': estado_caja, 'sin_pedidos': sin_pedidos })
 
 @login_required
 def listar_reservados(request):  
@@ -83,8 +90,10 @@ def listar_reservados(request):
         estado_caja = caja.estado_caja
     else:
         estado_caja = False
-        
-    return render(request, 'pedido/index.html', {'pedidos_reservados': pedidos_reservados, 'estado_caja': estado_caja, })  
+       
+    sin_pedidos = "No tiene pedidos reservados..."
+     
+    return render(request, 'pedido/index.html', {'pedidos_reservados': pedidos_reservados, 'estado_caja': estado_caja, 'sin_pedidos': sin_pedidos})  
     
     
     

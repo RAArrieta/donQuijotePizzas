@@ -8,27 +8,14 @@ from .models import Caja
 from pedido.models import Pedido, PedidosReservado
 from core.forms import PagosForm
 
-from pedido.recuperar_pedidos import recuperar_entregados, recuperar_sin_reservados
+from pedido.recuperar_pedidos import recuperar_entregados, recuperar_sin_reservados, recuperar_sin_reservados2
 from .facturas import cargar_fact
 from django.utils import timezone
 
-# def abrirCaja(request):
-#     turno = request.GET.get("turno")
-
-#     caja = Caja.objects.first()
-
-#     if caja:
-#         caja.estado_caja = True
-#         caja.turno = turno
-#         caja.save()
-
-#     return redirect("facturas:home")
-
-
-
 def abrirCaja(request):
 
-    hora_actual = timezone.localtime(timezone.now()).hour
+    hora_actual = timezone.now().hour
+
 
     if 6 <= hora_actual < 17:
         turno = "mediodia"
@@ -78,8 +65,12 @@ def cerrarCaja(request):
 def listar_caja(request):    
     print(f"def listar_caja(request):    ")
     datos_pedidos = recuperar_sin_reservados() 
+    datos_pedidos2 = recuperar_sin_reservados2() 
+    
     pedidos = datos_pedidos.get("pedidos", {})  
-    pedidos_reservados = datos_pedidos.get("pedidos_reservados", {})    
+    pedidos_reservados = datos_pedidos2.get("pedidos_reservados", {})    
+    
+    
     
     pedidos_pago = None
     pedidos_pago_reserv = None
@@ -106,12 +97,6 @@ def listar_caja(request):
         estado_caja = caja.estado_caja
     else:
         estado_caja = False
-    print(f"Estado caja: {estado_caja}")
-    # for estado in estado_caja:
-    #     if not estado:
-    #         messages.warning(request, "Caja cerrada...")
-    #     elif caja_total == 0.0:
-    #         messages.warning(request, "Aun no tiene pedidos entregados...")
             
     form = PagosForm(request.GET or None)
 

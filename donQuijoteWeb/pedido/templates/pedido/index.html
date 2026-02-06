@@ -97,7 +97,7 @@
     {% if estado_caja == False %}
         <h2 class="vacio">Debe abrir caja para realizar pedidos...</h2> 
     {% elif not pedidos and not pedidos_reservados %}
-        <h2 class="vacio">Aun no se cargaron pedidos...</h2> 
+        <h2 class="vacio">{{sin_pedidos}}</h2> 
         
     {% endif %}
 </section>
