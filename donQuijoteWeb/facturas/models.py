@@ -7,7 +7,8 @@ class Facturas(models.Model):
     pago = models.FloatField()
     fecha = models.DateField(default=now)
     envio = models.BooleanField(default=True) 
-        
+    turno = models.CharField(max_length=20, null=True, blank=True)
+    
     class Meta:
         db_table = "facturas"
         verbose_name = "Facturas"
@@ -24,4 +25,12 @@ class FacturaProducto(models.Model):
         return f"{self.cantidad} x {self.producto.nombre} en Factura {self.factura.id}"
 
 class Caja(models.Model):
-    estado_caja = models.BooleanField()
+    TURNOS = [
+        ("mediodia", "Mediodía"),
+        ("noche", "Noche"),
+    ]
+
+    estado_caja = models.BooleanField(default=False)
+    turno = models.CharField(max_length=20, choices=TURNOS, null=True, blank=True)
+
+    

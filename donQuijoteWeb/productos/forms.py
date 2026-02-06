@@ -64,19 +64,19 @@ class CantProductoForm(forms.ModelForm):
             'stock': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        producto = kwargs.get('instance')
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     producto = kwargs.get('instance')
+    #     super().__init__(*args, **kwargs)
 
-        if producto and producto.categoria.nombre != 'Pizzas':
-            # Mostrar entero
-            self.fields['cantidad'].widget.attrs['step'] = 1
+    #     if producto and producto.categoria.nombre != 'Pizzas':
+    #         # Mostrar entero
+    #         self.fields['cantidad'].widget.attrs['step'] = 1
 
-            if producto.cantidad is not None:
-                self.initial['cantidad'] = int(producto.cantidad)
-        else:
-            # Pizzas → decimal
-            self.fields['cantidad'].widget.attrs['step'] = '0.01'
+    #         if producto.cantidad is not None:
+    #             self.initial['cantidad'] = int(producto.cantidad)
+    #     else:
+    #         # Pizzas → decimal
+    #         self.fields['cantidad'].widget.attrs['step'] = '0.01'
 
 class CantCategoriaForm(forms.ModelForm):
     class Meta:
@@ -92,17 +92,17 @@ class CantCategoriaForm(forms.ModelForm):
             }),
         }
 
-    def __init__(self, *args, **kwargs):
-        categoria = kwargs.get('instance')
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     categoria = kwargs.get('instance')
+    #     super().__init__(*args, **kwargs)
 
-        if str(categoria.nombre) != 'Pizzas':
-            self.fields['cantidad'].widget.attrs['step'] = 1
+    #     if str(categoria.nombre) != 'Pizzas':
+    #         self.fields['cantidad'].widget.attrs['step'] = 1
             
-            if categoria.cantidad is not None:
-                self.initial['cantidad'] = int(categoria.cantidad)
-        else:
-            self.fields['cantidad'].widget.attrs['step'] = '0.01'
+    #         if categoria.cantidad is not None:
+    #             self.initial['cantidad'] = int(categoria.cantidad)
+    #     else:
+    #         self.fields['cantidad'].widget.attrs['step'] = '0.01'
 
             # if categoria and categoria.cantidad is not None:
             #     self.initial['cantidad'] = int(categoria.cantidad)

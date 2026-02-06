@@ -10,7 +10,8 @@ urlpatterns = [
     path('reservados/', views.listar_reservados, name="listar_reservados"),
     path('procesar_ped/', views.procesar_ped, name="procesar_ped"),
     path('modificar/pedido/<str:tipo>/<int:pedido>', views.modificar_pedido, name="modificar_pedido"),
-    path("pedido-nuevo/", views.hay_pedido_nuevo, name="pedido_nuevo"),
+    # path("pedido-nuevo/", views.hay_pedido_nuevo, name="pedido_nuevo"),
+    path("pedidos-nuevos/", views.pedidos_nuevos, name="pedidos_nuevos"),
 ]
 
 urlpatterns += [

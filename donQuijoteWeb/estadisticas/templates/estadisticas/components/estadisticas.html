@@ -12,6 +12,12 @@
         {% else %}
             <h3 class="titulo-h3">Informe de Envíos</h3>
         {% endif %}
+
+        {% if estadisticas.turno != None %}
+            <h3 class="titulo-h3">Turno: {{ estadisticas.turno|lower|capfirst }}</h3>
+        {% else %}
+            <h3 class="titulo-h3">Jornada Completa</h3>
+        {% endif %}
         <hr class="est-hr">
         
         <p class="est-datos"><strong> ▪️  &nbsp; Total:</strong> {{ estadisticas.cantidad_vendida }} {% if estadisticas.producto_nombre %} {{estadisticas.producto_nombre}} {% elif estadisticas.categoria %}{{ estadisticas.categoria }}{% else %} envíos {% endif %}</p>

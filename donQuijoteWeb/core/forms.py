@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from gastos.models import Proveedores
+from facturas.models import Caja
 
 class CustomAuthenticationForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -53,6 +54,12 @@ class FechasPagosForm(forms.Form):
     ]
     forma_pago = forms.ChoiceField(
         choices=OPCIONES_FORMA_PAGO,
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label=""
+    )
+    turno = forms.ChoiceField(
+        choices=[('', 'Turno')] + Caja.TURNOS,
         required=False,
         widget=forms.Select(attrs={'class': 'form-control'}),
         label=""

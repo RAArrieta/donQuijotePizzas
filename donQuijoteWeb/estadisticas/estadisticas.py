@@ -7,7 +7,7 @@ from django.db.models import Sum, Count
 
 class Estadisticas:
     env = False
-    def __init__(self, producto_id,  producto_nombre, categoria, cantidad_vendida, cantidad_promedio, cantidad_minima, cantidad_maxima, dia_venta, dia_no_venta, fecha_inicio, fecha_fin, dia_semana, media_semana, mes, ano, cantidad_dias):
+    def __init__(self, producto_id,  producto_nombre, categoria, cantidad_vendida, cantidad_promedio, cantidad_minima, cantidad_maxima, dia_venta, dia_no_venta, fecha_inicio, fecha_fin, dia_semana, media_semana, turno, mes, ano, cantidad_dias):
         self.producto_id = producto_id
         self.producto_nombre = producto_nombre
         self.categoria= categoria
@@ -21,6 +21,7 @@ class Estadisticas:
         self.fecha_fin = fecha_fin
         self.dia_semana = dia_semana
         self.media_semana = media_semana
+        self.turno = turno
         self.mes = mes
         self.ano = ano
         self.cantidad_dias = cantidad_dias
@@ -101,8 +102,7 @@ class Estadisticas:
             else:
                 cantidad_lunes = (ultima_fecha - primer_fecha).days / 7 + 1
                 
-            # print(f"estoy en cantidad de dias: dia semana: {self.dia_semana}, cant dias lunes: {cantidad_lunes}")  
-            
+          
         elif self.mes and self.ano:
             ano = int(self.ano)
             if self.mes != "0":
@@ -157,12 +157,7 @@ class Estadisticas:
         else:
             self.env = True
             facturas_con_envio = Facturas.objects.filter(envio=True)  
-            # facturas_con_envio = Facturas.objects.filter(envios__=True)  
             productos_vendidos = FacturaProducto.objects.filter(factura__in=facturas_con_envio)
-            for factura in facturas_con_envio:
-                print(factura.id, factura.envio)
-                
-            print(Facturas.objects.values_list("envio", flat=True).distinct())
 
         if productos_vendidos.exists():
             if self.fecha_inicio and self.fecha_fin:                
@@ -174,7 +169,6 @@ class Estadisticas:
                     productos_vendidos = productos_vendidos.filter(factura__fecha=hoy)
                 else:
                     productos_vendidos = productos_vendidos.filter(factura__fecha__range=(primer_fecha, ultima_fecha))
-                print(f"estoy en productos_vendidos: {productos_vendidos}")
             if self.mes and self.ano:
                 ano = int(self.ano)
                 if self.mes != "0":
@@ -182,6 +176,10 @@ class Estadisticas:
                     productos_vendidos = productos_vendidos.filter(factura__fecha__month=mes, factura__fecha__year=ano)
                 else:
                     productos_vendidos = productos_vendidos.filter(factura__fecha__year=ano)
+                    
+        if self.turno:
+            productos_vendidos = productos_vendidos.filter(factura__turno=self.turno)
+            
         return productos_vendidos
     
     def calculo_cantidad_vendida(self, productos_vendidos):

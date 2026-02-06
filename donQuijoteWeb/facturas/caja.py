@@ -8,18 +8,46 @@ from .models import Caja
 from pedido.models import Pedido, PedidosReservado
 from core.forms import PagosForm
 
-from pedido.recuperar_pedidos import recuperar_entregados
+from pedido.recuperar_pedidos import recuperar_entregados, recuperar_sin_reservados
 from .facturas import cargar_fact
+from django.utils import timezone
+
+# def abrirCaja(request):
+#     turno = request.GET.get("turno")
+
+#     caja = Caja.objects.first()
+
+#     if caja:
+#         caja.estado_caja = True
+#         caja.turno = turno
+#         caja.save()
+
+#     return redirect("facturas:home")
+
+
 
 def abrirCaja(request):
-    caja = Caja.objects.first()  
+
+    hora_actual = timezone.localtime(timezone.now()).hour
+
+    if 6 <= hora_actual < 17:
+        turno = "mediodia"
+    else:
+        turno = "noche"
+
+    # crear o abrir caja con ese turno
+    caja = Caja.objects.first()
+
     if caja:
         caja.estado_caja = True
-        caja.save() 
-        
+        caja.turno = turno
+        caja.save()
+
     return redirect("facturas:home")
 
+
 def cerrarCaja(request):
+    print(f"def cerrarCaja(request):")
     caja = Caja.objects.first() 
 
     if caja:
@@ -38,6 +66,7 @@ def cerrarCaja(request):
                 cursor.execute("DELETE FROM sqlite_sequence WHERE name='pedidos'") 
                 
             caja.estado_caja = False
+            caja.turno = None
             caja.save() 
             return redirect("facturas:home")  
         else:
@@ -47,7 +76,8 @@ def cerrarCaja(request):
 
 
 def listar_caja(request):    
-    datos_pedidos = recuperar_entregados() 
+    print(f"def listar_caja(request):    ")
+    datos_pedidos = recuperar_sin_reservados() 
     pedidos = datos_pedidos.get("pedidos", {})  
     pedidos_reservados = datos_pedidos.get("pedidos_reservados", {})    
     
@@ -70,13 +100,18 @@ def listar_caja(request):
     caja_mercado = caja["mercado"]
     caja_naranja = caja["naranja"]
                        
-    estado_caja = Caja.objects.all().values_list('estado_caja', flat=True)
-    
-    for estado in estado_caja:
-        if not estado:
-            messages.warning(request, "Caja cerrada...")
-        elif caja_total == 0.0:
-            messages.warning(request, "Aun no tiene pedidos entregados...")
+    caja = Caja.objects.first()
+
+    if caja:
+        estado_caja = caja.estado_caja
+    else:
+        estado_caja = False
+    print(f"Estado caja: {estado_caja}")
+    # for estado in estado_caja:
+    #     if not estado:
+    #         messages.warning(request, "Caja cerrada...")
+    #     elif caja_total == 0.0:
+    #         messages.warning(request, "Aun no tiene pedidos entregados...")
             
     form = PagosForm(request.GET or None)
 
@@ -94,7 +129,7 @@ def listar_caja(request):
             }
             pedidos = None
             pedidos_reservados = None
-            
+
     context = {
         'form': form,
         'pedidos': pedidos,
@@ -104,7 +139,8 @@ def listar_caja(request):
         'caja_total': caja_total,
         'caja_efectivo': caja_efectivo,
         'caja_mercado': caja_mercado, 
-        'caja_naranja': caja_naranja
+        'caja_naranja': caja_naranja,
+        'estado_caja': estado_caja,
     }
     return render(request, "facturas/index.html", context)
 

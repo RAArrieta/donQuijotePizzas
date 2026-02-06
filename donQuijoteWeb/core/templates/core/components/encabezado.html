@@ -52,11 +52,23 @@
             <a class="btn-opc" href="{% url 'productos:listar_proveedores' %}">Proveedor</a>
             <a class="btn-opc" href="{% url 'productos:lista_wa' %}">Lista Whatsapp</a> 
         {% elif titulo_texto == "Pedidos" %}
-            <a class="btn-opc" href="{% url 'carro:carro' %}">Nuevo Pedido</a>
-            <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
-            <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
-            <a class="btn-opc" href="{% url 'pedido:listar_reservados' %}">Reservados</a>
-            <a class="btn-opc" href="{% url 'pedido:home' %}">Todos</a>
+            {% if estado_caja == True %}
+                <a class="btn-opc" href="{% url 'carro:carro' %}">Nuevo Pedido</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_reservados' %}">Reservados</a>
+                <a class="btn-opc" href="{% url 'pedido:home' %}">Todos</a>
+            {% else %}
+                <a class="btn-opc" href="{% url 'pedido:home' %}">Nuevo Pedido</a>
+                <a class="btn-opc" href="{% url 'pedido:home' %}">Pendientes</a>
+                <a class="btn-opc" href="{% url 'pedido:home' %}">Entregados</a>
+                <a class="btn-opc" href="{% url 'pedido:listar_reservados' %}">Reservados</a>
+                <a class="btn-opc" href="{% url 'pedido:home' %}">Todos</a>
+            {% endif %}
+
+
+
+
         {% elif titulo_texto == "Nuevo Pedido" %}
             <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
             <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
@@ -64,8 +76,18 @@
             <a class="btn-opc" href="{% url 'pedido:home' %}">Todos</a>
 
         {% elif titulo_texto == "Caja Diaria" %}
-            <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>
-            <a class="btn-opc" href="{% url 'facturas:cerrar_caja' %}">Cerrar Caja</a>
+
+            {% if estado_caja == True %}
+                <a class="btn-opc" href="{% url 'facturas:cerrar_caja' %}">Cerrar Caja</a>
+            {% else %}
+                <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>   
+            {% endif %}
+
+
+
+
+
+            
             {% if caja_total > 0.0 %}
             <form method="get" class="filtro-form">
                 {{ form.as_p }}

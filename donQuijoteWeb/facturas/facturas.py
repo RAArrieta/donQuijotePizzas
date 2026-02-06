@@ -17,76 +17,81 @@ def cargar_fact(request):
     datos_pedidos = recuperar_entregados()
     pedidos = datos_pedidos.get("pedidos", {})  
     pedidos_reservados = datos_pedidos.get("pedidos_reservados", {}) 
-    
-    for key, value in pedidos.items():
-        envio, forma_pago, total = None, None, None
-        lista_productos = list()  
-        
-        for k, v in value['datos'].items():
-            if k == "forma_entrega" and v == "Retira":
-                envio = False
-            elif k == "forma_entrega" and v != "Retira":
-                envio = True
-            elif k == "pago":
-                forma_pago = v
-            elif k == "total":
-                total = v  
-        
-        factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, )   
-        
-        factura.save()  
+    caja = Caja.objects.first()
 
-        for k, v in value.items():
-            if k.isdigit(): 
-                cantidad = None
-                for prod_key, prod_value in v.items():
-                    if prod_key == "cantidad":
-                        cantidad = prod_value
-                        break
-                
-                if cantidad is not None:
-                    lista_productos.append(FacturaProducto(
-                        producto_id=int(k),
-                        cantidad=float(cantidad),
-                        factura=factura  
-                    ))
-        
-        FacturaProducto.objects.bulk_create(lista_productos)
-        
-    for key, value in pedidos_reservados.items():
-        envio, forma_pago, total = None, None, None
-        lista_productos = list()  
-        
-        for k, v in value['datos'].items():
-            if k == "forma_entrega" and v == "Retira":
-                envio = False
-            elif k == "forma_entrega" and v != "Retira":
-                envio = True
-            elif k == "pago":
-                forma_pago = v
-            elif k == "total":
-                total = v  
-        
-        factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, )   
-        
-        factura.save()  
+    if caja:
+        turno = caja.turno
 
-        for k, v in value.items():
-            if k.isdigit(): 
-                cantidad = None
-                for prod_key, prod_value in v.items():
-                    if prod_key == "cantidad":
-                        cantidad = prod_value
-                        break
-                
-                if cantidad is not None:
-                    lista_productos.append(FacturaProducto(
-                        producto_id=int(k),
-                        cantidad=float(cantidad),
-                        factura=factura  
-                    ))
         
-        FacturaProducto.objects.bulk_create(lista_productos)
+        for key, value in pedidos.items():
+            envio, forma_pago, total = None, None, None
+            lista_productos = list()  
+            
+            for k, v in value['datos'].items():
+                if k == "forma_entrega" and v == "Retira":
+                    envio = False
+                elif k == "forma_entrega" and v != "Retira":
+                    envio = True
+                elif k == "pago":
+                    forma_pago = v
+                elif k == "total":
+                    total = v  
+            
+            factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, )   
+            
+            factura.save()  
+
+            for k, v in value.items():
+                if k.isdigit(): 
+                    cantidad = None
+                    for prod_key, prod_value in v.items():
+                        if prod_key == "cantidad":
+                            cantidad = prod_value
+                            break
+                    
+                    if cantidad is not None:
+                        lista_productos.append(FacturaProducto(
+                            producto_id=int(k),
+                            cantidad=float(cantidad),
+                            factura=factura  
+                        ))
+            
+            FacturaProducto.objects.bulk_create(lista_productos)
+            
+        for key, value in pedidos_reservados.items():
+            envio, forma_pago, total = None, None, None
+            lista_productos = list()  
+            
+            for k, v in value['datos'].items():
+                if k == "forma_entrega" and v == "Retira":
+                    envio = False
+                elif k == "forma_entrega" and v != "Retira":
+                    envio = True
+                elif k == "pago":
+                    forma_pago = v
+                elif k == "total":
+                    total = v  
+            
+            factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, )   
+            
+            factura.save()  
+
+            for k, v in value.items():
+                if k.isdigit(): 
+                    cantidad = None
+                    for prod_key, prod_value in v.items():
+                        if prod_key == "cantidad":
+                            cantidad = prod_value
+                            break
+                    
+                    if cantidad is not None:
+                        lista_productos.append(FacturaProducto(
+                            producto_id=int(k),
+                            cantidad=float(cantidad),
+                            factura=factura  
+                        ))
+            
+            FacturaProducto.objects.bulk_create(lista_productos)
         
     return redirect("core:home")
 
@@ -101,12 +106,16 @@ def listar_facturas(request):
         fecha_inicio = form.cleaned_data.get('fecha_inicio')
         fecha_fin = form.cleaned_data.get('fecha_fin')
         forma_pago = form.cleaned_data.get('forma_pago')
+        turno = form.cleaned_data.get('turno')
         
         if fecha_inicio and fecha_fin:
             facturas = Facturas.objects.filter(fecha__range=[fecha_inicio, fecha_fin])
         
         if forma_pago:
             facturas = facturas.filter(forma_pago=forma_pago)
+            
+        if turno:
+            facturas = facturas.filter(turno=turno)
   
     caja_total = 0.0
     caja_efectivo = 0.0

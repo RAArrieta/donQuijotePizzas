@@ -77,7 +77,6 @@
                 <option value="v_d">Viernes a Domingos</option>
             </select>
             
-
             <div class="form-row">
                 <div class="form-group">
                     {{ form.mes.label_tag }} {{ form.mes }}
@@ -86,6 +85,15 @@
                     {{ form.ano.label_tag }} {{ form.ano }}
                 </div>
             </div>
+
+            <label for="turno">Turno</label>
+            <select name="turno" id="turno">
+                <option disabled selected>Turno</option>
+                <option value="mediodia">Mediodía</option>
+                <option value="noche">Noche</option>
+            </select>
+
+
             <div class="btn-buscar est-btn-buscar">
                 <button type="submit" class="btn-success" onclick="openModal()">Buscar</button>
             </div>

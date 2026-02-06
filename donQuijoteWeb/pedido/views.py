@@ -8,7 +8,7 @@ from django.contrib import messages
 
 from django.http import JsonResponse
 
-
+from facturas.models import Caja
 from pedido.models import FormaEntrega, Pedido
 from pedido.forms import FormaEntregaForm
  
@@ -30,76 +30,71 @@ def modificar_pedido(request, tipo, pedido):
     mod_pedido(request, tipo, pedido)
     return redirect("carro:carro")
 
+
 @login_required
-def listar_pedidos(request):  
+def listar_pedidos(request): 
     datos_pedidos = recuperar_pedidos()  
     pedidos = datos_pedidos.get("pedidos", {})  
-    pedidos_reservados = datos_pedidos.get("pedidos_reservados", {})    
-    if not pedidos and not pedidos_reservados:
-        messages.warning(request, "No hay pedidos cargados...")
+    pedidos_reservados = datos_pedidos.get("pedidos_reservados", {})   
+    caja = Caja.objects.first()
 
-    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'pedidos_reservados': pedidos_reservados})
+    if caja:
+        estado_caja = caja.estado_caja
+    else:
+        estado_caja = False
+        
+    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'pedidos_reservados': pedidos_reservados, 'estado_caja': estado_caja, })
 
 @login_required
-def listar_pendientes(request):
+def listar_pendientes(request):   
     datos_pedidos = recuperar_pendientes()  
     pedidos = datos_pedidos.get("pedidos", {})  
-    pedidos_reservados = datos_pedidos.get("pedidos_reservados", {}) 
-    if not pedidos:
-        messages.warning(request, "No hay pedidos pendientes...")
-    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'pedidos_reservados': pedidos_reservados})
+
+    caja = Caja.objects.first()
+
+    if caja:
+        estado_caja = caja.estado_caja
+    else:
+        estado_caja = False
+
+    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'estado_caja': estado_caja, })
 
 @login_required
 def listar_entregados(request):
     datos_pedidos = recuperar_entregados()  
     pedidos = datos_pedidos.get("pedidos", {})  
-    pedidos_reservados = datos_pedidos.get("pedidos_reservados", {}) 
-    if not pedidos:
-        messages.warning(request, "No hay pedidos entregados...")
-    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'pedidos_reservados': pedidos_reservados})
+
+    caja = Caja.objects.first()
+
+    if caja:
+        estado_caja = caja.estado_caja
+    else:
+        estado_caja = False
+        
+    return render(request, 'pedido/index.html', {'pedidos': pedidos, 'estado_caja': estado_caja, })
 
 @login_required
-def listar_reservados(request):
+def listar_reservados(request):  
     datos_pedidos = recuperar_reservados()  
     pedidos_reservados = datos_pedidos.get("pedidos_reservados", {}) 
-    if not pedidos_reservados:
-        messages.warning(request, "No hay pedidos reservados...")
-    return render(request, 'pedido/index.html', {'pedidos_reservados': pedidos_reservados})
+    caja = Caja.objects.first()
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    if caja:
+        estado_caja = caja.estado_caja
+    else:
+        estado_caja = False
+        
+    return render(request, 'pedido/index.html', {'pedidos_reservados': pedidos_reservados, 'estado_caja': estado_caja, })  
     
     
     
     
 
 
-def hay_pedido_nuevo(request):
-    ultimo_id = int(request.GET.get("ultimo_id", 0))
-
-    ultimo_pedido = (
-        Pedido.objects
-        .filter(id__gt=ultimo_id)
-        .order_by("-id")
-        .first()
-    )
-
-    if ultimo_pedido:
-        return JsonResponse({
-            "nuevo": True,
-            "ultimo_id": ultimo_pedido.id
-        })
+def pedidos_nuevos(request):
+    ultimo = Pedido.objects.order_by("-hora").first()
 
     return JsonResponse({
-        "nuevo": False,
-        "ultimo_id": ultimo_id
+        "ultima_fecha": ultimo.hora.timestamp() if ultimo else 0
     })
     

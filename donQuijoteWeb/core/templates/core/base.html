@@ -29,22 +29,33 @@
 
 
     <audio id="plin" src="{% static 'sounds/plin.mp3' %}" preload="auto"></audio>
+    <audio id="plin" src="{% static 'sounds/plin.mp3' %}" preload="auto"></audio>
+
+
 
     <script>
-    const urlPedidoNuevo = "{% url 'pedido:pedido_nuevo' %}";
-    let ultimoPedido = parseInt(localStorage.getItem("ultimoPedido")) || 0;
+    let ultimaFecha = localStorage.getItem("ultimaFecha") || 0;
 
-    setInterval(() => {
-        fetch(`${urlPedidoNuevo}?ultimo_id=${ultimoPedido}`)
-            .then(r => r.json())
-            .then(data => {
-                if (data.nuevo && data.ultimo_id > ultimoPedido) {
-                    document.getElementById("plin").play();
-                    ultimoPedido = data.ultimo_id;
-                    localStorage.setItem("ultimoPedido", ultimoPedido);
-                }
-            });
-    }, 20000);
+    async function chequearPedidos() {
+
+        const audio = document.getElementById("plin");
+
+        const response = await fetch("/pedido/pedidos-nuevos/");
+        const data = await response.json();
+
+        console.log("Guardado:", ultimaFecha);
+        console.log("Servidor:", data.ultima_fecha);
+
+        if (ultimaFecha !== 0 && Number(data.ultima_fecha) > ultimaFecha) {
+            audio.play();
+        }
+
+        ultimaFecha = Number(data.ultima_fecha);
+        localStorage.setItem("ultimaFecha", ultimaFecha);
+    }
+    setInterval(chequearPedidos, 5000);
+
+
     </script>
 
 

@@ -73,9 +73,10 @@ def cargar_estadistica(request):
         fecha_fin = parse_date(fecha_fin) if fecha_fin else None
         dia_semana = request.POST.get("dia_semana", None)
         media_semana = request.POST.get("media_semana", None)
+        turno = request.POST.get("turno", None)
         mes = request.POST.get("mes", None)
         ano = request.POST.get("ano", None)
-              
+                    
         if producto_id or categoria or envios:
             estadisticas = Estadisticas(
                 producto_id=producto_id,
@@ -91,6 +92,7 @@ def cargar_estadistica(request):
                 fecha_fin=fecha_fin,
                 dia_semana=dia_semana,
                 media_semana=media_semana,
+                turno=turno,
                 mes=mes if (fecha_inicio is None and dia_semana is None and media_semana is None) else None,
                 ano=ano if (fecha_inicio is None and dia_semana is None and media_semana is None) else None,
                 cantidad_dias=0
@@ -112,6 +114,7 @@ def cargar_estadistica(request):
                 'fecha_fin': str(estadisticas.fecha_fin) if fecha_fin else None,
                 'dia_semana': dia_semana,
                 'media_semana': media_semana,
+                'turno': turno,
                 'mes': mes if (fecha_inicio is None and dia_semana is None and mes and ano) else None,
                 'ano': ano if (fecha_inicio is None and dia_semana is None and mes and ano) else None,
                 'cantidad_dias': estadisticas.cantidad_dias,     

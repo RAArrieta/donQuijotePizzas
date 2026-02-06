@@ -19,7 +19,7 @@ def control_carro(request):
     
     for estado in estado_caja:
         if not estado:
-            return redirect("pedido:listar_pendientes")
+            return redirect("pedido:home")
 
     if cargar_pedido and comprobacion_pedido:
         return redirect("pedido:procesar_ped")
