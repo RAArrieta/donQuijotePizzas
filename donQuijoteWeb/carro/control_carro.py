@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from productos.models import Producto
-from pedido.models import FormaEntrega
+from pedido.models import FormaEntrega, Descuentos
 
 from .select_productos import select_productos
 from .carro import Carro
@@ -37,10 +37,12 @@ def control_carro(request):
     carro = Carro(request)
     categorias = select_productos() 
     forma_entrega = FormaEntrega.objects.all()
+    descuentos = Descuentos.objects.all()
     
     context = {
         'categorias': categorias,
         'forma_entrega': forma_entrega,
+        'descuentos': descuentos,
         'pedido': pedido,
     }      
     return render(request, "carro/carro.html", context)
@@ -53,6 +55,8 @@ def cargar_dat(request):
             "hora":"",
             "pago": "",
             "forma_entrega": "",
+            "descuento": "",
+            "descuento_precio": "",
             "precio_entrega": "",
             "envio":"",
             "nombre": "",
@@ -60,7 +64,7 @@ def cargar_dat(request):
             "observacion": "",
         }
     if request.method == 'POST':        
-        for field in ['estado', 'hora', 'pago', 'direccion', 'forma_entrega', 'nombre', 'observacion']:
+        for field in ['estado', 'hora', 'pago', 'direccion', 'forma_entrega','descuentos', 'nombre', 'observacion']:
             if field in request.POST:
                 datos[field]=request.POST.get(field)
                 if field == 'forma_entrega':
@@ -69,6 +73,11 @@ def cargar_dat(request):
                     datos["forma_entrega"]= entrega.forma_entrega
                     datos["precio_entrega"]= entrega.precio
                     datos["envio"]= entrega.envio
+                elif field == 'descuentos':
+                    descuento_id = request.POST.get("descuentos")
+                    descuento = Descuentos.objects.get(id=descuento_id)
+                    datos["descuento"]= descuento.descuento
+                    datos["descuento_precio"]= descuento.precio
                 carro.agregar_datos(datos=datos) 
     carro.calcular_precio()
     return redirect("carro:carro")

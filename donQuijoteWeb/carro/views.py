@@ -45,39 +45,6 @@ def agregar_producto(request, producto_id):
             carro.agregar(producto=producto)
             agregado = True
             
-    # =========================
-    # PEDIDO EXISTENTE
-    # =========================
-    # if es_edicion:
-    #     if str(producto.categoria) == "Pizzas":
-    #         nueva_cantidad = float(cantidad_producto_carro) + 0.5
-    #     else:
-    #         nueva_cantidad = cantidad_producto_carro + 1
-
-    #     if chequear_actualizacion(request, producto, nueva_cantidad):
-    #         carro.agregar(producto=producto)
-    #         agregado = True
-
-
-    # =========================
-    # PEDIDO NUEVO
-    # =========================
-    # else:
-        # if cantidad_producto_carro == 0:
-        #     if chequear_stock(request, producto, cantidad_producto_carro):
-        #         carro.agregar(producto=producto)
-        #         agregado = True
-
-
-    # if not agregado:
-    #     messages.error(
-    #         request,
-    #         mark_safe(
-    #             f"<strong>STOCK:</strong><br>"
-    #             f"{producto.categoria}: {producto.categoria.cantidad} unidades.<br>"
-    #             f"{producto}: {producto.cantidad} unidades."
-    #         )
-    #     )
     if not agregado:
         mensaje = "<strong>STOCK:</strong><br>"
 
@@ -115,36 +82,10 @@ def actualizar_cantidad(request, producto_id):
     # es_edicion = "nro_pedido" in request.session
     agregado = False
     
-    # # =========================
-    # # PEDIDO EXISTENTE
-    # # =========================
-    # if es_edicion:
-    #     pass
-    # # =========================
-    # # PEDIDO NUEVO
-    # # =========================
-    # else:
     if chequear_actualizacion(request, producto, nueva_cantidad):
         carro.actualizar_cant(producto=producto, nueva_cantidad=nueva_cantidad)
         agregado = True   
 
-    # if not agregado:
-    #     messages.error(
-    #         request,
-    #         mark_safe(
-    #             f"<strong>STOCK:</strong><br>"
-                
-    #             if producto.categoria.stock == False:
-    #                 f"{producto.categoria}: SIN STOCK.<br>"
-    #             else
-    #                 f"{producto.categoria}: {producto.categoria.cantidad} unidades.<br>"
-    #             if producto.stock == False:
-    #                 f"{producto}: SIN STOCK.<br>"
-    #             else
-    #                 f"{producto}: {producto.cantidad} unidades."
-                
-    #         )
-    #     )
     if not agregado:
         mensaje = "<strong>STOCK:</strong><br>"
 

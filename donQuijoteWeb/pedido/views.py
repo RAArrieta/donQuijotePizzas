@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (UpdateView)
 from django.http import JsonResponse
-from pedido.models import FormaEntrega, Pedido
-from pedido.forms import FormaEntregaForm
+from pedido.models import FormaEntrega, Pedido, Descuentos
+from pedido.forms import FormaEntregaForm, DescuentosForm
 from pedido.procesar_pedido import procesar_pedido, mod_pedido
 from pedido.recuperar_pedidos import recuperar_pedidos, obtener_estado_caja
 
@@ -16,6 +16,11 @@ def procesar_ped(request):
 class FormaEntregaUpdate(LoginRequiredMixin, UpdateView):
     model = FormaEntrega
     form_class = FormaEntregaForm
+    success_url = reverse_lazy("productos:home")
+     
+class DescuentosUpdate(LoginRequiredMixin, UpdateView):
+    model = Descuentos
+    form_class = DescuentosForm
     success_url = reverse_lazy("productos:home")
 
 @login_required

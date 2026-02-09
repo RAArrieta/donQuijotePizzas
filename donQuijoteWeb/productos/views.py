@@ -8,7 +8,7 @@ from django.forms import modelformset_factory
 
 from . import forms, models
 from .models import Producto, ProductoCategoria, Insumos, Proveedores, ProductoInsumos
-from pedido.models import FormaEntrega
+from pedido.models import FormaEntrega, Descuentos
 from .precio_recomendado import precio_recomendado
 from .forms import CantProductoForm, CantCategoriaForm
 
@@ -17,6 +17,7 @@ def home(request):
     productos = Producto.objects.select_related('categoria').order_by('categoria__nombre').all()
     categorias = ProductoCategoria.objects.all()
     forma_entrega = FormaEntrega.objects.all()
+    descuentos = Descuentos.objects.all()
     precio_recomendado()      
 
     forms_por_producto = {producto.id: CantProductoForm(instance=producto) for producto in productos}
@@ -27,6 +28,7 @@ def home(request):
         'object_list': productos,
         'categorias': categorias,
         'forma_entrega': forma_entrega,
+        'descuentos': descuentos,
         'forms_por_producto': forms_por_producto,
         'forms_por_categoria': forms_por_categoria,
     }

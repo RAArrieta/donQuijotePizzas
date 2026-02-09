@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    dQ | Modificar Descuento  
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'productos/css/styles.css' %}">
+{% endblock css %}
+
+{% block titulo %}
+    {% include 'core/components/encabezado.html' with titulo_texto="Modificar Descuento" %}
+{% endblock titulo %}
+
+{% block main %}
+    <section class="form-container">
+        <form class="card" action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <div class="btn-container">
+                <button class="btn-success" type="submit">Guardar</button>
+                <a class="btn-success" href="{% url 'productos:home' %}">Volver</a>
+            </div> 
+        </form>
+    </section>
+{% endblock main %}

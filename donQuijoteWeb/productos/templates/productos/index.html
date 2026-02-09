@@ -100,7 +100,25 @@ dQ | Productos
                 </div>
             </div>    
         {% endfor %}
-    </div>    
+    </div>   
+    
+    <div class="card">           
+        <h1 class="categoria-titulo">Descuentos</h1>
+        <hr class="categoria-hr">
+        {% for descuento in descuentos %}
+            <div class="productos">
+                <p class="producto-nombre">{{ descuento.descuento }}</p>
+                {% if descuento.precio != None %}
+                    <p class="producto-precio">{{ descuento.precio }}</p>
+                {% endif %}
+                <div class="producto-opc">
+                    <a href="{% url 'pedido:descuentos_update' descuento.id %}">
+                        <img class="icono-opc" src="{% static 'productos/img/editar.webp' %}" alt="Editar Producto">
+                    </a>
+                </div>
+            </div>    
+        {% endfor %}
+    </div>
     
     {% for categoria in categorias_productos %}
         {% with categoria.grouper as nombre_categoria %}

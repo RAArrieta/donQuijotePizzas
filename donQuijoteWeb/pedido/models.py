@@ -13,7 +13,17 @@ class FormaEntrega(models.Model):
         db_table = "formaentrega"
         verbose_name = "Forma de entrega"
     
-
+class Descuentos(models.Model):
+    descuento = models.CharField(max_length=50)
+    precio = models.FloatField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.descuento}"
+    
+    class Meta:
+        db_table = "descuento"
+        verbose_name = "Descuento"
+        
 class Pedido(models.Model):
     ESTADO_CHOICES = [
         ('entregado', 'Entregado'),

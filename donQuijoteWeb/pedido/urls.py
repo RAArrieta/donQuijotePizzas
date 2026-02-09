@@ -14,5 +14,6 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-     path("formaentrega_update/<int:pk>", views.FormaEntregaUpdate.as_view(), name="formaentrega_update"),
+    path("formaentrega_update/<int:pk>", views.FormaEntregaUpdate.as_view(), name="formaentrega_update"),
+    path("descuentos_update/<int:pk>", views.DescuentosUpdate.as_view(), name="descuentos_update"),
 ]

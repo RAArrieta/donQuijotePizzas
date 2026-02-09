@@ -10,3 +10,11 @@ class FormaEntregaForm(forms.ModelForm):
             'precio': forms.NumberInput(attrs={'step': 'any', "class": "form-control"})
         }
         
+class DescuentosForm(forms.ModelForm):
+    class Meta:
+        model = models.Descuentos
+        fields = ['descuento', 'precio']
+        widgets = {
+            "descuento": forms.TextInput(attrs={"class": "form-control"}),
+            'precio': forms.NumberInput(attrs={'step': 'any', "class": "form-control"})
+        }

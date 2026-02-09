@@ -6,7 +6,7 @@ class Carro:
         self.request = request
         self.session = request.session
         carro = self.session.get("carro")
-        forma_entrega = FormaEntrega.objects.get(id=2)
+        forma_entrega = FormaEntrega.objects.get(id=1)
         if not carro:
             print("if not carro (creo)")
             carro = self.session["carro"] = {
@@ -18,6 +18,8 @@ class Carro:
                     "forma_entrega": str(forma_entrega.forma_entrega),
                     "precio_entrega": float(forma_entrega.precio),
                     "envio":True,
+                    "descuento": "",
+                    "descuento_precio": 0.0,
                     "nombre": "",
                     "direccion": "",
                     "observacion": "",
@@ -106,6 +108,9 @@ class Carro:
 
     def agregar_datos(self, datos):
         print("def agregar_datos(self, datos)")
+        print("*************************")
+        print(f"{self.carro["datos"]["descuento"]}")
+        print("*************************")
         if "nombre" in datos:
             self.carro["datos"]["nombre"]=datos["nombre"]
         if "direccion" in datos:
@@ -120,6 +125,9 @@ class Carro:
             self.carro["datos"]["forma_entrega"]=datos["forma_entrega"]
             self.carro["datos"]["precio_entrega"]=datos["precio_entrega"]
             self.carro["datos"]["envio"]=bool(datos["envio"])
+        if "descuento" in datos:
+            self.carro["datos"]["descuento"]=datos["descuento"]
+            self.carro["datos"]["descuento_precio"]=datos["descuento_precio"]
         self.guardar_carro()
         
         
@@ -210,7 +218,10 @@ class Carro:
             elif key == "empanadas":
                 total = float(total)+float(value["subtotal_emp"])
         
-        self.session["carro"]["datos"]["total"] = float(total)
+        if self.session["carro"]["datos"]["descuento_precio"] != 0.0:
+            self.session["carro"]["datos"]["total"] = int(float(total) / self.session["carro"]["datos"]["descuento_precio"])
+        else:
+            self.session["carro"]["datos"]["total"] = float(total)
         return total
     
     def cargar_pedido(self, pedido):

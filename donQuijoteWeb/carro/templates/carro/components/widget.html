@@ -77,6 +77,23 @@
         {% endif %} 
     {% endfor %}
     </div>
+
+    <div class="widget-envios">
+        {% for key, value in request.session.carro.items %}
+        {% if key == "datos" %}
+            <div class="widget-producto">
+                {% if value.descuento != None and value.descuento_precio != 0.0 %}
+                    <p class="widget-prod-nombre" style="color: red;">Descuento</p>
+                    <p class="widget-prod-mod"></p>
+                    <div class="widget-prod-cant"></div>
+                    <p class="widget-prod-mod"></p>
+                    <p class="widget-prod-subt" style="color: red;">{{value.descuento}}</p>
+                    <p class="widget-prod-elim"></p>
+                {% endif %}
+            </div>
+        {% endif %} 
+    {% endfor %}
+    </div>
     
 
     {% if request.session.carro.datos.total %}
