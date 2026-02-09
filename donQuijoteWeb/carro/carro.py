@@ -21,6 +21,7 @@ class Carro:
                     "descuento": "",
                     "descuento_precio": 0.0,
                     "nombre": "",
+                    "telefono": "",
                     "direccion": "",
                     "observacion": "",
                     "total":0.0,
@@ -108,11 +109,10 @@ class Carro:
 
     def agregar_datos(self, datos):
         print("def agregar_datos(self, datos)")
-        print("*************************")
-        print(f"{self.carro["datos"]["descuento"]}")
-        print("*************************")
         if "nombre" in datos:
             self.carro["datos"]["nombre"]=datos["nombre"]
+        if "telefono" in datos:
+            self.carro["datos"]["telefono"]=datos["telefono"]
         if "direccion" in datos:
             self.carro["datos"]["direccion"]=datos["direccion"]
         if "observacion" in datos:
@@ -127,7 +127,7 @@ class Carro:
             self.carro["datos"]["envio"]=bool(datos["envio"])
         if "descuento" in datos:
             self.carro["datos"]["descuento"]=datos["descuento"]
-            self.carro["datos"]["descuento_precio"]=datos["descuento_precio"]
+            self.carro["datos"]["descuento_precio"]=float(datos["descuento_precio"])
         self.guardar_carro()
         
         
@@ -218,7 +218,7 @@ class Carro:
             elif key == "empanadas":
                 total = float(total)+float(value["subtotal_emp"])
         
-        if self.session["carro"]["datos"]["descuento_precio"] != 0.0:
+        if self.session["carro"]["datos"].get("descuento_precio", 0.0) != 0.0 and self.session["carro"]["datos"]["descuento_precio"] != None:
             self.session["carro"]["datos"]["total"] = int(float(total) / self.session["carro"]["datos"]["descuento_precio"])
         else:
             self.session["carro"]["datos"]["total"] = float(total)

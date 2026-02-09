@@ -42,7 +42,8 @@
                     <input class="selects" type="text" {% if value.direccion == "" %}placeholder="Dirección..."{% else %}value="{{ value.direccion }}"{% endif %} name="direccion">
                 {% endif %}
 
-                <input class="selects" type="text" {% if value.nombre == "" %}placeholder="Nombre..."{% else %}value="{{ value.nombre }}"{% endif %} name="nombre">    
+                <input class="selects" type="text" {% if value.nombre == "" %}placeholder="Nombre..."{% else %}value="{{ value.nombre }}"{% endif %} name="nombre">   
+                <input class="selects" type="text" {% if value.telefono == "" %}placeholder="Teléfono..."{% else %}value="{{ value.telefono }}"{% endif %} name="telefono">   
                 <input class="selects" type="text" {% if value.observacion == "" %}placeholder="Observación..."{% else %}value="{{ value.observacion }}"{% endif %} name="observacion">           
                 
                 <select class="selects" name="descuentos" onchange="this.form.submit()">

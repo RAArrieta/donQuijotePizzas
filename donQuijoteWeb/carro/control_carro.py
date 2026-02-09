@@ -56,15 +56,16 @@ def cargar_dat(request):
             "pago": "",
             "forma_entrega": "",
             "descuento": "",
-            "descuento_precio": "",
+            "descuento_precio": 0.0,
             "precio_entrega": "",
             "envio":"",
             "nombre": "",
+            "telefono": "",
             "direccion": "",
             "observacion": "",
         }
     if request.method == 'POST':        
-        for field in ['estado', 'hora', 'pago', 'direccion', 'forma_entrega','descuentos', 'nombre', 'observacion']:
+        for field in ['estado', 'hora', 'pago', 'direccion', 'forma_entrega','descuentos', 'nombre', 'telefono', 'observacion']:
             if field in request.POST:
                 datos[field]=request.POST.get(field)
                 if field == 'forma_entrega':

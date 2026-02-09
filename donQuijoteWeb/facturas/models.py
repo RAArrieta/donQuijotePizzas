@@ -8,6 +8,7 @@ class Facturas(models.Model):
     fecha = models.DateField(default=now)
     envio = models.BooleanField(default=True) 
     turno = models.CharField(max_length=20, null=True, blank=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
     
     class Meta:
         db_table = "facturas"

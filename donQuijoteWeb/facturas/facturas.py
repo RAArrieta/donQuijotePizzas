@@ -21,7 +21,7 @@ def cargar_fact(request):
 
         
         for key, value in pedidos.items():
-            envio, forma_pago, total = None, None, None
+            envio, forma_pago, telefono, total = None, None, None,
             lista_productos = list()  
             
             for k, v in value['datos'].items():
@@ -31,10 +31,12 @@ def cargar_fact(request):
                     envio = True
                 elif k == "pago":
                     forma_pago = v
+                elif k == "telefono":
+                    telefono = v
                 elif k == "total":
                     total = v  
             
-            factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, )   
+            factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, telefono=telefono )   
             
             factura.save()  
 
