@@ -1,20 +1,17 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.db.models import Sum, Q
 from datetime import datetime
 
 from .models import Caja
 
 from .models import Facturas, FacturaProducto
-from pedido.models import Pedido
 
 from core.forms import FechasPagosForm
-from core.forms import PagosForm
 
-from pedido.recuperar_pedidos import recuperar_entregados
+from pedido.recuperar_pedidos import recuperar_pedidos
 
 def cargar_fact(request):   
-    datos_pedidos = recuperar_entregados()
+    datos_pedidos = recuperar_pedidos('entregado')
     pedidos = datos_pedidos.get("pedidos", {})  
     pedidos_reservados = datos_pedidos.get("pedidos_reservados", {}) 
     caja = Caja.objects.first()
