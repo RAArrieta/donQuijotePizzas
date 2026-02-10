@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from django.db.models import Sum, Q
-from datetime import datetime
+from django.utils import timezone
+
 from .models import Gastos
 from core.forms import FechasPagosProvForm
 
 
 def listar_pagos(request):
-    now = datetime.now()
-    gastos = Gastos.objects.all()
-
+    today = timezone.now().date()
+    gastos = Gastos.objects.filter(fecha__year=today.year, fecha__month=today.month)
+    
     form = FechasPagosProvForm(request.GET or None)  
 
     if form.is_valid():
@@ -20,7 +21,7 @@ def listar_pagos(request):
         if fecha_inicio and fecha_fin:
             gastos = gastos.filter(fecha__range=[fecha_inicio, fecha_fin])
         else:
-            gastos = gastos.filter(fecha__year=now.year, fecha__month=now.month)
+            gastos = gastos.filter(fecha__year=today.year, fecha__month=today.month)
                
         if forma_pago:
             gastos = gastos.filter(forma_pago=forma_pago)
@@ -28,7 +29,7 @@ def listar_pagos(request):
         if proveedor:
             gastos = gastos.filter(proveedor=proveedor)
     else:      
-        gastos = gastos.filter(fecha__year=now.year, fecha__month=now.month)
+        gastos = gastos.filter(fecha__year=today.year, fecha__month=today.month)
     
     caja_total = 0.0
     caja_efectivo = 0.0

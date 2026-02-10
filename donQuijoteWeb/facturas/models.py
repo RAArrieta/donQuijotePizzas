@@ -9,6 +9,8 @@ class Facturas(models.Model):
     envio = models.BooleanField(default=True) 
     turno = models.CharField(max_length=20, null=True, blank=True)
     telefono = models.CharField(max_length=20, blank=True, null=True)
+    nombre = models.CharField(max_length=20, blank=True, null=True)
+    direccion = models.CharField(max_length=50, blank=True, null=True)
     
     class Meta:
         db_table = "facturas"

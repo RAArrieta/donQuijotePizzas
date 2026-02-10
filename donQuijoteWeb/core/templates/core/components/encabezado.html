@@ -66,9 +66,6 @@
                 <a class="btn-opc" href="{% url 'pedido:home' %}">Todos</a>
             {% endif %}
 
-
-
-
         {% elif titulo_texto == "Nuevo Pedido" %}
             <a class="btn-opc" href="{% url 'pedido:listar_pendientes' %}">Pendientes</a>
             <a class="btn-opc" href="{% url 'pedido:listar_entregados' %}">Entregados</a>
@@ -83,11 +80,6 @@
                 <a class="btn-opc" href="{% url 'facturas:abrir_caja' %}">Abrir Caja</a>   
             {% endif %}
 
-
-
-
-
-            
             {% if caja_total > 0.0 %}
             <form method="get" class="filtro-form">
                 {{ form.as_p }}
@@ -101,36 +93,36 @@
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
 
-
-
-
-
+            <a class="btn-opc" href="{% url 'facturas:facturas_detalle' %}">Ver Detalles</a>
 
             <form method="get" action="{% url 'facturas:imprimir_facturas' %}" target="_blank">
-
                 {% for factura in facturas %}
                     <input type="hidden" name="ids" value="{{ factura.id }}">
                 {% endfor %}
 
-                <button type="submit">
-                    Imprimir teléfonos y direcciones
+                <button type="submit" class="btn-opc">
+                    Sorteo
                 </button>
-
             </form>
 
-            
 
+            {% elif titulo_texto == "Detalle de Facturación" %}
+            <form method="get" class="filtro-form">
+                {{ form.as_p }}
+                <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
+            </form>
 
+            <a class="btn-opc" href="{% url 'facturas:facturas' %}">Facturas</a>
 
+            <form method="get" action="{% url 'facturas:imprimir_facturas' %}" target="_blank">
+                {% for factura in facturas %}
+                    <input type="hidden" name="ids" value="{{ factura.id }}">
+                {% endfor %}
 
-
-
-
-
-
-
-
-
+                <button type="submit" class="btn-opc">
+                    Sorteo
+                </button>
+            </form>
 
         {% elif titulo_texto == "Pagos" %}
             <a class="btn-opc" href="{% url 'gastos:cargar_pagos' %}">Cargar Pagos</a>

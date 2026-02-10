@@ -1,4 +1,10 @@
 /* index.html */
+.factura-cliente {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 10px;
+}
+
 .facturas-totales {
     background-color: rgb(215, 250, 238);
     display: flex;
@@ -46,12 +52,13 @@
 }
 .productos-factura {
     background-color:  rgb(232, 247, 242);
-    width: 50%;
+    width: 75%;
     margin: 0 auto;
     margin-bottom: 10px;
 }
 .productos-detalles {
     margin: 10px 50px;
+    text-align: center;
 }
 
 .no-check {

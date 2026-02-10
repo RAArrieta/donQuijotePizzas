@@ -10,7 +10,7 @@
 {% endblock css %}
 
 {% block titulo %}
-    {% include 'core/components/encabezado.html' with titulo_texto="Facturación" %}
+    {% include 'core/components/encabezado.html' with titulo_texto="Detalle de Facturación" %}
 {% endblock titulo %}
 
 {% block main %}
@@ -30,8 +30,27 @@
         <p class="facturas-detalle-pedido">{{ factura.fecha|date:"d/m/Y" }}</p>
         <p class="facturas-detalle-pedido">{{ factura.forma_pago|upper }}</p>
         <p class="facturas-detalle-pedido">${{ factura.pago }}</p>
+
+        <button onclick="toggleProductos('{{ factura.id }}')" class="facturas-detalle-icono">
+            <img class="icono-opc" src="{% static 'facturas/img/lupa.webp' %}" alt="Detalle Factura">
+        </button>
     </div>
-   
+
+    <div id="productos-{{ factura.id }}" class="card productos-factura" style="display: none;">
+        <div class="factura-cliente">
+            <p>Nom: {{ factura.nombre }}</p> 
+            <p>Dir: {{ factura.direccion }}</p> 
+            <p>Tel: {{ factura.telefono }}</p> 
+        </div>
+
+        <hr>
+        {% for producto in productos_factura %}
+            {% if factura.id == producto.factura.id %}
+                <p class="productos-detalles">{{ producto.cantidad }} {{ producto.producto }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    
     <div class="facturas-hr-container">
         <hr class="facturas-hr">  
     </div>

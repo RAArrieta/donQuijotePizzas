@@ -6,7 +6,10 @@
 
 {% for factura in facturas %}
     <div style="border:1px solid black; padding:10px; text-align:center;">
-        {{ factura.telefono }}
+        <p style="margin:2px 0;">Nom: {{ factura.nombre }}</p>
+        <p style="margin:2px 0;">Dir: {{ factura.direccion }}</p>
+        <p style="margin:2px 0;">Tel: {{ factura.telefono }}</p>
+
     </div>
 {% endfor %}
 

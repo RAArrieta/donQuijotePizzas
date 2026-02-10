@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum, Q
-from datetime import datetime
+from django.utils import timezone
 
 from .models import Caja
 
@@ -21,7 +21,7 @@ def cargar_fact(request):
 
         
         for key, value in pedidos.items():
-            envio, forma_pago, telefono, total = None, None, None,
+            direccion, nombre, envio, forma_pago, telefono, total = None, None, None, None, None, None
             lista_productos = list()  
             
             for k, v in value['datos'].items():
@@ -33,10 +33,14 @@ def cargar_fact(request):
                     forma_pago = v
                 elif k == "telefono":
                     telefono = v
+                elif k == "direccion":
+                    direccion = v
+                elif k == "nombre":
+                    nombre = v
                 elif k == "total":
                     total = v  
             
-            factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, telefono=telefono )   
+            factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, telefono=telefono, direccion=direccion, nombre=nombre )   
             
             factura.save()  
 
@@ -58,7 +62,7 @@ def cargar_fact(request):
             FacturaProducto.objects.bulk_create(lista_productos)
             
         for key, value in pedidos_reservados.items():
-            envio, forma_pago, total = None, None, None
+            direccion, nombre, envio, forma_pago, telefono, total = None, None, None, None, None, None
             lista_productos = list()  
             
             for k, v in value['datos'].items():
@@ -68,10 +72,16 @@ def cargar_fact(request):
                     envio = True
                 elif k == "pago":
                     forma_pago = v
+                elif k == "telefono":
+                    telefono = v
+                elif k == "direccion":
+                    direccion = v
+                elif k == "nombre":
+                    nombre = v
                 elif k == "total":
                     total = v  
             
-            factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, )   
+            factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, telefono=telefono, direccion=direccion, nombre=nombre )   
             
             factura.save()  
 
@@ -95,9 +105,9 @@ def cargar_fact(request):
     return redirect("core:home")
 
 def listar_facturas(request):
-    now = datetime.now()
-    facturas = Facturas.objects.filter(fecha__year=now.year, fecha__month=now.month)
-    productos_factura = FacturaProducto.objects.all()
+    today = timezone.now().date()
+    facturas = Facturas.objects.filter(fecha__year=today.year, fecha__month=today.month)
+    # productos_factura = FacturaProducto.objects.filter(factura__in=facturas)
     
     form = FechasPagosForm(request.GET or None)
     
@@ -108,14 +118,66 @@ def listar_facturas(request):
         turno = form.cleaned_data.get('turno')
         
         if fecha_inicio and fecha_fin:
-            facturas = Facturas.objects.filter(fecha__range=[fecha_inicio, fecha_fin])
-        
+            facturas = Facturas.objects.filter(fecha__range=[fecha_inicio, fecha_fin])           
         if forma_pago:
             facturas = facturas.filter(forma_pago=forma_pago)
-            
         if turno:
             facturas = facturas.filter(turno=turno)
-  
+
+        # productos_factura = FacturaProducto.objects.filter(factura__in=facturas)
+        
+    caja_total = 0.0
+    caja_efectivo = 0.0
+    caja_mercado = 0.0
+    caja_naranja = 0.0
+       
+    facturas_aggregates = facturas.aggregate(
+        total=Sum('pago'),
+        efectivo=Sum('pago', filter=Q(forma_pago="efectivo")),
+        mercado=Sum('pago', filter=Q(forma_pago="mercado")),
+        naranja=Sum('pago', filter=Q(forma_pago="naranja"))
+    )
+
+    caja_total = (facturas_aggregates['total'] or 0) 
+    caja_efectivo = (facturas_aggregates['efectivo'] or 0) 
+    caja_mercado = (facturas_aggregates['mercado'] or 0)
+    caja_naranja = (facturas_aggregates['naranja'] or 0) 
+ 
+    context = {
+        'form': form,
+        'facturas': facturas,
+        # 'productos_factura': productos_factura,
+        'caja_total': caja_total,
+        'caja_efectivo': caja_efectivo,
+        'caja_mercado': caja_mercado,
+        'caja_naranja': caja_naranja,
+    }
+    
+    return render(request, "facturas/facturas.html", context) 
+
+
+def listar_facturas_detalle(request):
+    today = timezone.now().date()
+    facturas = Facturas.objects.filter(fecha__year=today.year, fecha__month=today.month)
+    productos_factura = FacturaProducto.objects.filter(factura__in=facturas)
+    
+    form = FechasPagosForm(request.GET or None)
+    
+    if form.is_valid():
+        fecha_inicio = form.cleaned_data.get('fecha_inicio')
+        fecha_fin = form.cleaned_data.get('fecha_fin')
+        forma_pago = form.cleaned_data.get('forma_pago')
+        turno = form.cleaned_data.get('turno')
+        
+        if fecha_inicio and fecha_fin:
+            facturas = Facturas.objects.filter(fecha__range=[fecha_inicio, fecha_fin])           
+        if forma_pago:
+            facturas = facturas.filter(forma_pago=forma_pago)
+        if turno:
+            facturas = facturas.filter(turno=turno)
+
+        productos_factura = FacturaProducto.objects.filter(factura__in=facturas)
+        
     caja_total = 0.0
     caja_efectivo = 0.0
     caja_mercado = 0.0
@@ -143,4 +205,4 @@ def listar_facturas(request):
         'caja_naranja': caja_naranja,
     }
     
-    return render(request, "facturas/facturas.html", context) 
+    return render(request, "facturas/facturas_detalle.html", context) 
