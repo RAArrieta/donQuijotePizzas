@@ -1,10 +1,13 @@
 from django.db import models
 from productos.models import Producto
+from pedido.models import Pedido
 from django.utils.timezone import now
 
 class Facturas(models.Model):
+    pedido = models.CharField(max_length=20, blank=True, null=True)
     forma_pago = models.CharField(max_length=50)
     pago = models.FloatField()
+    descuento = models.CharField(max_length=50)
     fecha = models.DateField(default=now)
     envio = models.BooleanField(default=True) 
     turno = models.CharField(max_length=20, null=True, blank=True)

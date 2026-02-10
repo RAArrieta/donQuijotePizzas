@@ -86,6 +86,11 @@
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
             {% endif %}
+
+
+
+
+
             
         {% elif titulo_texto == "Facturación" %}
             <form method="get" class="filtro-form">
@@ -93,7 +98,7 @@
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
 
-            <a class="btn-opc" href="{% url 'facturas:facturas_detalle' %}">Ver Detalles</a>
+            <a class="btn-opc" href="{% url 'facturas:facturas' 'detalle' %}">Ver Detalles</a>
 
             <form method="get" action="{% url 'facturas:imprimir_facturas' %}" target="_blank">
                 {% for factura in facturas %}
@@ -104,6 +109,9 @@
                     Sorteo
                 </button>
             </form>
+
+
+
 
 
             {% elif titulo_texto == "Detalle de Facturación" %}
@@ -112,17 +120,11 @@
                 <button type="submit" class="btn-opc"><img class="icono-opc" src="{% static 'facturas/img/buscar_dato.webp' %}" alt="Detalle Producto"></button>
             </form>
 
-            <a class="btn-opc" href="{% url 'facturas:facturas' %}">Facturas</a>
+            <a class="btn-opc" href="{% url 'facturas:facturas' 'factura' %}">Facturas</a>
 
-            <form method="get" action="{% url 'facturas:imprimir_facturas' %}" target="_blank">
-                {% for factura in facturas %}
-                    <input type="hidden" name="ids" value="{{ factura.id }}">
-                {% endfor %}
+           
 
-                <button type="submit" class="btn-opc">
-                    Sorteo
-                </button>
-            </form>
+
 
         {% elif titulo_texto == "Pagos" %}
             <a class="btn-opc" href="{% url 'gastos:cargar_pagos' %}">Cargar Pagos</a>

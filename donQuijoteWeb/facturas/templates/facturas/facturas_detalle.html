@@ -38,9 +38,11 @@
 
     <div id="productos-{{ factura.id }}" class="card productos-factura" style="display: none;">
         <div class="factura-cliente">
+            <p>Ped: {{ factura.pedido }}</p> 
             <p>Nom: {{ factura.nombre }}</p> 
             <p>Dir: {{ factura.direccion }}</p> 
             <p>Tel: {{ factura.telefono }}</p> 
+            <p>Des: {{ factura.descuento }}</p> 
         </div>
 
         <hr>

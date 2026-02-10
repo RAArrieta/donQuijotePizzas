@@ -6,7 +6,7 @@
             <li class="list-link"><a class="link-app" href="{% url 'pedido:listar_pendientes' %}">Pedidos</a></li>
             <li class="list-link"><a class="link-app" href="{% url 'productos:home' %}">Productos</a></li>             
             <li class="list-link"><a class="link-app" href="{% url 'estadisticas:home' %}">Estadisticas</a></li>
-            <li class="list-link"><a class="link-app" href="{% url 'facturas:facturas' %}">Facturación</a></li>
+            <li class="list-link"><a class="link-app" href="{% url 'facturas:facturas' 'factura' %}">Facturación</a></li>
             <li class="list-link"><a class="link-app" href="{% url 'gastos:home' %}">Pagos</a></li>
             <li class="list-link"><a class="link-app" href="{% url 'contable:home' %}">Tesoreria</a></li>      
         {% endif %}    
