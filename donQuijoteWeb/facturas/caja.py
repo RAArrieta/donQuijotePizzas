@@ -11,16 +11,13 @@ from .facturas import cargar_fact
 from django.utils import timezone
 
 def abrirCaja(request):
-
     hora_actual = timezone.now().hour
-
 
     if 6 <= hora_actual < 17:
         turno = "mediodia"
     else:
         turno = "noche"
 
-    # crear o abrir caja con ese turno
     caja = Caja.objects.first()
 
     if caja:
@@ -32,7 +29,6 @@ def abrirCaja(request):
 
 
 def cerrarCaja(request):
-    print(f"def cerrarCaja(request):")
     caja = Caja.objects.first() 
 
     if caja:
@@ -64,12 +60,9 @@ def listar_caja(request):
     print(f"def listar_caja(request):    ")
     datos_pedidos = recuperar_sin_reservados(Pedido, PedidoProductos, "pedidos")
     datos_pedidos_reserv = recuperar_sin_reservados(PedidosReservado, PedidosProductosReservados, "pedidos_reservados")
-
     
     pedidos = datos_pedidos.get("pedidos", {})  
-    pedidos_reservados = datos_pedidos_reserv.get("pedidos_reservados", {})    
-    
-    
+    pedidos_reservados = datos_pedidos_reserv.get("pedidos_reservados", {})      
     
     pedidos_pago = None
     pedidos_pago_reserv = None

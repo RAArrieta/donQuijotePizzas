@@ -1,5 +1,3 @@
-
-
 from django.shortcuts import render
 from .models import Facturas
 from .caja import listar_caja, abrirCaja, cerrarCaja
@@ -16,13 +14,6 @@ def cerrar_caja(request):
 
 def facturas(request, key=None):       
     return listar_facturas(request, key)
-
-# def facturas_detalle(request, key=None):
-    
-#     if key:
-#         print(f'key: {key}')
-        
-#     return listar_facturas_detalle(request)
 
 def imprimir_facturas(request):
     ids = request.GET.getlist("ids")

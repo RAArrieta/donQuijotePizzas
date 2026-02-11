@@ -219,7 +219,7 @@ class Carro:
                 total = float(total)+float(value["subtotal_emp"])
         
         if self.session["carro"]["datos"].get("descuento_precio", 0.0) != 0.0 and self.session["carro"]["datos"]["descuento_precio"] != None:
-            self.session["carro"]["datos"]["total"] = int(float(total) / self.session["carro"]["datos"]["descuento_precio"])
+            self.session["carro"]["datos"]["total"] = int(float(total) - (float(total) * (self.session["carro"]["datos"]["descuento_precio"])/100))
         else:
             self.session["carro"]["datos"]["total"] = float(total)
         return total

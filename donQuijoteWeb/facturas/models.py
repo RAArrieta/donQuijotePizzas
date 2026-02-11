@@ -24,8 +24,10 @@ class Facturas(models.Model):
 
 class FacturaProducto(models.Model):
     factura = models.ForeignKey(Facturas, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True, blank=True)
+    empanadas = models.CharField(max_length=20, null=True, blank=True)
     cantidad = models.FloatField()
+    subtotal = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.cantidad} x {self.producto.nombre} en Factura {self.factura.id}"

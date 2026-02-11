@@ -12,12 +12,12 @@ def cargar_fact(request):
     pedidos = datos_pedidos.get("pedidos", {})  
     pedidos_reservados = datos_pedidos.get("pedidos_reservados", {}) 
     caja = Caja.objects.first()
-
-    if caja:
-        turno = caja.turno
-    print("***********************")
+    turno = caja.turno if caja else None
+    
+    print("*************************")
     print(pedidos)
-    print("***********************")
+    print("*************************")
+
     for key, value in pedidos.items():
         cargar_factura(key, value, turno)
         
@@ -55,17 +55,26 @@ def cargar_factura(key, value, turno):
     factura.save()  
 
     for k, v in value.items():
-        if k.isdigit(): 
-            cantidad = None
-            for prod_key, prod_value in v.items():
-                if prod_key == "cantidad":
-                    cantidad = prod_value
-                    break
-            
-            if cantidad is not None:
+        subtotal, cantidad = None, None
+        for prod_key, prod_value in v.items():
+            if prod_key == "cantidad":
+                cantidad = prod_value
+            if prod_key == "subtotal" or prod_key == "subtotal_emp":
+                subtotal = prod_value
+        
+        if cantidad is not None:
+            if k == 'empanadas':
+                lista_productos.append(FacturaProducto(
+                    empanadas=str(k),
+                    cantidad=float(cantidad),
+                    subtotal = float(subtotal),
+                    factura=factura  
+                ))
+            else:
                 lista_productos.append(FacturaProducto(
                     producto_id=int(k),
                     cantidad=float(cantidad),
+                    subtotal = float(subtotal),
                     factura=factura  
                 ))
     

@@ -46,9 +46,24 @@
         </div>
 
         <hr>
+
         {% for producto in productos_factura %}
-            {% if factura.id == producto.factura.id %}
+            {% if factura.id == producto.factura.id and  producto.empanadas != None %}
+                <p class="productos-detalles">{{ producto.cantidad }} Empanadas ${{ producto.subtotal }}</p>
+            {% endif %}
+        {% endfor %}
+
+        {% for producto in productos_factura %}
+            {% if factura.id == producto.factura.id and producto.producto.categoria.nombre == "Empanadas" %}
                 <p class="productos-detalles">{{ producto.cantidad }} {{ producto.producto }}</p>
+            {% endif %}
+        {% endfor %}
+
+        <hr>
+
+        {% for producto in productos_factura %}
+            {% if factura.id == producto.factura.id and producto.empanadas == None and producto.producto.categoria.nombre != "Empanadas" %}
+                <p class="productos-detalles">{{ producto.cantidad }} {{ producto.producto }} ${{ producto.subtotal }}</p>
             {% endif %}
         {% endfor %}
     </div>
