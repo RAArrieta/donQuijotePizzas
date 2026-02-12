@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
 from django.db import connection
 from collections import defaultdict
-
 from .models import Caja
 from pedido.models import Pedido, PedidoProductos, PedidosReservado, PedidosProductosReservados
 from core.forms import PagosForm
-
 from pedido.recuperar_pedidos import recuperar_sin_reservados
 from .facturas import cargar_fact
 from django.utils import timezone
@@ -57,7 +55,6 @@ def cerrarCaja(request):
 
 
 def listar_caja(request):    
-    print(f"def listar_caja(request):    ")
     datos_pedidos = recuperar_sin_reservados(Pedido, PedidoProductos, "pedidos")
     datos_pedidos_reserv = recuperar_sin_reservados(PedidosReservado, PedidosProductosReservados, "pedidos_reservados")
     

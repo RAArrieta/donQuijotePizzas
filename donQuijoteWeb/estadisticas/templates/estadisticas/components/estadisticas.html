@@ -5,7 +5,7 @@
 
         {% if estadisticas.producto_nombre %}
             <h4 >Informe de Ventas</h4>
-            <h3 class="titulo-h3">{{estadisticas.categoria}} /  {{ estadisticas.producto_nombre }}</h3>
+            <h3 class="titulo-h3">{{estadisticas.categoria}} / {{ estadisticas.producto_nombre }}</h3>
         {% elif estadisticas.categoria %}
             <h4 >Informe de Ventas</h4>
             <h3 class="titulo-h3">{{ estadisticas.categoria }}</h3>
@@ -26,6 +26,7 @@
         <p class="est-datos"><strong> ▪️  &nbsp; Día seleccionado:</strong> {{ dia_semana_nombre }}</p>
         
     </div>
+
     {% else %}
     <div class="estadisticas-datos">
 
@@ -38,6 +39,12 @@
         {% else %}
             <h3 class="titulo-h3">Informe de Envíos</h3>
         {% endif %}
+        {% if estadisticas.turno != None %}
+            <h3 class="titulo-h3">Turno: {{ estadisticas.turno|lower|capfirst }}</h3>
+        {% else %}
+            <h3 class="titulo-h3">Jornada Completa</h3>
+        {% endif %}
+        <hr class="est-hr">
         <hr class="est-hr">
         
         {% if estadisticas.media_semana  == "m_j" %}

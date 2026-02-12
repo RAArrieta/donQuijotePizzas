@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum, Q
 from django.utils import timezone
-
 from .models import Caja
 from .models import Facturas, FacturaProducto
 from core.forms import FechasPagosForm
@@ -14,10 +13,6 @@ def cargar_fact(request):
     caja = Caja.objects.first()
     turno = caja.turno if caja else None
     
-    print("*************************")
-    print(pedidos)
-    print("*************************")
-
     for key, value in pedidos.items():
         cargar_factura(key, value, turno)
         
@@ -27,7 +22,7 @@ def cargar_fact(request):
     return redirect("core:home")
 
 def cargar_factura(key, value, turno):
-    descuento, direccion, nombre, envio, forma_pago, telefono, total = None, None, None, None, None, None, None
+    envio, forma_pago, telefono, direccion, nombre, descuento, total = None, None, None, None, None, None, None
     lista_productos = list()  
     
     pedido = key
@@ -50,7 +45,7 @@ def cargar_factura(key, value, turno):
         elif k == "total":
             total = v  
     
-    factura = Facturas(envio=envio, forma_pago=forma_pago, pago=total, turno=turno, telefono=telefono, direccion=direccion, nombre=nombre, descuento=descuento, pedido=pedido )   
+    factura = Facturas(turno=turno, envio=envio, forma_pago=forma_pago, telefono=telefono, direccion=direccion, nombre=nombre, descuento=descuento, pedido=pedido, pago=total)   
     
     factura.save()  
 
@@ -82,25 +77,37 @@ def cargar_factura(key, value, turno):
         
 
 def listar_facturas(request, key):
-    print(f"key: {key}")
     today = timezone.now().date()
-    facturas = Facturas.objects.filter(fecha__year=today.year, fecha__month=today.month)
-    
+    facturas = Facturas.objects.all()
+
     form = FechasPagosForm(request.GET or None)
-    
+
     if form.is_valid():
         fecha_inicio = form.cleaned_data.get('fecha_inicio')
         fecha_fin = form.cleaned_data.get('fecha_fin')
         forma_pago = form.cleaned_data.get('forma_pago')
         turno = form.cleaned_data.get('turno')
-        
-        if fecha_inicio and fecha_fin:
-            facturas = Facturas.objects.filter(fecha__range=[fecha_inicio, fecha_fin])           
+
+        if fecha_inicio:
+            facturas = facturas.filter(fecha__gte=fecha_inicio)
+
+        if fecha_fin:
+            facturas = facturas.filter(fecha__lte=fecha_fin)
+
+        if not fecha_inicio and not fecha_fin:
+            facturas = facturas.filter(fecha__year=today.year, fecha__month=today.month)
+
         if forma_pago:
             facturas = facturas.filter(forma_pago=forma_pago)
+
         if turno:
             facturas = facturas.filter(turno=turno)
-       
+
+    else:
+        facturas = facturas.filter(fecha__year=today.year, fecha__month=today.month)
+
+    facturas = facturas.order_by('-fecha')
+
     caja_total = 0.0
     caja_efectivo = 0.0
     caja_mercado = 0.0

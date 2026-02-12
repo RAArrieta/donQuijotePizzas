@@ -34,7 +34,6 @@ class Carro:
         self.carro = carro
         
     def agregar(self, producto):
-        print("def agregar(self, producto)")
         producto_id_str = str(producto.id)
         if producto_id_str not in self.carro.keys():
             self.carro[producto_id_str] = {

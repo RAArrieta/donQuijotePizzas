@@ -8,7 +8,6 @@ from core.forms import FechasPagosProvForm
 
 def listar_pagos(request):
     today = timezone.now().date()
-    gastos = Gastos.objects.filter(fecha__year=today.year, fecha__month=today.month)
     
     form = FechasPagosProvForm(request.GET or None)  
 
